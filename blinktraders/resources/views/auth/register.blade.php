@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-    @extends('layouts.meta') 
+        @extends('layouts.meta') 
     </head>
     <body>   
         @extends('layouts.header')
@@ -22,18 +22,24 @@
                                             <span class="force-color-black"><span class="force-color-blue">*</span>Required fields</span><br>
                                             <div class="form-group">
                                                 <label class="force-color-black">Full Name <span class="force-color-blue">*</span></label>
-                                                <input type="text" class="form-control input-outline" name="us_full_name" value="">
-                                                <span class="force-color-red"></span>
+                                                <input type="text" class="form-control input-outline" name="name" value="{{ old('name') }}">
+                                                @error('name')
+                                                    <span class="force-color-red">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="form-group">
                                                 <label class="force-color-black">Email Address <span class="force-color-blue">*</span></label>
-                                                <input type="email" class="form-control input-outline" name="us_email" value="" >
-                                                <span class="force-color-red"></span>
+                                                <input type="email" class="form-control input-outline" name="email" value="{{ old('email') }}" >
+                                                @error('email')
+                                                    <span class="force-color-red">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="form-group">
                                                 <label class="force-color-black">Phone Number <span class="force-color-blue">*</span></label>
-                                                <input type="tel" class="form-control input-outline" name="us_phone" value="" >
-                                                <span class="force-color-red"></span>
+                                                <input type="tel" class="form-control input-outline" name="phone" value="{{ old('phone') }}" >
+                                                @error('phone')
+                                                    <span class="force-color-red">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="cover">
                                                 <button type="submit" class="btn btn-primary btn-lg text-center" name="submit_form_1_btn">Continue</button>
@@ -56,16 +62,11 @@
         @extends('layouts.footer')
         
         <script>
-            // window.onload = (event) => {
-            //    bs4pop.notice('', {position: 'topright', type: 'danger'})
-            // };
-            
-            // var msg = new URL(window.location.href).searchParams.get("msg");
-            // if(msg === "invalid"){
-            //     window.onload = (event) => {
-            //        bs4pop.notice('Invalid Link', {position: 'topright', type: 'danger'})
-            //     };
-            // }
+            @if($errors->any())
+                window.onload = (event) => {
+                bs4pop.notice('Input Error', {position: 'topright', type: 'danger'})
+                };
+            @endif
         </script>
     </body>
 </html>

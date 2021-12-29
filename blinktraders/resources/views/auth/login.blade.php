@@ -18,14 +18,15 @@
                                         <br><br>
                                     </div>
                                     <div class="px-2">
-                                        <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post" class="">
+                                        <form action="{{ route('login') }}" method="post">
+                                            @csrf
                                             <div class="form-group">
                                                 <label class="force-color-black">Email Address</label>
-                                                <input type="email" name="username_email_phone" class="form-control input-outline" value="<?= $username_email_phone ?>" required>
+                                                <input type="email" name="email" class="form-control input-outline" value="{{ old('email') }}" required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="force-color-black">Password</label>
-                                                <input type="password" name="password" class="form-control input-outline" value="<?= $password ?>" required>
+                                                <input type="password" name="password" class="form-control input-outline" value="{{ old('password') }}" required>
                                             </div>
                                             <div class="cover">
                                                 <button type="submit" class="btn btn-primary btn-lg text-center" name="submit_login_btn">Login</button>
@@ -48,19 +49,12 @@
         
         @extends('layouts.footer')
         
-        <script>
-            var msg = new URL(window.location.href).searchParams.get("msg");
-            if(msg === "sucess"){
+        <script>            
+            @if (session('status'))
                 window.onload = (event) => {
-                   bs4pop.notice('Account created', {position: 'topright', type: 'success'})
+                bs4pop.notice('{{ session('status') }}', {position: 'topright', type: 'danger'})
                 };
-            }
-            
-            <?php if($message_err != ""){ ?>
-            window.onload = (event) => {
-               bs4pop.notice('<?= $message_err ?>', {position: 'topright', type: 'danger'})
-            };
-            <?php } ?>
+            @endif
         </script>
         
     </body>

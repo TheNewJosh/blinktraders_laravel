@@ -2,22 +2,6 @@
     $page = basename($_SERVER['PHP_SELF']); 
     
     $mi1 = $mi2 = $mi3 = $mi4 = "";
-    
-    if($page == "index.php"){
-        $mi1 = "active-nav";
-    }
-
-    if($page == "blog.php"){
-        $mi2 = "active-nav";
-    }
-
-    if($page == "advance-search.php"){
-        $mi3 = "active-nav";
-    }
-
-    if($page == "register.php"){
-        $mi4 = "active-nav";
-    }
 ?>
     <nav class="navbar navbar-expand-lg fixed-top nav-bg">
         <div>
