@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        @extends('layouts.meta')
+        @include('layouts.meta')
         <?php 
             $page = "index.php"; 
             $page_title = "Portfolio";
             $mi1 = $mi2 = $mi3 = $mi4 = $mi5 = $mi6 = $mi7 = $mi8 = "";
-            $smi1 = $smi2 = $smi3 = $smi4 = $smi5 = "";
+            $smi1 = "footer-sticky-menu-active";
+            $smi5 = $smi2 = $smi4 = $smi3 = "";
         ?>
     </head>
     <body>
@@ -125,7 +126,7 @@
                                 Referrals<br><br>
                                 <div class="row border-line-bottom mt-2">
                                     <div class="col col-lg-8 text-left row">
-                                        <span><img src="../../assets/img/circle-gray.svg" /></span>
+                                        <span><img src="{{ asset('assets/img/circle-gray.svg') }}" /></span>
                                         <span class="ml-2">
                                             <b class="force-color-black big-font-size">Deposit</b><br>
                                             <sp class="small-font-size">user1</sp>
@@ -137,7 +138,7 @@
                                 </div>
                                 <div class="row border-line-bottom mt-2">
                                     <div class="col col-lg-8 text-left row">
-                                        <span><img src="../../assets/img/circle-gray.svg" /></span>
+                                        <span><img src="{{ asset('img/circle-gray.svg') }}" /></span>
                                         <span class="ml-2">
                                             <b class="force-color-black big-font-size">Deposit</b><br>
                                             <sp class="small-font-size">user1</sp>
@@ -149,7 +150,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col col-lg-8 text-left row">
-                                        <span><img src="../../assets/img/circle-gray.svg" /></span>
+                                        <span><img src="{{ asset('assets/img/circle-gray.svg') }}" /></span>
                                         <span class="ml-2">
                                             <b class="force-color-black big-font-size">Deposit</b><br>
                                             <sp class="small-font-size">user1</sp>
@@ -212,7 +213,7 @@
                                 Referrals<br><br>
                                 <div class="row border-line-bottom mt-2">
                                     <div class="col col-lg-8 text-left row">
-                                        <span><img src="../../assets/img/circle-gray.svg" /></span>
+                                        <span><img src="{{ asset('img/circle-gray.svg') }}" /></span>
                                         <span class="ml-2">
                                             <b class="force-color-black big-font-size">Deposit</b><br>
                                             <sp class="small-font-size">user1</sp>
@@ -224,7 +225,7 @@
                                 </div>
                                 <div class="row border-line-bottom mt-2">
                                     <div class="col col-lg-8 text-left row">
-                                        <span><img src="../../assets/img/circle-gray.svg" /></span>
+                                        <span><img src="{{ asset('img/circle-gray.svg') }}" /></span>
                                         <span class="ml-2">
                                             <b class="force-color-black big-font-size">Deposit</b><br>
                                             <sp class="small-font-size">user1</sp>
@@ -236,7 +237,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col col-lg-8 text-left row">
-                                        <span><img src="../../assets/img/circle-gray.svg" /></span>
+                                        <span><img src="{{ asset('img/circle-gray.svg') }}" /></span>
                                         <span class="ml-2">
                                             <b class="force-color-black big-font-size">Deposit</b><br>
                                             <sp class="small-font-size">user1</sp>
@@ -305,7 +306,7 @@
   </div>
 </div>
         
-    @extends('user.layouts.footer')
+    @include('user.layouts.footer')
 
         <script>
             var msg = new URL(window.location.href).searchParams.get("msg");

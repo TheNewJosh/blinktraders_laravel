@@ -507,6 +507,10 @@ form:before {
     padding: 10px;
 }
 
+.body-main-adm{
+    background-color: #F1F3F6;
+}
+
 .main-dash.row{
     margin-right: 0px;
 }
@@ -644,6 +648,7 @@ form:before {
 
 .link-adm:hover{
     background-color: rgb(18, 20, 25, 0.2);
+    text-decoration: none !important;
 }
 
 
@@ -683,7 +688,7 @@ form:before {
 }
 
 .head-border-bottom-ads{
-    border-bottom: 1px solid var(--clr-black);
+    border-bottom: 0.5px solid #C7C7C8;
     height: 50px;
 }
 
@@ -692,7 +697,7 @@ form:before {
 }
 
 .main-content-body{
-    margin-left: 180px;
+    margin-left: 150px;
     margin-top: 150px;
 }
 
@@ -706,9 +711,13 @@ form:before {
 .pro-select-input{
     width: 80%;
     border: none;
-    border-bottom: 1px solid var(--clr-black);
+    border-bottom: 1px solid var(--clr-black) !important;
     outline: none;
     background-color: var(--clr-white);
+}
+
+.select2-hidden-accessible{
+    
 }
 
 .pro-select-input-sm{
@@ -755,6 +764,11 @@ form:before {
     border-radius: 20px;
 }
 
+.force-img-avatar-table-icon{
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+}
 .table-image{
     width: 70px;
     height: 50px;
@@ -1178,6 +1192,12 @@ input[type=number] {
     justify-content: space-between;
 }
 
+.justify-row-space{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .height-deposit-space{
     height: 55vh;
 }
@@ -1222,3 +1242,42 @@ input[type=number] {
     margin-left: 5px !important;
 }
 
+.blog-left-tag{
+    color: #0057FF;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    border: 2px solid #0057FF;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.blog-img-banner{
+    width: 320px;
+    height: 257px;
+    border-radius: 12px;
+}
+
+.hero-banner-head-blog{
+    background-color: var(--clr-black);
+    height: 80px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.blog-text{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    color: var(--clr-black);
+    text-align: justify;
+}
+
+.blog-content-text{
+    width: 300px;
+}
+
+.blog-container{
+    padding: 5px 0px 5px 120px;
+}

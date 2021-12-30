@@ -1,31 +1,31 @@
 <div class="footer-sticky-menu-div display-none-area-desk">
     <ul class="footer-sticky-menu-ul">
         <li class="footer-sticky-menu-li">
-            <a href="index.php" class="footer-sticky-menu-a <?= $smi1 ?>">
+            <a href="{{ route('dashboard') }}" class="footer-sticky-menu-a <?= $smi1 ?>">
                 <span class="footer-sticky-menu-icon"><i class="far fa-chart-bar"></i></span><br>
                 <span class="footer-sticky-menu-text">Portfolio</span>
             </a>
         </li>
         <li class="footer-sticky-menu-li">
-            <a href="deposit.php" class="footer-sticky-menu-a <?= $smi2 ?>">
+            <a href="{{ route('deposit') }}" class="footer-sticky-menu-a <?= $smi2 ?>">
                 <span class="footer-sticky-menu-icon"><i class="far fa-money-bill-alt"></i></span><br>
                 <span class="footer-sticky-menu-text">Deposit</span>
             </a>
         </li>
         <li class="footer-sticky-menu-li">
-            <a href="invest.php" class="footer-sticky-menu-a <?= $smi3 ?>">
+            <a href="{{ route('invest') }}" class="footer-sticky-menu-a <?= $smi3 ?>">
                 <span class="footer-sticky-menu-icon"><i class="fas fa-university"></i></span><br>
                 <span class="footer-sticky-menu-text">Invest</span>
             </a>
         </li>
         <li class="footer-sticky-menu-li">
-            <a href="withdraw.php" class="footer-sticky-menu-a <?= $smi4 ?>">
+            <a href="{{ route('withdraw') }}" class="footer-sticky-menu-a <?= $smi4 ?>">
                 <span class="footer-sticky-menu-icon"><i class="fas fa-hand-holding-usd"></i></span><br>
                 <span class="footer-sticky-menu-text">Withdraw</span>
             </a>
         </li>
         <li class="footer-sticky-menu-li">
-            <a href="activities.php" class="footer-sticky-menu-a <?= $smi5 ?>">
+            <a href="{{ route('activities') }}" class="footer-sticky-menu-a <?= $smi5 ?>">
                 <span class="footer-sticky-menu-icon"><i class="fas fa-exchange-alt"></i></span><br>
                 <span class="footer-sticky-menu-text">Activies</span>
             </a>
@@ -55,7 +55,7 @@
   </div>
 </div>
 
-<script src="../../assets/js/jquery-3-4-1.min.js"></script>
+<script src="{{ asset('js/jquery-3-4-1.min.js') }}"></script>
 
 <!--<script src="../../assets/js/aos.js"></script>-->
 
@@ -63,9 +63,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
-<script src="../../assets/js/main-user.js" type="application/javascript"></script>
+<script src="{{ asset('js/main-user.js') }}" type="application/javascript"></script>
 
-<script src="../../assets/js/bs4pop.js"></script>
+<script src="{{ asset('js/bs4pop.js') }}"></script>
 
 <script type="text/javascript">
     $(window).on('load', function() {

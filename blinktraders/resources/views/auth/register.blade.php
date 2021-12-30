@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        @extends('layouts.meta') 
+        <title>Blink Traders </title>
+        @include('layouts.meta') 
+        <?php
+            $page = "account.php";
+        ?>
     </head>
     <body>   
-        @extends('layouts.header')
+        @include('layouts.header')
         <main class="main">
             <div class="bg-img-page">
                 <section class="min-vh-100">
@@ -59,7 +63,7 @@
             </div>
         </main>
         
-        @extends('layouts.footer')
+        @include('layouts.footer')
         
         <script>
             @if($errors->any())

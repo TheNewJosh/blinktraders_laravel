@@ -1,11 +1,25 @@
-<?php    
-    $page = basename($_SERVER['PHP_SELF']); 
-    
+<?php        
     $mi1 = $mi2 = $mi3 = $mi4 = "";
+    
+    if($page == "index.php"){
+        $mi1 = "active-nav";
+    }
+
+    if($page == "blog.php"){
+        $mi2 = "active-nav";
+    }
+
+    if($page == "service.php"){
+        $mi3 = "active-nav";
+    }
+
+    if($page == "account.php"){
+        $mi4 = "active-nav";
+    }
 ?>
     <nav class="navbar navbar-expand-lg fixed-top nav-bg">
         <div>
-            <a class="navbar-brand" href="index.php"><img src="{{ asset('img/logo.png') }}" alt="BlinkTrader" /> <span class="logo-text">BlinkTraders</span></a>
+            <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('img/logo.png') }}" alt="BlinkTrader" /> <span class="logo-text">BlinkTraders</span></a>
         </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="fas fa-bars fa-1x force-color-blue"></span>
@@ -22,7 +36,7 @@
         </div>
         <ul class="navbar-nav ml-auto">
         <li class="nav-item nav-item-border-b">
-            <a class="nav-link <?= $mi1 ?>" href="/">
+            <a class="nav-link <?= $mi1 ?>" href="{{ route('home') }}">
                 <span class="nav-link-text">home</span>
             </a>
         </li>
@@ -32,10 +46,10 @@
                 <span class="nav-link-text"><i class="fa fa-chevron-down force-color-white icon-rotates d-lg-none ml-auto" aria-hidden="true"></i></span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">Blog</a>
-            <a class="dropdown-item" href="blog.php">investment</a>
-            <a class="dropdown-item" href="#">trading</a>
-            <a class="dropdown-item" href="#">motivation</a>
+            <a class="dropdown-item" href="{{ route('blog') }}">Blog</a>
+            <a class="dropdown-item" href="{{ route('blog') }}">investment</a>
+            <a class="dropdown-item" href="{{ route('blog') }}">trading</a>
+            <a class="dropdown-item" href="{{ route('blog') }}">motivation</a>
             </div>
         </li>
         <li class="nav-item nav-item-border-b dropdown">
@@ -44,9 +58,9 @@
                 <span class="nav-link-text"><i class="fa fa-chevron-down force-color-white icon-rotates d-lg-none" aria-hidden="true"></i></span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="service-crypto-investment.php">crypto investment</a>
-            <a class="dropdown-item" href="service-forex.php">forex trading</a>
-            <a class="dropdown-item" href="service-stock.php">stock trading</a>
+            <a class="dropdown-item" href="{{ route('serviceCryptoInvestment') }}">crypto investment</a>
+            <a class="dropdown-item" href="{{ route('serviceForex') }}">forex trading</a>
+            <a class="dropdown-item" href="{{ route('serviceStock') }}">stock trading</a>
             </div>
         </li>
         <li class="nav-item dropdown">

@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        @extends('layouts.meta') 
+        <title>Blink Traders </title>
+        @include('layouts.meta') 
+        <?php
+            $page = "index.php";
+        ?>
     </head>
     <body>   
-        @extends('layouts.header')     
+        @include('layouts.header')     
         <main class="main">
             <section class="hero-banner-head">
                 <div class="hero-banner-head-mobile"></div>
@@ -241,7 +245,7 @@
             </section>
         </main>
 
-        @extends('layouts.footer')
+        @include('layouts.footer')
 
         <script>
             $(document).ready(function(){
