@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class SystemConfigAccountInfoController extends Controller
 {
@@ -12,8 +15,35 @@ class SystemConfigAccountInfoController extends Controller
         $this->middleware(['auth']);
     }
     
-    public function index()
+    public function index(User $user)
+    {        
+        return view('admin.systemConfigAccountInfo', [
+            'user' => $user,
+        ]);
+    }
+
+    public function update(Request $request)
     {
-        return view('admin.systemConfigAccountInfo');
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|unique:users,username,'.$request->id
+        ]);
+
+        if($validator->fails()) {
+            return back()->with('statusError', 'Input error')->withErrors($validator)->withInput();
+        }else{
+
+            User::where('id', $request->id)->update([
+                'username' => $request->username,
+            ]);
+
+            if($request->password){
+                User::where('id', $request->id)->update([
+                    'password' => Hash::make($request->password),
+                ]);
+            }
+
+            return redirect()->back()->with('statusSuccess', 'Success');;
+
+        }
     }
 }

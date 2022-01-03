@@ -26,75 +26,79 @@
                     <div class="col col-lg-8 px-4">
                         <div class="force-bg-white">
                             <h4 class="big-font-size tabel-heading-h">Update account information</h4>
-                            <form action="" method="post" enctype="multipart/form-data" class="mt-4 px-5 py-4">
-                                <input type="hidden" name="user_use" value="" />
-                                <input type="hidden" name="get_us_username" value="" />
-                                <input type="hidden" name="get_us_email" value="" />
-                                <input type="hidden" name="get_us_phone" value="" />
-                                <input type="hidden" name="us_date_time_reg" value="" />
-                                <input type="hidden" name="date_time_login" value="" />
-                                <input type="hidden" name="date_time_update" value="" />
-                                <input type="hidden" name="mac_address" value="" />
-                                <input type="hidden" name="snapshot" value="" />
-                                <input type="hidden" name="front_snapshot" value="" />
-                                <input type="hidden" name="back_snapshot" value="" />
-                                <input type="hidden" name="proof_snap" value="" />
+                            <form action="{{ route('userManagementClientAccountManageUpdate') }}" method="post" enctype="multipart/form-data" class="mt-4 px-5 py-4">
+                                @csrf    
+                                <input type="hidden" name="user_id" value="{{$user->id}}" />
                                 <div class="row">
                                     <span class="col col-lg-3">Username </span>
                                     <span class="col col-lg-9">
-                                        <input type="text" name="us_username" value="" class="pro-select-input" />
+                                        <input type="text" name="username" value="{{$user->username}}" class="pro-select-input" />
                                         <br>
-                                        <sp class="force-color-red"></sp>
+                                        @error('username')
+                                            <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                                        @enderror
                                     </span>
                                 </div>
                                 <div class="row mt-5">
                                     <span class="col col-lg-3">Full Name </span>
                                     <span class="col col-lg-9">
-                                        <input type="text" name="us_full_name" value=""  class="pro-select-input" />
+                                        <input type="text" name="name" value="{{$user->name}}"  class="pro-select-input" />
                                         <br>
-                                        <sp class="force-color-red"></sp>
+                                        @error('name')
+                                            <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                                        @enderror
                                     </span>
                                 </div>
                                 <div class="row mt-5">
                                     <span class="col col-lg-3">Email </span>
-                                    <span class="col col-lg-9"><input type="email" name="us_email" value=""  class="pro-select-input" />
+                                    <span class="col col-lg-9"><input type="email" name="email" value="{{$user->email}}"  class="pro-select-input" />
                                         <br>
-                                        <sp class="force-color-red"></sp>
+                                        @error('email')
+                                            <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                                        @enderror
                                     </span>
                                 </div>
                                 <div class="row mt-5">
                                     <span class="col col-lg-3">Number </span>
-                                    <span class="col col-lg-9"><input type="tel" name="us_phone" value=""  class="pro-select-input" />
+                                    <span class="col col-lg-9"><input type="tel" name="phone" value="{{$user->phone}}"  class="pro-select-input" />
                                         <br>
-                                    <sp class="force-color-red"></sp>
+                                        @error('phone')
+                                            <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                                        @enderror
                                     </span>
                                 </div>
                                 <div class="row mt-5">
                                     <span class="col col-lg-3">Address</span>
-                                    <span class="col col-lg-9"><input type="text" name="address" value=""  class="pro-select-input" />
+                                    <span class="col col-lg-9"><input type="text" name="address" value="{{$user->address}}"  class="pro-select-input" />
                                         <br>
-                                        <sp class="force-color-red"></sp>
+                                        @error('address')
+                                            <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                                        @enderror
                                     </span>
                                 </div>
                                 <div class="row mt-5">
                                     <span class="col col-lg-3">Country</span>
-                                    <span class="col col-lg-9"><input type="text" name="country" value=""  class="pro-select-input" />
+                                    <span class="col col-lg-9"><input type="text" name="country" value="{{$user->country}}"  class="pro-select-input" />
                                         <br>
-                                        <sp class="force-color-red"></sp>
+                                        @error('country')
+                                            <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                                        @enderror
                                     </span>
                                     
                                 </div>
                                 <div class="row mt-5">
                                     <span class="col col-lg-3">Zip Code</span>
-                                    <span class="col col-lg-9"><input type="text" name="zip_code" value=""  class="pro-select-input" />
+                                    <span class="col col-lg-9"><input type="text" name="zip_code" value="{{$user->zip_code}}"  class="pro-select-input" />
                                         <br>
-                                        <sp class="force-color-red"></sp>                                 
+                                        @error('zip_code')
+                                            <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                                        @enderror                                
                                     </span>
                                     
                                 </div>
                                 <div class="row mt-5">
                                     <span class="col col-lg-3">Password</span>
-                                    <span class="col col-lg-9"><input type="password" name="us_password" value="" class="pro-select-input" /></span>
+                                    <span class="col col-lg-9"><input type="password" name="password" value="{{$user->password}}" class="pro-select-input" /></span>
                                     <span class="force-color-red"></span>
                                 </div>
                                 <div class="row mt-5">
@@ -118,8 +122,8 @@
                                         Email verification
                                         <span class="transact-toggle-switch">
                                             <label class="toggle-switch">
-                                                <input type="hidden" name="email_notify" value="0" />
-                                                <input type="checkbox" id="toggle-switch-input-1" name="email_notify" value="1" <?php if(1 == 1){echo "checked";} ?> class="toggle-switch-input" />
+                                                <input type="hidden" name="email_verify" value="0" />
+                                                <input type="checkbox" id="toggle-switch-input-1" name="email_verify" value="1" @if($user->email_verify == '1') checked @endif class="toggle-switch-input" />
                                                 <label for="toggle-switch-input-1" class="toggle-switch-label"></label>
                                             </label>
                                         </span>
@@ -127,8 +131,8 @@
                                             Phone verification
                                         <span class="transact-toggle-switch">
                                             <label class="toggle-switch">
-                                                <input type="hidden" name="phone_notify" value="0" />
-                                                <input type="checkbox" id="toggle-switch-input-9" name="phone_notify" value="1"  class="toggle-switch-input" />
+                                                <input type="hidden" name="phone_verify" value="0" />
+                                                <input type="checkbox" id="toggle-switch-input-9" name="phone_verify" value="1" @if($user->phone_verify == '1') checked @endif class="toggle-switch-input" />
                                                 <label for="toggle-switch-input-9" class="toggle-switch-label"></label>
                                             </label>
                                         </span>
@@ -137,8 +141,8 @@
                                             Upgrade account
                                         <span class="transact-toggle-switch">
                                             <label class="toggle-switch">
-                                                <input type="hidden" name="upgrade_acct_notify" value="0" />
-                                                <input type="checkbox" id="toggle-switch-input-2"  name="upgrade_acct_notify" value="1" class="toggle-switch-input" />
+                                                <input type="hidden" name="upgrade_account" value="0" />
+                                                <input type="checkbox" id="toggle-switch-input-2"  name="upgrade_account" value="1" @if($user->upgrade_account == '1') checked @endif class="toggle-switch-input" />
                                                 <label for="toggle-switch-input-2" class="toggle-switch-label"></label>
                                             </label>
                                         </span>
@@ -156,19 +160,19 @@
                         <div class="force-bg-white px-4 py-4">
                             <div class="row">
                                 <span class="col col-lg-4 small-font-size">Joined: </span>
-                                <span class="col col-lg-8 small-font-size"> Last</span>
+                                <span class="col col-lg-8 small-font-size"> {{$user->created_at}}</span>
                             </div>
                             <div class="row">
                                 <span class="col col-lg-4 small-font-size">Login: </span>
-                                <span class="col col-lg-8 small-font-size"> Last</span>
+                                <span class="col col-lg-8 small-font-size"> {{$user->last_login}}</span>
                             </div>
                             <div class="row">
                                 <span class="col col-lg-4 small-font-size">Updated: </span>
-                                <span class="col col-lg-8 small-font-size"> IP</span>
+                                <span class="col col-lg-8 small-font-size"> {{$user->updated_at}}</span>
                             </div>
                             <div class="row">
-                                <span class="col col-lg-4 small-font-size">Address: </span>
-                                <span class="col col-lg-8 small-font-size"></span>
+                                <span class="col col-lg-4 small-font-size">IP Address: </span>
+                                <span class="col col-lg-8 small-font-size">{{$user->mac_address}}</span>
                             </div>
                         </div>
                         <div class="force-bg-white py-4 mt-5">
@@ -176,7 +180,7 @@
                             <div class="tabel-heading-h">
                                 <div class="px-4 py-2">
                                     <b class="small-font-size">Snapshot</b><br><br>
-                                    <img src="{{ asset('img/user/') }}" class="force-img-avatar-circle" />
+                                    <img src="{{ asset('img/user') }}/{{$user->snapshot}}" class="force-img-avatar-circle" />
                                 </div>
                             </div>
                             <div class="tabel-heading-h">
@@ -185,11 +189,11 @@
                                     <div class="row">
                                         <div class="col col-lg-6">
                                             <span class="small-font-size">Front snap</span><br>
-                                            <img src="{{ asset('assets/img/user/') }}" class="force-img-avatar-triangle" />
+                                            <img src="{{ asset('assets/img/user') }}/{{$user->front_snapshot}}" class="force-img-avatar-triangle" />
                                         </div>
                                         <div class="col col-lg-6">
                                             <span class="small-font-size">Back snap</span><br>
-                                            <img src="{{ asset('assets/img/user/') }}" class="force-img-avatar-triangle" />
+                                            <img src="{{ asset('assets/img/user') }}/{{$user->back_snapshot}}" class="force-img-avatar-triangle" />
                                         </div>
                                     </div>
                                 </div>
@@ -200,14 +204,14 @@
                                     <div class="row">
                                         <div class="col col-lg-6">
                                             <span class="small-font-size">Snap</span><br>
-                                            <img src="{{ asset('assets/img/user/') }}" class="force-img-avatar-triangle" />
+                                            <img src="{{ asset('assets/img/user') }}/{{$user->proof_snap}}" class="force-img-avatar-triangle" />
                                         </div>
-<!--
+<!-- 
                                         <div class="col col-lg-6">
                                             <span class="small-font-size">Back snap</span>
                                             <img src="{{ asset('assets/img/banner1.png" class="force-img-avatar-triangle" />
-                                        </div>
--->
+                                        </div> -->
+
                                     </div>
                                 </div>
                             </div>
@@ -232,12 +236,17 @@
             });
         </script>
         <script>
-            var msg = new URL(window.location.href).searchParams.get("msg");
-            if(msg === "sucess"){
+            @if(session('statusError'))
                 window.onload = (event) => {
-                   bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                   bs4pop.notice('Input Error', {position: 'topright', type: 'danger'})
                 };
-            }
+            @endif
+
+            @if(session('statusSuccess'))
+                window.onload = (event) => {
+                bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                };
+            @endif
         </script>
     </body>
 </html>

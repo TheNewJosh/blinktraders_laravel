@@ -41,20 +41,26 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @if ($copyTrade->count())
+                          {{ $i=1 }}
+                          @foreach ($copyTrade as $cpt)
                             <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td>$320,800</td>
-                                <td>$320,800</td>
-                                <td>$320,800</td>
+                                <td>{{$i}}</td>
+                                <td>{{$cpt->user->name}}</td>
+                                <td>{{$cpt->mt4bal}}</td>
+                                <td>{{$cpt->mt4id}}</td>
+                                <td>{{$cpt->mt4bal}}</td>
+                                <td>{{$cpt->password}}</td>
+                                <td>{{$cpt->broker}}</td>
+                                <td>{{$cpt->status}}</td>
+                                <td>{{$cpt->created_at}}</td>
                                 <td>
                                     <button type="button" class="btn btn-outline-danger">Delete</button>
                                 </td>
                             </tr>
+                            {{ $i++ }}
+                          @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>

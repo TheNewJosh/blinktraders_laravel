@@ -24,19 +24,25 @@
                     <h4 class="force-color-black force-small-text">Select withdrawal method</h4>
                     <div class="mb-5 deposit-res-px-5">                        
                         <div class="master-deposit-div-wk">
+                        @if ($paymentGateway->count())
+                          @foreach ($paymentGateway as $pgw)
                             <div class="amount-span-border px-4">
-                                <a href="{{ route('withdrawTransact') }}" class="force-bg-white justify-space-between depost-px-4">
+                                <a href="{{ route('withdrawTransact', ['payment_id' => $pgw->id]) }}" class="force-bg-white justify-space-between depost-px-4">
                                     <div class="row">
                                         <div class="mr-3">
-                                            <img src="{{ asset('img/payment-gateway/icon_agric1638313563.9616.png') }}" class="coin-icon">
+                                            <img src="{{ asset('img/payment-gateway') }}/{{$pgw->upload_icon}}" class="coin-icon">
                                         </div>
                                         <div class="">
-                                            <h4 class="force-color-black big-font-size">Bitcoin</h4>
+                                            <h4 class="force-color-black big-font-size">{{$pgw->name}}</h4>
                                             <span class="small-font-size force-color-black">
-                                            02-02-2002
+                                                @if($user->transactions->where('payment_gateway_id', $pgw->id)->where('transact_type', 1)->count() >= 1)
+                                                    ${{$user->transactions->where('payment_gateway_id', $pgw->id)->where('transact_type', 1)->last()->amount}}
+                                                @endif
                                             </span>
                                             <span class="force-color-green">
-                                                -16.4555
+                                                @if($user->transactions->where('payment_gateway_id', $pgw->id)->where('transact_type', 1)->count() >= 1)
+                                                    -{{$user->transactions->where('payment_gateway_id', $pgw->id)->where('transact_type', 1)->last()->percent}}%
+                                                @endif
                                             </span>
                                         </div>
                                     </div>
@@ -44,7 +50,9 @@
                                         <span><i class="fa fa-chevron-right icon-coin-angle mt-2"></i></span>
                                     </div>
                                 </a>
-                            </div>
+                            </div> 
+                            @endforeach
+                        @endif  
                         
                     </div>
                 </div>

@@ -22,20 +22,22 @@
                 </div>
                 <div class="main-content-body force-bg-white px-1 pt-2 pb-5" id="mrda-margin-move">
                     <h4 class="big-font-size tabel-heading-h">Account information</h4>
-                    <div class="mt-4 px-5 py-4">
+                    <form action="{{ route('systemConfigAccountInfoUpdate') }}" method="post" class="mt-4 px-5 py-4">
+                        @csrf    
+                        <input type="hidden" name="id" value="{{$user->id}}" />
                         <div class="row mt-5">
                             <span class="col col-lg-3">Username </span>
-                            <span class="col col-lg-9"><input type="text" class="pro-select-input" /></span>
+                            <span class="col col-lg-9"><input type="text" class="pro-select-input" name="username" value="{{ $user->username }}" /></span>
                         </div>
                         <div class="row mt-5">
                             <span class="col col-lg-3">Password</span>
-                            <span class="col col-lg-9"><input type="password" class="pro-select-input" /></span>
+                            <span class="col col-lg-9"><input type="password" name="password" class="pro-select-input" /></span>
                         </div>
                            
                         <div class="mt-2">
-                            <button type="button" class="btn btn-primary float-right">Update <i class="fas fa-paper-plane"></i></button>
+                            <button type="submit" name="submit" class="btn btn-primary float-right">Update <i class="fas fa-paper-plane"></i></button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </section>
         </main>
@@ -53,6 +55,19 @@
             $(document).ready(function() {
                 $('.js-example-basic-multiple').select2();
             });
+        </script>
+        <script>
+            @if(session('statusError'))
+                window.onload = (event) => {
+                   bs4pop.notice('Input Error', {position: 'topright', type: 'danger'})
+                };
+            @endif
+
+            @if(session('statusSuccess'))
+                window.onload = (event) => {
+                bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                };
+            @endif
         </script>
     </body>
 </html>

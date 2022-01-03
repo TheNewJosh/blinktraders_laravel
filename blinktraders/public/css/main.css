@@ -421,11 +421,19 @@ body, html{
 }
 
 .bg-img-page{
-    background-image: url(../img/banner4.png);
+    background-image: url(../img/banner4.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     padding: 100px 0px;
 }
+
+.bg-img-page:before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    top: 0; bottom: 0;
+    background: rgba(0,0,0,.8);
+  }
 
 .cover {
     text-align: center;
@@ -711,13 +719,44 @@ form:before {
 .pro-select-input{
     width: 80%;
     border: none;
-    border-bottom: 1px solid var(--clr-black) !important;
+    border-bottom: 1px solid #9F9F9F !important;
     outline: none;
     background-color: var(--clr-white);
 }
 
-.select2-hidden-accessible{
-    
+.pro-select-input-new{
+    width: 350px;
+    border: none;
+    border-bottom: 1px solid #9F9F9F !important;
+    outline: none;
+    background-color: var(--clr-white);
+}
+
+.pro-select-input-new-sm{
+    width: 150px;
+    border: none;
+    border-bottom: 1px solid #9F9F9F !important;
+    outline: none;
+    background-color: var(--clr-white);
+}
+
+.pro-select-input-text-error{
+    font-size: 10px;
+}
+
+@media(max-width:600px){
+    .pro-select-input-new{
+        width: 80%;
+    }
+}
+
+.pro-select-input-text{
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
 }
 
 .pro-select-input-sm{
@@ -957,8 +996,7 @@ form:before {
     margin-right: 0px;
 }
 
-.amount-span{
-    width:90px; 
+.amount-span{ 
     word-break: break-all;
 }
 
@@ -1020,7 +1058,8 @@ form:before {
         border-radius: 10px;
         padding-top: 20px;
         padding-bottom: 10px;
-        padding-left: 50px;
+        padding-left: 25px;
+        padding-right: 25px;
     }
 
 @media(min-width:600px){
@@ -1029,7 +1068,7 @@ form:before {
         border-radius: 10px;
         padding-top: 20px;
         padding-bottom: 10px;
-        padding-left: 50px;
+        padding: 50px;
     }
 }
 
@@ -1085,7 +1124,7 @@ form:before {
 }
 
 .footer-sticky-menu-div{
-    background-color: #FFFFFF;
+    background-color: #f02525;
     box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 24px 24px 0px 0px;
 }
@@ -1100,7 +1139,7 @@ form:before {
     padding-top: 20px;
     text-align: center;
     position: fixed;
-    bottom: 0;
+    bottom: -20px;
     width: 100%;
     z-index: 1440;
     box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);
@@ -1136,6 +1175,11 @@ form:before {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.justify-no-space-between{
+    display: flex;
+    flex-direction: row;
 }
 
 .depost-px-4{
@@ -1280,4 +1324,31 @@ input[type=number] {
 
 .blog-container{
     padding: 5px 0px 5px 120px;
+}
+
+@media(max-width:600px){
+    .container{
+        width: 95% !important;
+    }
+}
+
+.button-deposit-log{
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.deposit-activity{
+    margin: 0px 10px;
+    padding: 10px;
+}
+
+@media(max-width:600px){
+    .deposit-activity{
+        margin: 0px;
+    }
 }

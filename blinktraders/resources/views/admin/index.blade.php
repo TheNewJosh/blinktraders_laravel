@@ -31,15 +31,15 @@
                                       </div>
                                       <div class="col col-lg-6">
                                           <span class="big-font-size">
-                                            567
+                                            {{$user_all}}
                                           </span>
                                       </div>
                                   </div>
                                   <div>
-                                    <span class="small-font-size">Active Users: 123</span>
+                                    <span class="small-font-size">Active Users: {{$user_1}}</span>
                                   </div>
                                   <div>
-                                    <span class="small-font-size">Blocked Users: 452</span>
+                                    <span class="small-font-size">Blocked Users: {{$user_0}}</span>
                                   </div><br>
                               </div>
                             </div>
@@ -52,17 +52,17 @@
                                           <span class="big-font-size">Deposit</span>
                                       </div>
                                       <div class="col col-lg-6">
-                                          <span class="big-font-size">345</span>
+                                          <span class="big-font-size">{{$trn_deposit_all}}</span>
                                       </div>
                                   </div>
                                   <div>
-                                    <span class="small-font-size">Pending: 11</span>
+                                    <span class="small-font-size">Pending: {{$trn_deposit_0}}</span>
                                   </div>
                                   <div>
-                                    <span class="small-font-size">Approved: 12</span>
+                                    <span class="small-font-size">Approved: {{$trn_deposit_1}}</span>
                                   </div>
                                   <div>
-                                    <span class="small-font-size">Declined: 0</span>
+                                    <span class="small-font-size">Declined: {{$trn_deposit_2}}</span>
                                   </div>
                               </div>
                             </div>
@@ -75,17 +75,17 @@
                                           <span class="big-font-size">Withdrawal</span>
                                       </div>
                                       <div class="col col-lg-6">
-                                          <span class="big-font-size">345</span>
+                                          <span class="big-font-size">{{$trn_withdraw_all}}</span>
                                       </div>
                                   </div>
                                   <div>
-                                    <span class="small-font-size">Pending: 11</span>
+                                    <span class="small-font-size">Pending: {{$trn_withdraw_0}}</span>
                                   </div>
                                   <div>
-                                    <span class="small-font-size">Approved: 12</span>
+                                    <span class="small-font-size">Approved: {{$trn_withdraw_1}}</span>
                                   </div>
                                   <div>
-                                    <span class="small-font-size">Declined: 0</span>
+                                    <span class="small-font-size">Declined: {{$trn_withdraw_2}}</span>
                                   </div>
                               </div>
                             </div>

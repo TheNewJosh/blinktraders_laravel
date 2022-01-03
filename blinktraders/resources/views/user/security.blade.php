@@ -23,17 +23,18 @@
                     <div class="deposit-res-px-5">
                         <p class="force-color-black force-small-text">Create PIN for transactions</p>
                         <div class="force-bg-gray master-deposit-div-wk px-4 py-2">
-                            <form action="" method="post" enctype="multipart/form-data" class="pr-5">
+                            <form action="{{ route('securityPin') }}" method="post" enctype="multipart/form-data" class="pr-5">
+                            @csrf
                               <div class="form-group">
                                 <label for="exampleInputEmail1">PIN</label>
-                                <input type="password" class="form-control border border-dark"  placeholder="Enter Pin" name="pin" value="">
+                                <input type="password" class="form-control border border-dark" placeholder="Enter Pin" name="pin" value="">
                                 @error('pin')
                                     <span class="force-color-red">{{ $message }}</span>
                                 @enderror
                               </div>
                               <div class="form-group">
                                 <label for="exampleInputPassword1">Confirm PIN</label>
-                                <input type="password" class="form-control border border-dark" placeholder="Confirm Pin" name="confirm_pin" value="">
+                                <input type="password" class="form-control border border-dark" placeholder="Confirm Pin" name="pin_confirmation" value="">
                                 @error('confirm_pin')
                                     <span class="force-color-red">{{ $message }}</span>
                                 @enderror
@@ -45,7 +46,8 @@
                     <div class="mt-5 mb-5 deposit-res-px-5">
                         <p class="force-color-black force-small-text">Edit Password</p>
                         <div class="force-bg-gray master-deposit-div-wk px-4 py-2">
-                            <form action="" method="post" enctype="multipart/form-data" class="pr-5">
+                            <form action="{{ route('securityPassword') }}" method="post" enctype="multipart/form-data" class="pr-5">
+                            @csrf
                               <div class="form-group">
                                 <label for="exampleInputEmail1">Old Password</label>
                                 <input type="password" class="form-control border border-dark" placeholder="Enter Old password" name="old_password" value="">
@@ -62,7 +64,7 @@
                               </div>
                               <div class="form-group">
                                 <label for="exampleInputPassword1">Confirm Password</label>
-                                <input type="password" class="form-control border border-dark" placeholder="Confirm Password" name="confirm_password" value="">
+                                <input type="password" class="form-control border border-dark" placeholder="Confirm Password" name="password_confirmation" value="">
                                 @error('confirm_password')
                                     <span class="force-color-red">{{ $message }}</span>
                                 @enderror
@@ -78,22 +80,21 @@
         @include('user.layouts.footer')
         
         <script>
-            @if($errors->any())
+            @if(session('statusError'))
                 $(window).on('load', function() {
                     $('#myModal').modal('show');
                 });
             
                 window.onload = (event) => {
-                   bs4pop.notice('<?= $message_err ?>', {position: 'topright', type: 'danger'})
+                   bs4pop.notice('Input error', {position: 'topright', type: 'danger'})
                 };
             @endif
 
-            var msg = new URL(window.location.href).searchParams.get("msg");
-            if(msg === "sucess"){
+            @if(session('statusSuccess'))
                 window.onload = (event) => {
                    bs4pop.notice('Saved', {position: 'topright', type: 'success'})
                 };
-            }
+            @endif
         </script>
         
     </body>

@@ -5,6 +5,7 @@
         <?php 
             $page = "deposit-log.php"; 
             $page_title = "Deposit"; 
+            $typStatus = ["Pending", "Approved", "Decline"];
         ?>
         @include('layouts.meta')
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
@@ -41,16 +42,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>fg</td>
-                                <td>vf</td>
-                                <td>gh</td>
-                                <td>45</td>
-                                <td>fg</td>
-                                <td>23</td>
-                                <td>fg</td>
-                                <td>r55</td>
+                        @if ($transactions->count())
+                          {{ $i=1 }}
+                          @foreach ($transactions as $trn)
+                          <tr>
+                                <td>{{$i}}</td>
+                                <td>{{$trn->user->name}}</td>
+                                <td>{{$trn->amount}}</td>
+                                <td>{{$trn->paymentGateway->name}}</td>
+                                <td>{{$trn->coin_amount}}</td>
+                                <td>{{$trn->reference_id}}</td>
+                                <td>{{$trn->charges}}</td>
+                                <td>{{$typStatus[$trn->status]}}</td>
+                                <td>{{$trn->created_at}}</td>
                                 <td>
                                     <div class="dropdown-adm">
                                         <a href="#" class="link-adm dropdown-toggle text-center" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -61,13 +65,22 @@
                                             </div>
                                         </a>
                                         <div class="dropdown-menu admin-drop-menu-tb" aria-labelledby="navbarDropdownMenuLink">
-                                          <a class="force-color-black" href="components/actions-aaa-table.php?aproval-deposit=yes&status=1&id=">
-                                              <i class="fas fa-cog mr-2"></i>
-                                              Approve request
-                                            </a><br>
-                                          <a class="force-color-black" href="components/actions-aaa-table.php?aproval-deposit=yes&status=2&id=">
-                                              <i class="far fa-envelope mr-2"></i>Decline Request
-                                            </a><br>
+                                          <div class="force-color-black">
+                                              <form action="{{ route('depositLog') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$trn->id}}">
+                                                <input type="hidden" name="status" value="1">
+                                                <button type="submit" class="button-deposit-log"><i class="fas fa-cog mr-2"></i> Approve request</button>
+                                            </form>
+                                            <div><br>
+                                          <div class="force-color-black">
+                                              <form action="{{ route('depositLog') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$trn->id}}">
+                                                <input type="hidden" name="status" value="2">
+                                                <button type="submit" class="button-deposit-log"><i class="far fa-envelope mr-2"></i> Decline Request</button>
+                                            </form>
+                                            </div><br>
                                             <?php if(1 != 1){ ?>
                                             <a class="force-color-black" href="components/actions-aaa-table.php?delete-deposit=yes&id=">
                                               <i class="far fa-envelope mr-2"></i>Delete
@@ -77,6 +90,9 @@
                                     </div>
                                 </td>
                             </tr>
+                          {{ $i++ }}
+                          @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -91,17 +107,17 @@
                 $('#example').DataTable();
             } );
             
-            var msg = new URL(window.location.href).searchParams.get("msg");
-            if(msg === "sucess"){
+            @if(session('statusUpdateSuccess'))
                 window.onload = (event) => {
                    bs4pop.notice('Transaction Processed', {position: 'topright', type: 'success'})
                 }
-            }
-            if(msg === "sucessDel"){
+            @endif
+
+            @if(session('statusdepositPaymentgate'))
                 window.onload = (event) => {
                    bs4pop.notice('Transaction Deleted', {position: 'topright', type: 'success'})
                 }
-            }
+            @endif
         </script>
         
     </body>

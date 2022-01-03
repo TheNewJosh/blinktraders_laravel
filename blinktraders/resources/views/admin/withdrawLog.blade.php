@@ -5,6 +5,7 @@
         <?php 
             $page = "withdraw-log.php"; 
             $page_title = "Withradaw System"; 
+            $typStatus = ["Pending", "Approved", "Decline"];
         ?>
         @include('layouts.meta')
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
@@ -39,18 +40,55 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td>$320,800</td>
+                        @if ($transactions->count())
+                          {{ $i=1 }}
+                          @foreach ($transactions as $trn)
+                          <tr>
+                                <td>{{$i}}</td>
+                                <td>{{$trn->user->name}}</td>
+                                <td>{{$trn->amount}}</td>
+                                <td>{{$trn->wallet_address}}</td>
+                                <td>{{$trn->reference_id}}</td>
+                                <td>{{$typStatus[$trn->status]}}</td>
+                                <td>{{$trn->created_at}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-outline-danger">Delete</button>
+                                    <div class="dropdown-adm">
+                                        <a href="#" class="link-adm dropdown-toggle text-center" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <div class="icon-r-adm">
+                                                <span class="force-color-black">
+                                                    <i class="fa fa-chevron-right icon-rotates"></i>
+                                                </span>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-menu admin-drop-menu-tb" aria-labelledby="navbarDropdownMenuLink">
+                                          <div class="force-color-black">
+                                              <form action="{{ route('withdrawLog') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$trn->id}}">
+                                                <input type="hidden" name="status" value="1">
+                                                <button type="submit" class="button-deposit-log"><i class="fas fa-cog mr-2"></i> Approve request</button>
+                                            </form>
+                                            <div><br>
+                                          <div class="force-color-black">
+                                              <form action="{{ route('withdrawLog') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$trn->id}}">
+                                                <input type="hidden" name="status" value="2">
+                                                <button type="submit" class="button-deposit-log"><i class="far fa-envelope mr-2"></i> Decline Request</button>
+                                            </form>
+                                            </div><br>
+                                            <?php if(1 != 1){ ?>
+                                            <a class="force-color-black" href="components/actions-aaa-table.php?delete-deposit=yes&id=">
+                                              <i class="far fa-envelope mr-2"></i>Delete
+                                            </a>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
+                          {{ $i++ }}
+                          @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -64,6 +102,18 @@
             $(document).ready(function() {
                 $('#example').DataTable();
             } );
+
+            @if(session('statusUpdateSuccess'))
+                window.onload = (event) => {
+                   bs4pop.notice('Transaction Processed', {position: 'topright', type: 'success'})
+                }
+            @endif
+
+            @if(session('statusdepositPaymentgate'))
+                window.onload = (event) => {
+                   bs4pop.notice('Transaction Deleted', {position: 'topright', type: 'success'})
+                }
+            @endif
         </script>
         
     </body>

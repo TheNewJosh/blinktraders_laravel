@@ -24,6 +24,13 @@ class User extends Authenticatable
         'referral_id',
         'country',
         'phone',
+        'username',
+        'address',
+        'zip_code',
+        'email_verify',
+        'phone_verify',
+        'upgrade_account',
+        'snapshot',
     ];
 
     /**
@@ -44,4 +51,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function transactions()
+    {
+        return $this->hasMany(Transactions::class);
+    }
+    
+    public function copyTrade()
+    {
+        return $this->hasMany(CopyTrade::class);
+    }
+
+    public function investPackTransaction()
+    {
+        return $this->hasMany(InvestPackTransaction::class);
+    }
+
+    public function masterClass()
+    {
+        return $this->hasMany(MasterClass::class);
+    }
+
+    public function referral()
+    {
+        return $this->hasMany(Referrals::class);
+    }
 }

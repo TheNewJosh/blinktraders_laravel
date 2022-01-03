@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DepositLogController extends Controller
 {
@@ -14,6 +15,19 @@ class DepositLogController extends Controller
     
     public function index()
     {
-        return view('admin.depositLog');
+        $transactions = Transactions::where('transact_type', 0)->get();
+
+        return view('admin.depositLog', [
+            'transactions' => $transactions,
+        ]);
+    }
+
+    public function update(Request $request)
+    { 
+        Transactions::where('id', $request->id)->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('statusUpdateSuccess', 'Success');
     }
 }

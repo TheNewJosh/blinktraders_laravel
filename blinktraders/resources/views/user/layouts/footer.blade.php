@@ -68,9 +68,11 @@
 <script src="{{ asset('js/bs4pop.js') }}"></script>
 
 <script type="text/javascript">
-    $(window).on('load', function() {
-        $('#myModalVerifyAcc').modal('show');
-    });
+    @if(auth()->user()->email_verify == 0)
+        $(window).on('load', function() {
+            $('#myModalVerifyAcc').modal('show');
+        });
+    @endif
 </script>
 
 <script>

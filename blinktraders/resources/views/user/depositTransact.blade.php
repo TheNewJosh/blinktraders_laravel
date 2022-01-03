@@ -22,7 +22,7 @@
                 <div class="pofolio-div">
                     <div class="space-mobile"></div>
                     <h4 class="force-color-black text-center force-small-text border-space-mobile">
-                        <img src="{{ asset('img/payment-gateway/icon_agric1638313563.9616.png') }}" class="coin-icon" /> Bitcoin
+                        <img src="{{ asset('img/payment-gateway') }}/{{$payment_id->upload_icon}}" class="coin-icon" /> {{$payment_id->name}}
                     </h4>
                     
                     <!--         Mobile view start           -->
@@ -43,12 +43,15 @@
                     <!--         Mobile view end           -->
                     
                     <div class="mt-5 mb-5 deposit-res-px-5 display-none-area">
-                        <form action="" method="post" enctype="multipart/form-data" class="master-deposit-div-wk">
+                        <form action="{{ route('depositTransactStore') }}" method="post" enctype="multipart/form-data" class="master-deposit-div-wk">
+                        @csrf
                         <input type="hidden" id="amount-snt" name="amount"/>
                         <input type="hidden" id="charges-snt" name="charges"/>
                         <input type="hidden" id="coin-amount-snt" name="coin_amount"/>
-                        <input type="hidden" name="cdt" value="1"/>
-                        <input type="hidden" name="user_id" value="1"/>
+                        <input type="hidden" name="payment_gateway_id" value="{{$payment_id->id}}"/>
+                        <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
+                        <input type="hidden" name="wallet_address" value="{{$payment_id->wallet_address}}"/>
+                        <input type="hidden" name="percent" value="{{$system_configuration->deposit_charge}}"/>
                             <h4 class="big-font-size text-center">Input amount to deposit</h4><br>
                             <div class="text-center">
                                 <input type="number" id="amt-transact-input" placeholder="10.0" class="amt-transact-input input-cal-transact" required /><br>
@@ -58,6 +61,10 @@
                                 <div class="d-flex justify-content-between">
                                     <span>Amount</span>
                                     <span id="amount">--</span>
+                                </div><br>
+                                <div class="d-flex justify-content-between">
+                                    <span>Coin Amount</span>
+                                    <span id="amount-coin">--</span>
                                 </div><br>
                                 <div class="d-flex justify-content-between">
                                     <span>Charge</span>
@@ -71,8 +78,7 @@
                             <br>
                             <div class="text-center">
                                 <a href="#" class="btn btn-outline-primary">Calculate</a>
-                                <!-- <button type="submit" name="submit_deposit_btn" class="btn btn-primary">Deposit</button> -->
-                                <a href="{{ route('depositCode') }}" name="submit_deposit_btn" class="btn btn-primary">Deposit</a>
+                                <button type="submit" name="submit_deposit_btn" class="btn btn-primary">Deposit</button>
                             </div>
                         </form>
                     </div>
@@ -94,19 +100,20 @@
         <span class="big-font-size">Deposit Method</span><br><br>
         <div class="force-color-black text-center force-small-text justify-space-between">
             <span>
-                <img src="{{ asset('img/payment-gateway/icon_agric1638313563.9616.png') }}" class="coin-icon" /> Bitcoin
+                <img src="{{ asset('img/payment-gateway') }}/{{$payment_id->upload_icon}}" class="coin-icon" /> {{$payment_id->name}}
             </span>
-            <span>
-                000066BTC
-            </span>
+            <span id="amount-coin-m"></span>
         </div>
         <div class="deposit-res-px-5">
-            <form action="" method="post" enctype="multipart/form-data" class="master-deposit-div-wk">
-            <input type="hidden" id="amount-snt-m" name="amount"/>
-            <input type="hidden" id="charges-snt-m" name="charges"/>
-            <input type="hidden" id="coin-amount-snt-m" name="coin_amount"/>
-            <input type="hidden" name="cdt" value="1"/>
-            <input type="hidden" name="user_id" value="1"/>
+            <form action="{{ route('depositTransactStore') }}" method="post" enctype="multipart/form-data" class="master-deposit-div-wk">
+            @csrf
+                <input type="hidden" id="amount-snt-m" name="amount"/>
+                <input type="hidden" id="charges-snt-m" name="charges"/>
+                <input type="hidden" id="coin-amount-snt-m" name="coin_amount"/>
+                <input type="hidden" name="payment_gateway_id" value="{{$payment_id->id}}"/>
+                <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
+                <input type="hidden" name="wallet_address" value="{{$payment_id->wallet_address}}"/>
+                <input type="hidden" name="percent" value="{{$system_configuration->deposit_charge}}"/>
                 <div class="in-box-depot">
                     <div class="d-flex justify-content-between">
                         <span>Amount</span>
@@ -123,8 +130,7 @@
                 </div>
                 <br>
                 <div class="text-center">
-                    <!-- <button type="submit" name="submit_deposit_btn" class="btn btn-primary">Deposit</button> -->
-                    <a href="{{ route('depositCode') }}" name="submit_deposit_btn" class="btn btn-primary">Deposit</a>
+                    <button type="submit" name="submit_deposit_btn" class="btn btn-primary">Deposit</button>
                 </div>
             </form>
         </div>
@@ -138,14 +144,16 @@
         <script>
             $('#amt-transact-input').change(function(){
                     var input_amt =  $('#amt-transact-input').val();
-                    var charges_db = 12;
+                    var charges_db = {{$system_configuration->deposit_charge}};
                     var charges = (charges_db/100) * input_amt;
                     var total = Number(input_amt) + Number(charges);
+                    var coin_amt = Number(total) / Number({{$payment_id->price}});
 
                     document.querySelector('#amount-snt').value = total;
-                    document.querySelector('#charges-snt').value = charges;
+                    document.querySelector('#charges-snt').value = coin_amt;
                     document.querySelector('#coin-amount-snt').value = total;
                     document.querySelector('#amount').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(input_amt);
+                    document.querySelector('#amount-coin').innerHTML = new Intl.NumberFormat('en-US').format(coin_amt) + "{{$payment_id->coin_short}}";
                     document.querySelector('#charge').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(charges);
                     document.querySelector('#total').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(total); 
             });
@@ -153,18 +161,26 @@
         <script>
             $('#amt-transact-input-m').change(function(){
                     var input_amt =  $('#amt-transact-input-m').val();
-                    var charges_db = 12;
+                    var charges_db = {{$system_configuration->deposit_charge}};
                     var charges = (charges_db/100) * input_amt;
                     var total = Number(input_amt) + Number(charges);
+                    var coin_amt = Number(total) / Number({{$payment_id->price}});
 
                     document.querySelector('#amount-snt-m').value = total;
                     document.querySelector('#charges-snt-m').value = charges;
-                    document.querySelector('#coin-amount-snt-m').value = total;
+                    document.querySelector('#coin-amount-snt-m').value = coin_amt;
                     document.querySelector('#amount-m').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(input_amt);
+                    document.querySelector('#amount-coin-m').innerHTML = new Intl.NumberFormat('en-US').format(coin_amt) + "{{$payment_id->coin_short}}";
                     document.querySelector('#charge-m').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(charges);
                     document.querySelector('#total-m').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(total); 
             });
         </script>
-        
+        <script>
+            @if(session('statusdepositPaymentgate'))
+                window.onload = (event) => {
+                    bs4pop.notice('Error Occur', {position: 'topright', type: 'danger'})
+                };
+            @endif
+        </script>
     </body>
 </html>

@@ -28,58 +28,28 @@
                         <div class="master-deposit-div-wk force-bg-gray px-4 py-1">
                             <section class="pricing-div">
                                 <div class="row px-2">
+                                @if ($investPlan->count())
+                                  @foreach ($investPlan as $inp)
                                     <div class="col col-lg-3">
                                         <div class="card force-bg-white border-curve-5">
                                           <div class="card-body text-center">
-                                            <h5 class="card-title force-color-black border-line-bottom pb-2">Starter Pack</h5>
-                                              <h2 class="force-color-blue">10%</h2>
-                                              <b class="force-color-blue">DAILY</b><br><br>
-                                              <p class="force-color-black">$1000 - $4,999</p>
+                                            <h5 class="card-title force-color-black border-line-bottom pb-2">{{$inp->name}}</h5>
+                                              <h2 class="force-color-blue">{{$inp->percent}}%</h2>
+                                              <b class="force-color-blue">{{$inp->percent_ref}}</b><br><br>
+                                              <p class="force-color-black">${{$inp->price}} - Above</p>
                                               <p class="force-color-black">24/7 support</p>
                                               <p class="force-color-black">Referral Bonus 5%</p><br><br>
-                                              <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#myModalCalc">Calculate</a>
+                                              <a href="#" class="btn btn-outline-primary"
+                                              data-id="{{$inp->id}}"
+                                              data-percent="{{$inp->percent}}"
+                                              data-duration="{{$inp->duration}}"
+                                              data-price="{{$inp->price}}"
+                                              data-toggle="modal" data-target="#myModalCalc" id="investCalc">Calculate</a>
                                           </div>
                                         </div>
                                     </div>
-                                    <div class="col col-lg-3">
-                                        <div class="card force-bg-white border-curve-5">
-                                          <div class="card-body text-center">
-                                            <h5 class="card-title force-color-black border-line-bottom pb-2">Standard Pack</h5>
-                                              <h2 class="force-color-blue">12%</h2>
-                                              <b class="force-color-blue">DAILY</b><br><br>
-                                              <p class="force-color-black">$5000 - $19,999</p>
-                                              <p class="force-color-black">24/7 support</p>
-                                              <p class="force-color-black">Referral Bonus 5%</p><br><br>
-                                              <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#myModalCalc">Calculate</a>
-                                          </div>
-                                        </div>
-                                    </div>
-                                    <div class="col col-lg-3">
-                                        <div class="card force-bg-white border-curve-5">
-                                          <div class="card-body text-center">
-                                            <h5 class="card-title force-color-black border-line-bottom pb-2">Premium Pack</h5>
-                                              <h2 class="force-color-blue">15%</h2>
-                                              <b class="force-color-blue">DAILY</b><br><br>
-                                              <p class="force-color-black">$20,000 - $49,999</p>
-                                              <p class="force-color-black">24/7 support</p>
-                                              <p class="force-color-black">Referral Bonus 5%</p><br><br>
-                                              <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#myModalCalc">Calculate</a>
-                                          </div>
-                                        </div>
-                                    </div>
-                                    <div class="col col-lg-3">
-                                        <div class="card force-bg-white border-curve-5">
-                                          <div class="card-body text-center">
-                                            <h5 class="card-title force-color-black border-line-bottom pb-2">Enterprize Pack</h5>
-                                              <h2 class="force-color-blue">20%</h2>
-                                              <b class="force-color-blue">DAILY</b><br><br>
-                                              <p class="force-color-black">$50,000 - unlimited</p>
-                                              <p class="force-color-black">24/7 support</p>
-                                              <p class="force-color-black">Referral Bonus 5%</p><br><br>
-                                              <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#myModalCalc">Calculate</a>
-                                          </div>
-                                        </div>
-                                    </div>
+                                  @endforeach
+                                @endif
                                 </div>
                             </section>
                         </div>
@@ -107,14 +77,15 @@
           <br>
             <div class="card force-bg-gray input-deposit-card-div">
               <div class="card-body text-center input-deposit-transt-dis">
-                <input type="number" id="amt-transact-input-m" placeholder="0.00" class="input-deposit-transt-no">
+                <input type="hidden" id="calc-perctage"/>
+                <input type="number" id="amt-transact-input" placeholder="0.00" class="input-deposit-transt-no">
                   <br>
                   <b class="big-font-size">USD</b>
               </div>
               <div class="balance-border-fill"></div>
             </div>
           <br><br>
-            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#myModalConfirmInvestInpt" data-dismiss="modal">Calculate</button>
+            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#myModalConfirmInvestInpt" id="ConfirmInvestInpt" data-dismiss="modal">Calculate</button>
       </div>
     </div>
   </div>
@@ -137,7 +108,7 @@
       <!-- Modal body -->
       <div class="modal-body text-center">
             <span class="big-font-size">Your investment profit will amount to</span><br>
-            <span class="big-font-size text-center">$0</span><br><br>
+            <span class="big-font-size text-center" id="invest-profit-r">$0</span><br><br>
             <button type="button" data-toggle="modal" data-target="#myModalCalcBuy" class="btn btn-outline-primary" data-dismiss="modal">Buy pack</button>
       </div>
     </div>
@@ -152,20 +123,39 @@
       <!-- Modal Header -->
         <div class="px-5 pt-4 row d-flex justify-content-between">
           <span class="big-font-size">Successful<br>$1000 - $4,999</span>
-          <span class="force-color-blue big-font-size">10%</span>
+          <span class="force-color-blue big-font-size" id="percentage-success">-</span>
       </div>
       <!-- Modal body -->
-      <div class="modal-body text-center">
-            <span class="big-font-size">Input amount to invest</span><br>
-            <span class="big-font-size text-center"><input type="number" placeholder="0.0" class="input-spcing-buyp" /></span><br><br>
-            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#myModalCalcBuyMss" data-dismiss="modal">Buy pack</button>
-      </div>
+      <form action="{{ route('investPackTransact') }}" method="post" class="modal-body text-center">
+      @csrf
+        <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
+        <input type="hidden" id="invest_plan_id" name="invest_plan_id"/>
+        <input type="hidden" id="percentage" name="percentage"/>
+        <input type="hidden" id="duration" name="duration"/>
+        <input type="hidden" id="profit" name="profit"/>
+        <input type="hidden" id="price" name="price"/>
+        <span class="big-font-size">Input amount to invest</span><br>
+        <span class="big-font-size text-center"><input type="number" id="amount-cal" name="amount" placeholder="0.0" class="input-spcing-buyp" readonly /></span><br><br>
+        <button type="submit" class="btn btn-outline-primary">Buy pack</button>
+      </form>
     </div>
   </div>
 </div>
         
 <!-- The Modal trigger account not verify -->
 <div class="modal" id="myModalCalcBuyMss">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+            <span class="force-color-green" style="font-size:50px;"><i class="far fa-check-circle"></i></span><br>
+            <span class="big-font-size">Your investment is successful</span><br><br><br>
+      </div> 
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalCalcBuyMssErr1">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
@@ -177,12 +167,19 @@
             <span class="small-font-size text-center">You are unable to withdraw because you do not have any previous transactions with us.
 Please opt in for an investment pack</span><br><br>
       </div>
-        
-        <div class="modal-body text-center">
-            <span class="force-color-green" style="font-size:50px;"><i class="far fa-check-circle"></i></span><br>
-            <span class="big-font-size">Your investment is successful</span><br><br><br>
-      </div>
-        
+
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalCalcBuyMssErr2">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+              
         <div class="modal-body text-center">
             <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
             <span class="big-font-size">Unsuccessful!</span><br>
@@ -196,6 +193,40 @@ Please opt in for an investment pack</span><br><br>
 @include('user.layouts.footer')
         
         
-        
+        <script>
+          $(document).on('click', '#investCalc', function(){
+            document.querySelector("#invest_plan_id").value = $(this).attr("data-id");
+            document.querySelector("#calc-perctage").value = $(this).attr("data-percent");
+            document.querySelector("#duration").value = $(this).attr("data-duration");
+            document.querySelector("#price").value = $(this).attr("data-price");
+          });
+
+            $('#ConfirmInvestInpt').click(function(){
+                    var calcPercent =  $('#calc-perctage').val();
+                    var amtTransactInput = $('#amt-transact-input').val();
+                    var calProfit = (calcPercent/100) * amtTransactInput;
+                    var total = Number(amtTransactInput) + Number(calProfit);
+
+                    document.querySelector('#percentage').value = calcPercent;
+                    document.querySelector('#profit').value = calProfit;
+                    document.querySelector('#amount-cal').value = amtTransactInput;
+
+                    document.querySelector('#invest-profit-r').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(calProfit);
+                    document.querySelector('#percentage-success').innerHTML = calcPercent + "%"; 
+            });
+        </script>
+        <script>
+            @if(session('statusError2'))
+                $(window).on('load', function() {
+                    $('#myModalCalcBuyMssErr2').modal('show');
+                });
+            @endif
+
+            @if(session('statusSuccess'))
+                $(window).on('load', function() {
+                    $('#myModalCalcBuyMss').modal('show');
+                });
+            @endif
+        </script>
     </body>
 </html>

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DepositCodeController extends Controller
 {
@@ -12,8 +13,10 @@ class DepositCodeController extends Controller
         $this->middleware(['auth']);
     }
     
-    public function index()
+    public function index(Transactions $transactions_id)
     {
-        return view('user.depositCode');
+        return view('user.depositCode', [
+            'transactions_id' => $transactions_id,
+        ]);
     }
 }

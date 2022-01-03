@@ -4,7 +4,8 @@
         <title>Blink Traders || Dashboard </title>
         <?php 
             $page = "invest-plan.php"; 
-            $page_title = "Invest"; 
+            $page_title = "Invest";
+            $typStatus = ["Pending", "Active"]; 
         ?>
         @include('layouts.meta')
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
@@ -40,27 +41,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                                <td>1</td>
-                                <td><img src="{{asset('img/payment-gateway/') }}" class="force-img-avatar-table-icon" /></td>
-                                <td>bhfg</td>
-                                <td>er</td>
-                                <td>gf</td>
-                                <td>fg</td>
-                                <td>bgtt</td>
+                        @if ($investPlan->count())
+                          {{ $i=1 }}
+                          @foreach ($investPlan as $inp)
+                          <tr>
+                                <td>{{$i}}</td>
+                                <td><img src="{{asset('img/invest-plan') }}/{{$inp->icon}}" class="force-img-avatar-table-icon" /></td>
+                                <td>{{ $inp->name }}</td>
+                                <td>{{ $inp->percent }}</td>
+                                <td>{{ $inp->price }}</td>
+                                <td>{{ $typStatus[$inp->status] }}</td>
+                                <td>{{ $inp->created_at }}</td>
                                 <td>
                                     <a href="#" class="force-color-black" data-toggle="modal" data-target="#myModal" id="click-modal-update" 
-                                    data-id="1"
-                                    data-name="bgt"
-                                    data-max_deposit="myu"
-                                    data-min_deposit="gfr"
-                                    data-wallet_address="fggt"
-                                    data-upload_icon="3245"
-                                    data-upload_qr_img="gh"
-                                    data-status="23"
+                                    data-id="{{ $inp->id }}"
+                                    data-name="{{ $inp->name }}"
+                                    data-price="{{ $inp->price }}"
+                                    data-percent="{{ $inp->percent }}"
+                                    data-percent_ref="{{ $inp->percent_ref }}"
+                                    data-duration="{{ $inp->duration }}"
+                                    data-icon="{{ $inp->icon }}"
+                                    data-type_in="{{ $inp->type_in }}"
+                                    data-status="{{ $inp->status }}"
                                     ><i class="fas fa-pencil-alt mr-2"></i>Edit</a>
                                 </td>
                             </tr> 
+                          {{ $i++ }}
+                          @endforeach
+                        @endif 
                         </tbody>
                     </table>             
                 </div>
@@ -69,84 +77,100 @@
         
 <!-- The Modal New -->
 <div class="modal" id="myModalAdd">
-  <div class="modal-dialog modal-lg">
-    <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" class="modal-content">
-
+  <div class="modal-dialog modal-dialog-centered">
+    <form action="{{ route('investPlan') }}" method="post" enctype="multipart/form-data" class="modal-content">
+    @csrf
       <!-- Modal Header -->
       <h4 class="big-font-size px-2 py-4">Create Plan</h4>
 
       <!-- Modal body -->
       <div class="modal-body">
-        <div class="row">
-            <span class="col col-lg-3">Name of plan </span>
-            <span class="col col-lg-9">
-                <input type="text" class="pro-select-input" name="name" value="" />
+        <div class="justify-no-space-between">
+            <span class="mr-2 pro-select-input-text">Name of plan </span>
+            <span class="">
+                <input type="text" class="pro-select-input-new" name="name" value="{{old('name')}}" />
                 <br>
-                <span class="force-color-red"></span>
+               @error('name')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
             </span>
         </div>
-          <div class="row mt-4">
-            <span class="col col-lg-3">Price </span>
-            <span class="col col-lg-9">
-                <input type="number" class="pro-select-input" name="wallet_address" value="" />
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Price </span>
+            <span class="">
+                <input type="number" class="pro-select-input-new" name="price" value="{{old('price')}}" />
                 <br>
-                <span class="force-color-red"></span>
+               @error('price')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
               </span>
         </div>
-        <div class="row mt-4">
-            <span class="col col-lg-2">Percentage </span>
-            <span class="col col-lg-4">
-                <input type="number" class="pro-select-input" name="max_deposit" value="" />
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Percentage </span>
+            <span class="">
+                <input type="number" class="pro-select-input-new-sm" name="percent" value="{{old('percent')}}" />
             <br>
-                <sp class="force-color-red"></sp>
+                @error('percent')
+                    <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                @enderror
             </span>
             
-            <span class="col col-lg-2">Percentage Ref </span>
-            <span class="col col-lg-4">
-                <input type="number" class="pro-select-input" name="min_deposit" value="" />
+            <span class="mr-2 pro-select-input-text">Pert. Ref </span>
+            <span class="">
+                <input type="text" class="pro-select-input-new-sm" name="percent_ref" value="{{old('percent_ref')}}" />
                 <br>
-                <span class="force-color-red"></span>
+               @error('percent_ref')
+                    <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                @enderror
             </span>
             
         </div>
-          <div class="row mt-4">
-            <span class="col col-lg-3">Duration (Day) </span>
-            <span class="col col-lg-9">
-                <input type="number" class="pro-select-input" name="wallet_address" value="" />
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Duration (Day) </span>
+            <span class="">
+                <input type="number" class="pro-select-input-new" name="duration" value="{{old('duration')}}" />
                 <br>
-                <span class="force-color-red"></span>
+               @error('duration')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
               </span>
         </div>
-          <div class="row mt-4">
-            <span class="col col-lg-3">Upload icon </span>
-            <span class="col col-lg-9">
-                <input type="file" class="pro-select-input" name="upload_icon" accept="jpg, jpeg, png, svg, gif" />
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Upload icon </span>
+            <span class="">
+                <input type="file" class="pro-select-input-new" name="icon" accept="jpg, jpeg, png, svg, gif" />
                 <br>
-                <span class="force-color-red"></span>
+               @error('icon')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
               </span>
         </div>
-          <div class="row mt-4">
-            <span class="col col-lg-3">Type </span>
-            <span class="col col-lg-9">
-                <input type="text" class="pro-select-input" name="wallet_address" value="" />
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Type </span>
+            <span class="">
+                <input type="text" class="pro-select-input-new" name="type_in" value="{{old('type_in')}}" />
                 <br>
-                <span class="force-color-red"></span>
+               @error('type_in')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
               </span>
         </div>
-          <div class="row mt-4">
-            <span class="col col-lg-3">Status </span>
-            <span class="col col-lg-9">
-                <select class="pro-select-input" name="status">
-                    <option value="1" <?php if(1 == 1){ echo "selected";} ?> >Active</option>
-                    <option value="0" <?php if(1 == 0){ echo "selected";} ?>>Pending</option>
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Status </span>
+            <span class="">
+                <select class="pro-select-input-new" name="status">  
+                  <option value="0" @if(old('status') == '0') selected @endif >Pending</option>
+                  <option value="1" @if(old('status') == '1') selected @endif >Active</option>
                 </select>
-                <span class="force-color-red"></span>
+               @error('status')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
               </span>
         </div>
       </div>
 
       <!-- Modal footer -->
-      <div class="modal-footer">
+      <div class="text-right py-4 px-2">
         <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
         <button type="submit" class="btn btn-primary" name="submit_payment_gate_btn">Save Changes</button>
       </div>
@@ -154,86 +178,112 @@
     </form>
   </div>
 </div>
-        
-<!-- The Modal Edit -->
+
+
+<!-- The Modal New -->
 <div class="modal" id="myModal">
-  <div class="modal-dialog modal-lg">
-  <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" class="modal-content">
-    <input type="hidden" name="id" id="id" value="" />
-    <input type="hidden" name="icon_img_hd" id="icon_img_hd" value="" />
-    <input type="hidden" name="p_img_hd" id="p_img_hd" value="" />
-<!-- Modal Header -->
-<h4 class="big-font-size px-2 py-4">Add payment gateway</h4>
+  <div class="modal-dialog modal-dialog-centered">
+    <form action="{{ route('investPlanUpdate') }}" method="post" enctype="multipart/form-data" class="modal-content">
+    @csrf
+    <input type="hidden" name="inp_id" id="inp_id" value="{{ old('inp_id') }}" />
+    <input type="hidden" name="icon_img_hd" id="icon_img_hd" value="{{ old('icon_img_hd') }}" />
+      <!-- Modal Header -->
+      <h4 class="big-font-size px-2 py-4">Create Plan</h4>
 
-<!-- Modal body -->
-<div class="modal-body">
-  <div class="row">
-      <span class="col col-lg-3">Name of gateway </span>
-      <span class="col col-lg-9">
-          <input type="text" class="pro-select-input" name="name" id="name" value="" />
-          <br>
-          <span class="force-color-red"></span>
-      </span>
-  </div>
-  <div class="row mt-4">
-      <span class="col col-lg-2">Max deposit </span>
-      <span class="col col-lg-4">
-          <input type="number" class="pro-select-input" name="max_deposit" id="max_deposit" value="" />
-      <br>
-          <sp class="force-color-red"></sp>
-      </span>
-      
-      <span class="col col-lg-2">Min deposit </span>
-      <span class="col col-lg-4">
-          <input type="number" class="pro-select-input" name="min_deposit" id="min_deposit" value="" />
-          <br>
-          <span class="force-color-red"></span>
-      </span>
-      
-  </div>
-    <div class="row mt-4">
-      <span class="col col-lg-3">Wallet address </span>
-      <span class="col col-lg-9">
-          <input type="text" class="pro-select-input" name="wallet_address" id="wallet_address" value="" />
-          <br>
-          <span class="force-color-red"></span>
-        </span>
-  </div>
-    <div class="row mt-4">
-      <span class="col col-lg-3">Upload icon </span>
-      <span class="col col-lg-9">
-          <input type="file" class="pro-select-input" name="upload_icon" id="upload_icon" accept="jpg, jpeg, png, svg, gif" />
-          <br>
-          <span class="force-color-red"></span>
-        </span>
-  </div>
-    <div class="row mt-4">
-      <span class="col col-lg-3">Upload QR image </span>
-      <span class="col col-lg-9">
-          <input type="file" class="pro-select-input" name="upload_qr_img" id="upload_qr_img" accept="jpg, jpeg, png, svg, gif" />
-          <br>
-          <span class="force-color-red"></span>
-        </span>
-  </div>
-    <div class="row mt-4">
-      <span class="col col-lg-3">Status </span>
-      <span class="col col-lg-9">
-          <select class="pro-select-input" name="status">
-              <option value="1" <?php if(1 == 1){ echo "selected";} ?> >Active</option>
-              <option value="0" <?php if(1 == 0){ echo "selected";} ?>>Pending</option>
-          </select>
-          <span class="force-color-red"></span>
-        </span>
-  </div>
-</div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="justify-no-space-between">
+            <span class="mr-2 pro-select-input-text">Name of plan </span>
+            <span class="">
+                <input type="text" class="pro-select-input-new" name="name" id="name" value="{{old('name')}}" />
+                <br>
+               @error('name')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+            </span>
+        </div>
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Price </span>
+            <span class="">
+                <input type="number" class="pro-select-input-new" name="price" id="price" value="{{old('price')}}" />
+                <br>
+               @error('price')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+              </span>
+        </div>
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Percentage </span>
+            <span class="">
+                <input type="number" class="pro-select-input-new-sm" name="percent" id="percent" value="{{old('percent')}}" />
+            <br>
+                @error('percent')
+                    <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                @enderror
+            </span>
+            
+            <span class="mr-2 pro-select-input-text">Pert. Ref </span>
+            <span class="">
+                <input type="text" class="pro-select-input-new-sm" name="percent_ref" id="percent_ref" value="{{old('percent_ref')}}" />
+                <br>
+               @error('percent_ref')
+                    <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                @enderror
+            </span>
+            
+        </div>
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Duration (Day) </span>
+            <span class="">
+                <input type="number" class="pro-select-input-new" name="duration" id="duration" value="{{old('duration')}}" />
+                <br>
+               @error('duration')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+              </span>
+        </div>
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Upload icon </span>
+            <span class="">
+                <input type="file" class="pro-select-input-new" name="icon" accept="jpg, jpeg, png, svg, gif" />
+                <br>
+               @error('icon')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+              </span>
+        </div>
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Type </span>
+            <span class="">
+                <input type="text" class="pro-select-input-new" name="type_in" id="type_in" value="{{old('type_in')}}" />
+                <br>
+               @error('type_in')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+              </span>
+        </div>
+          <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Status </span>
+            <span class="">
+                <select class="pro-select-input-new" name="status">  
+                  <option id="status"></option>
+                  <option value="0" @if(old('status') == '0') selected @endif >Pending</option>
+                  <option value="1" @if(old('status') == '1') selected @endif >Active</option>
+                </select>
+               @error('status')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+              </span>
+        </div>
+      </div>
 
-<!-- Modal footer -->
-<div class="modal-footer">
-  <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-  <button type="submit" class="btn btn-primary" name="submit_payment_gate_edit_btn">Save Changes</button>
-</div>
+      <!-- Modal footer -->
+      <div class="text-right py-4 px-2">
+        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" name="submit_payment_gate_btn">Save Changes</button>
+      </div>
 
-</form>
+    </form>
   </div>
 </div>
         
@@ -247,42 +297,54 @@
             
         </script>
         
-        
-        <script type="text/javascript">
+        <script>
+          @if(session('statusErrorStore'))
+                $(window).on('load', function() {
+                    $('#myModalAdd').modal('show');
+                });
             
-            var msg = new URL(window.location.href).searchParams.get("msg");
-            if(msg === "sucess"){
+                window.onload = (event) => {
+                   bs4pop.notice('Input Error', {position: 'topright', type: 'danger'})
+                };
+          @endif
+
+          @if(session('statusdepositPaymentgateUpdate'))
+                $(window).on('load', function() {
+                    $('#myModal').modal('show');
+                });
+            
+                window.onload = (event) => {
+                   bs4pop.notice('Input Error', {position: 'topright', type: 'danger'})
+                };
+          @endif
+
+          @if(session('statusSuccess'))
                 window.onload = (event) => {
                    bs4pop.notice('Saved', {position: 'topright', type: 'success'})
                 };
-            }
+          @endif
         </script>
+
         <script>
           $(document).ready(function(){
                 
                 $(document).on('click', '#click-modal-update', function(){
-                  document.querySelector("#id").value = $(this).attr("data-id");
+                  document.querySelector("#inp_id").value = $(this).attr("data-id");
                   document.querySelector("#name").value = $(this).attr("data-name");
-                  document.querySelector("#max_deposit").value = $(this).attr("data-max_deposit");
-                  document.querySelector("#min_deposit").value = $(this).attr("data-min_deposit");
-                  document.querySelector("#wallet_address").value = $(this).attr("data-wallet_address");
-                  document.querySelector("#upload_icon").value = $(this).attr("data-upload_icon");
-                  document.querySelector("#upload_qr_img").value = $(this).attr("data-upload_qr_img");
-                  document.querySelector("#icon_img_hd").value = $(this).attr("data-upload_icon");
-                  document.querySelector("#p_img_hd").value = $(this).attr("data-upload_qr_img");;
+                  document.querySelector("#price").value = $(this).attr("data-price");
+                  document.querySelector("#percent").value = $(this).attr("data-percent");
+                  document.querySelector("#percent_ref").value = $(this).attr("data-percent_ref");
+                  document.querySelector("#duration").value = $(this).attr("data-duration");
+                  document.querySelector("#type_in").value = $(this).attr("data-type_in");
+                  document.querySelector("#icon_img_hd").value = $(this).attr("data-icon");
+                  
                   document.querySelector("#status").value = $(this).attr("data-status");
+                  if($(this).attr("data-status")== 1){statusMss = "Active";}else{statusMss = "Pending"}
+                  document.querySelector("#status").innerHTML = statusMss;
+
                      modalBg.classList.add("modal-bg-active");
                  }); 
              });
-
-             
-
-            var msg = new URL(window.location.href).searchParams.get("msg");
-            if(msg === "sucessUpdate"){
-                window.onload = (event) => {
-                   bs4pop.notice('Saved', {position: 'topright', type: 'success'})
-                };
-            }
         </script>
     </body>
 </html>

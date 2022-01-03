@@ -29,31 +29,44 @@
                             <div class="text-center">
                                 <span class="big-font-size force-small-text">Link your MT4 to our trade replicating server for weekly profit of $1000</span>
                             </div>
-                            <div class="form-invest-input">
+                            <form action="{{ route('investCopyTraderTransact') }}" method="post" class="form-invest-input">
+                                @csrf
+                                <!-- <input type="hidden" name="user_id" value="" > -->
                                 <div class="form-group">
                                     <label class="force-color-black">MT4 Account ID </label>
-                                    <input type="text" class="form-control input-outline force-bg-white">
+                                    <input type="text" name="mt4id" value="{{old('mt4id')}}" class="form-control input-outline force-bg-white">
+                                    @error('mt4id')
+                                        <span class="force-color-red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="force-color-black">Broker</label>
-                                    <select class="form-control input-outline force-bg-white">
-                                        <option>New</option>
-                                        <option>New</option>
-                                        <option>New</option>
+                                    <select class="form-control input-outline force-bg-white" name="broker">
+                                        <option value="0" @if(old('broker') == '0') selected @endif >New</option>
+                                        <option value="1" @if(old('broker') == '1') selected @endif >New1</option>
                                     </select>
+                                    @error('broker')
+                                        <span class="force-color-red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="force-color-black">MT4 Equity/Balance </label>
-                                    <input type="text" class="form-control input-outline force-bg-white">
+                                    <input type="text" class="form-control input-outline force-bg-white" name="mt4bal" value="{{old('mt4bal')}}">
+                                    @error('mt4bal')
+                                        <span class="force-color-red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="force-color-black">MT4 Password</label>
-                                    <input type="password" class="form-control input-outline force-bg-white">
+                                    <input type="text" class="form-control input-outline force-bg-white" name="password" value="{{old('password')}}">
+                                    @error('password')
+                                        <span class="force-color-red">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="cover">
-                                    <button type="submit" class="btn btn-primary btn-lg text-center" data-toggle="modal" data-target="#myModalConfirmInvest">Proceed</button>
+                                    <button type="submit" class="btn btn-primary btn-lg text-center">Proceed</button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -97,7 +110,7 @@
                 <i class="far fa-check-circle force-color-green" style="font-size:50px;"></i>
             </span><br><br>
             <span class="big-font-size">Trade subscription was successfully paid</span><br><br>
-            <button type="button" class="btn btn-primary">Ok</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
       </div>
     </div>
   </div>
@@ -105,7 +118,23 @@
         
 @include('user.layouts.footer')
         
-        
+        <script>
+            @if(session('statusError'))
+                window.onload = (event) => {
+                    bs4pop.notice('Error Occur', {position: 'topright', type: 'danger'})
+                };
+            @endif
+
+            @if(session('statusSuccess'))
+                $(window).on('load', function() {
+                    $('#myModalConfirmInvest').modal('show');
+                });
+
+                window.onload = (event) => {
+                    bs4pop.notice('Transaction Drafted', {position: 'topright', type: 'success'})
+                };
+            @endif
+        </script>
         
     </body>
 </html>

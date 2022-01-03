@@ -69,8 +69,18 @@
                 <span class="nav-link-text"><i class="fa fa-chevron-down force-color-white icon-rotates d-lg-none ml-auto" aria-hidden="true"></i></span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="{{ route('login') }}">login</a>
-            <a class="dropdown-item" href="{{ route('register') }}">register</a>
+            @auth
+                <a class="dropdown-item" href="{{ route('dashboard') }}">dashboard</a>
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="dropdown-item force-color-red">Logout</button>
+                </form>
+            @endauth
+
+            @guest
+                <a class="dropdown-item" href="{{ route('login') }}">login</a>
+                <a class="dropdown-item" href="{{ route('register') }}">register</a>
+            @endguest
             </div>
         </li>
         </ul>

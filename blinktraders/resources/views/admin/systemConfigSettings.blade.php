@@ -24,25 +24,27 @@
                 </div>
                 <div class="main-content-body force-bg-white px-1 pt-2 pb-5" id="mrda-margin-move">
                     <h4 class="big-font-size tabel-heading-h">General Settings</h4>
-                    <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data" class="mt-4 px-5 py-4">
+                    <form action="{{ route('systemConfigSettingsUpdate') }}" method="post" enctype="multipart/form-data" class="mt-4 px-5 py-4">
+                        @csrf
+                        <input type="hidden" name="id" value="{{$sysc->id}}" />
                         <div class="row mt-5">
                             <span class="col col-lg-3">Company / website name </span>
-                            <span class="col col-lg-9"><input type="text" class="pro-select-input" name="company_name" value="" name="company_name" value="" /><br><sp class="force-color-red"></sp></span>
+                            <span class="col col-lg-9"><input type="text" class="pro-select-input" name="company_name" value="{{ $sysc->company_name }}" /><br><sp class="force-color-red"></sp></span>
                         </div>
                         <div class="row mt-5">
                             <span class="col col-lg-3">Company email </span>
-                            <span class="col col-lg-9"><input type="email" class="pro-select-input" name="company_email" value="" /><br><sp class="force-color-red"></sp></span>
+                            <span class="col col-lg-9"><input type="email" class="pro-select-input" name="company_email" value="{{ $sysc->company_email }}" /><br><sp class="force-color-red"></sp></span>
     
                         </div>
                         <div class="row mt-5">
                             <span class="col col-lg-3">Balance on sign up </span>
                             <span class="col col-lg-9">
                                 USD<input type="text" class="pro-select-input-sm" />
-                                <sp class="ml-4">Withdraw charge<input type="text" class="pro-select-input-sm" name="withdraw_charge" value="" />%
+                                <sp class="ml-4">Withdraw charge<input type="text" class="pro-select-input-sm" name="withdraw_charge" value="{{ $sysc->withdraw_charge }}" />%
                                 </sp>
-                                <sp class="ml-4">Deposit charge<input type="text" class="pro-select-input-sm" name="deposit_charge" value="" />%</sp>
+                                <sp class="ml-4">Deposit charge<input type="text" class="pro-select-input-sm" name="deposit_charge" value="{{ $sysc->deposit_charge }}" />%</sp>
                                 <br><br>
-                                    <sp class="ml-4">Upgrade fee<input type="text" class="pro-select-input-sm" name="upgrade_fee" value="" />USD</sp>
+                                    <sp class="ml-4">Upgrade fee<input type="text" class="pro-select-input-sm" name="upgrade_fee" value="{{ $sysc->upgrade_fee }}" />USD</sp>
                                 
                             </span>
                         </div>
@@ -53,7 +55,7 @@
                                 <span class="transact-toggle-switch">
                                     <label class="toggle-switch">
                                         <input type="hidden" name="kyc" value="0" />
-                                        <input type="checkbox" id="toggle-switch-input-1" class="toggle-switch-input" name="kyc" value="1"  />
+                                        <input type="checkbox" id="toggle-switch-input-1" class="toggle-switch-input" name="kyc" value="1" @if($sysc->kyc == '1') checked @endif />
                                         <label for="toggle-switch-input-1" class="toggle-switch-label"></label>
                                     </label>
                                 </span>
@@ -62,7 +64,7 @@
                                 <span class="transact-toggle-switch">
                                     <label class="toggle-switch">
                                         <input type="hidden" name="email_verification" value="0" />
-                                        <input type="checkbox" id="toggle-switch-input-9" class="toggle-switch-input" name="email_verification" value="1"  />
+                                        <input type="checkbox" id="toggle-switch-input-9" class="toggle-switch-input" name="email_verification" value="1" @if($sysc->email_verification == '1') checked @endif />
                                         <label for="toggle-switch-input-9" class="toggle-switch-label"></label>
                                     </label>
                                 </span>
@@ -72,7 +74,7 @@
                                 <span class="transact-toggle-switch">
                                     <label class="toggle-switch">
                                         <input type="hidden" name="sms_verification" value="0" />
-                                        <input type="checkbox" id="toggle-switch-input-2" class="toggle-switch-input" name="sms_verification" value="1"  />
+                                        <input type="checkbox" id="toggle-switch-input-2" class="toggle-switch-input" name="sms_verification" value="1" @if($sysc->sms_verification == '1') checked @endif />
                                         <label for="toggle-switch-input-2" class="toggle-switch-label"></label>
                                     </label>
                                 </span>
@@ -82,7 +84,7 @@
                                 <span class="transact-toggle-switch">
                                     <label class="toggle-switch">
                                         <input type="hidden" name="upgrade_status" value="0" />
-                                        <input type="checkbox" id="toggle-switch-input-3" class="toggle-switch-input" name="upgrade_status" value="1"  />
+                                        <input type="checkbox" id="toggle-switch-input-3" class="toggle-switch-input" name="upgrade_status" value="1" @if($sysc->upgrade_status == '1') checked @endif />
                                         <label for="toggle-switch-input-3" class="toggle-switch-label"></label>
                                     </label>
                                 </span>
@@ -92,7 +94,7 @@
                                 <span class="transact-toggle-switch">
                                     <label class="toggle-switch">
                                         <input type="hidden" name="email_notify" value="0" />
-                                        <input type="checkbox" id="toggle-switch-input-4" class="toggle-switch-input" name="email_notify" value="1"  />
+                                        <input type="checkbox" id="toggle-switch-input-4" class="toggle-switch-input" name="email_notify" value="1" @if($sysc->email_notify == '1') checked @endif />
                                         <label for="toggle-switch-input-4" class="toggle-switch-label"></label>
                                     </label>
                                 </span>
@@ -102,7 +104,7 @@
                                 <span class="transact-toggle-switch">
                                     <label class="toggle-switch">
                                         <input type="hidden" name="sms_notify" value="0" />
-                                        <input type="checkbox" id="toggle-switch-input-5" class="toggle-switch-input" name="sms_notify" value="1"  />
+                                        <input type="checkbox" id="toggle-switch-input-5" class="toggle-switch-input" name="sms_notify" value="1" @if($sysc->sms_notify == '1') checked @endif />
                                         <label for="toggle-switch-input-5" class="toggle-switch-label"></label>
                                     </label>
                                 </span>
@@ -112,7 +114,7 @@
                                 <span class="transact-toggle-switch">
                                     <label class="toggle-switch">
                                         <input type="hidden" name="registration" value="0" />
-                                        <input type="checkbox" id="toggle-switch-input-6" class="toggle-switch-input" name="registration" value="1" />
+                                        <input type="checkbox" id="toggle-switch-input-6" class="toggle-switch-input" name="registration" value="1" @if($sysc->registration == '1') checked @endif />
                                         <label for="toggle-switch-input-6" class="toggle-switch-label"></label>
                                     </label>
                                 </span>
@@ -122,7 +124,7 @@
                                 <span class="transact-toggle-switch">
                                     <label class="toggle-switch">
                                         <input type="hidden" name="referral" value="0" />
-                                        <input type="checkbox" id="toggle-switch-input-7" class="toggle-switch-input" name="referral" value="1"  />
+                                        <input type="checkbox" id="toggle-switch-input-7" class="toggle-switch-input" name="referral" value="1" @if($sysc->referral == '1') checked @endif />
                                         <label for="toggle-switch-input-7" class="toggle-switch-label"></label>
                                     </label>
                                 </span>
@@ -132,12 +134,12 @@
                         
                         <div class="row mt-5">
                             <span class="col col-lg-3">Subject </span>
-                            <span class="col col-lg-9"><input type="text" class="pro-select-input" name="subject" value="" /><br><sp class="force-color-red"></sp></span>
+                            <span class="col col-lg-9"><input type="text" class="pro-select-input" name="subject" value="{{ $sysc->subject }}" /><br><sp class="force-color-red"></sp></span>
                             
                         </div>
                         <div class="row mt-5">
                             <span class="col col-lg-3">Address </span>
-                            <span class="col col-lg-9"><input type="text" class="pro-select-input" name="address" value="" /><br><sp class="force-color-red"></sp></span>
+                            <span class="col col-lg-9"><input type="text" class="pro-select-input" name="address" value="{{ $sysc->address }}" /><br><sp class="force-color-red"></sp></span>
                             
                         </div>
                         <div class="mt-2">
@@ -163,15 +165,17 @@
             });
         </script>
         <script>
-                // window.onload = (event) => {
-                //    bs4pop.notice('', {position: 'topright', type: 'danger'})
-                // };
-            var msg = new URL(window.location.href).searchParams.get("msg");
-            if(msg === "sucess"){
+            @if(session('statusError'))
                 window.onload = (event) => {
-                   bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                   bs4pop.notice('Input Error', {position: 'topright', type: 'danger'})
                 };
-            }
+            @endif
+
+            @if(session('statusSuccess'))
+                window.onload = (event) => {
+                bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                };
+            @endif
         </script>
     </body>
 </html>

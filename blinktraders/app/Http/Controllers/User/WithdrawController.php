@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\PaymentGateway;
+use App\Http\Controllers\Controller;
 
 class WithdrawController extends Controller
 {
@@ -14,6 +16,13 @@ class WithdrawController extends Controller
     
     public function index()
     {
-        return view('user.withdraw');
+        $paymentGateway = PaymentGateway::where('status', 1)->get();
+
+        $user = User::find(auth()->user()->id);
+        
+        return view('user.withdraw', [
+            'paymentGateway' => $paymentGateway,
+            'user' => $user,
+        ]);
     }
 }

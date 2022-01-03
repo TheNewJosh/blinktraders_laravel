@@ -22,7 +22,7 @@
                 <div class="pofolio-div">
                     <div class="space-mobile"></div>
                     <h4 class="force-color-black text-center force-small-text">
-                        <img src="{{ asset('img/banner1.png') }}" class="coin-icon" /> Bitcoin
+                        <img src="{{ asset('img/payment-gateway') }}/{{$transactions_id->paymentGateway->upload_icon}}" class="coin-icon" /> {{$transactions_id->paymentGateway->name}}
                     </h4>
                     <div class="mt-5 mb-5 deposit-res-px-5">
                         <div class="master-deposit-div-wk">
@@ -31,7 +31,7 @@
                             </div>
                             <br><br>
                             <div class="text-center">
-                                <img src="{{ asset('img/backcode.png') }}" class="backcode-size-img" />
+                                <img src="{{ asset('img/payment-gateway') }}/{{$transactions_id->paymentGateway->upload_qr_img}}" class="backcode-size-img" />
                             </div>
                             <div class="text-center">
                                 <div>
@@ -39,14 +39,14 @@
                                     <span class="big-font-size text-left">Wallet address</span><br>
                                     
                                     <span>
-                                        <input type="text" value="5tyy" id="inputfield"  class="input-withd" readonly />
+                                        <input type="text" value="{{$transactions_id->wallet_address}}" id="inputfield"  class="input-withd" readonly />
                                     </span>
                                 </div>
                             </div>
                             <br>
                             <div class="text-center">
-                                <button type="button" onclick="getTextCopied()" id="buttontext" class="btn btn-outline-primary mr-2">Copy address</button>
-                                <a href="#" class="btn btn-primary">Share address</a>
+                                <button type="button" onclick="getTextCopied()" id="buttontext" class="btn btn-outline-primary mr-2 mt-4">Copy address</button>
+                                <a href="#" class="btn btn-primary mt-4">Share address</a>
                             </div>
                         </div>
                     </div>
@@ -68,6 +68,12 @@
               document.getElementById('buttontext').innerHTML="Copied";
              }
         </script>
-        
+        <script>
+            @if(session('statusdepositPaymentgateSuccess'))
+                window.onload = (event) => {
+                bs4pop.notice('Transaction Drafted', {position: 'topright', type: 'success'})
+                };
+            @endif
+        </script>
     </body>
 </html>

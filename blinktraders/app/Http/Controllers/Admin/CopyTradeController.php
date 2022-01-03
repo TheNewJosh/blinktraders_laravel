@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\CopyTrade;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CopyTradeController extends Controller
 {
@@ -14,6 +15,9 @@ class CopyTradeController extends Controller
     
     public function index()
     {
-        return view('admin.copyTrade');
+        $copyTrade = CopyTrade::get();
+        return view('admin.copyTrade', [
+            'copyTrade' => $copyTrade,
+        ]);
     }
 }

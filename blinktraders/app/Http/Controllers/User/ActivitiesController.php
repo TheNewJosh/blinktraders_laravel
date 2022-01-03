@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ActivitiesController extends Controller
 {
@@ -14,6 +15,10 @@ class ActivitiesController extends Controller
     
     public function index()
     {
-        return view('user.activities');
+        $transaction = Transactions::where('user_id', auth()->user()->id)->get();
+
+        return view('user.activities', [
+            'transaction' => $transaction,
+        ]);
     }
 }

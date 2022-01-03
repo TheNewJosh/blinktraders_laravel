@@ -1,7 +1,7 @@
 <?php        
     $mi1 = $mi2 = $mi3 = $mi4 = $mi5 = $mi6 = $mi7 = $mi8 = $mi9 = "";
     $mi2_s = $mi3_s = $mi4_s = $mi5_s = $mi6_s = $mi7_s = $mi8_s = $mi9_s =  "";
-    $mi2_l1 = $mi2_l2 = $mi3_l1 = $mi3_l2 = $mi4_l1 = $mi4_l2 = $mi4_l3 = $mi4_l4 = $mi4_l5 = $mi5_l1 = $mi5_l2 = $mi5_l3 = $mi5_l4 = $mi8_l1 = $mi8_l2 = $mi8_l3 = $mi9_l1 = "";
+    $mi2_l1 = $mi2_l2 = $mi3_l1 = $mi3_l2 = $mi4_l1 = $mi4_l2 = $mi4_l3 = $mi4_l4 = $mi4_l5 = $mi5_l1 = $mi5_l2 = $mi5_l3 = $mi5_l4 = $mi8_l1 = $mi8_l2 = $mi8_l3 = $mi9_l1 = $mi9_l2 =  $mi9_l3 = "";
     
     if($page == "index.php"){
         $mi1 = "active-link-adm";
@@ -59,12 +59,16 @@
         }
     }
 
-    if($page == "invest-plan.php"){
+    if($page == "invest-plan.php" || $page == "invest-plan-transact.php"){
         $mi9 = "active-link-adm";
         $mi9_s = "show";
         
         if($page == "invest-plan.php"){
             $mi9_l1 = "active-link-adm";
+        }
+
+        if($page == "invest-plan-transact.php"){
+            $mi9_l2 = "active-link-adm";
         }
     }
 
@@ -137,11 +141,11 @@
                 </div>
             </a>
             <div class="dropdown-menu admin-drop-menu <?= $mi3_s ?>" aria-labelledby="navbarDropdownMenuLink">
-              <a class="force-color-white ml-4 py-1 px-2 small-font-size <?= $mi3_l1 ?>" href="{{ route('systemConfigSettings') }}">
+              <a class="force-color-white ml-4 py-1 px-2 small-font-size <?= $mi3_l1 ?>" href="{{ route('systemConfigSettings', ['adm_id' => 1]) }}">
                   <i class="fas fa-cog mr-2"></i>
                   Settings
                 </a><br>
-              <a class="force-color-white ml-4 py-1 px-2 small-font-size <?= $mi3_l2 ?>" href="{{ route('systemConfigAccountInfo') }}">
+              <a class="force-color-white ml-4 py-1 px-2 small-font-size <?= $mi3_l2 ?>" href="{{ route('systemConfigAccountInfo', ['user' => auth()->user()->id]) }}">
                   <i class="far fa-envelope mr-2"></i>Acount information
                 </a>
             </div>
@@ -221,7 +225,7 @@
               <a class="force-color-white ml-4 py-1 px-2 small-font-size" href="#">
                   <i class="far fa-envelope mr-2"></i>Completed
                 </a><br>
-                <a class="force-color-white ml-4 py-1 px-2 small-font-size" href="#">
+                <a class="force-color-white ml-4 py-1 px-2 small-font-size <?= $mi9_l2 ?>" href="{{ route('investPlanTransact') }}">
                   <i class="fas fa-cog mr-2"></i>
                   Pending
                 </a><br>

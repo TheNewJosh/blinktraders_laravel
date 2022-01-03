@@ -5,6 +5,7 @@
         <?php 
             $page = "user-management-client-account.php"; 
             $page_title = "User Management"; 
+            $userStatus = ["Block", "Active"];
         ?>
         @include('layouts.meta')
         
@@ -39,15 +40,18 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @if ($user->count())
+                          {{ $i=1 }}
+                          @foreach ($user as $usr)
                             <tr>
-                                <td>1</td>
-                                <td>gh</td>
-                                <td>user</td>
-                                <td>df@gml</td>
-                                <td>nig</td>
-                                <td>o5</td>
-                                <td>frr</td>
-                                <td>ghh</td>
+                                <td>{{$i}}</td>
+                                <td>{{ $usr->name }}</td>
+                                <td>{{ $usr->username }}</td>
+                                <td>{{ $usr->email }}</td>
+                                <td>{{ $userStatus[$usr->status] }}</td>
+                                <td>{{ $usr->name }}</td>
+                                <td>{{ $usr->created_at }}</td>
+                                <td>{{ $usr->updated_at }}</td>
                                 <td>
                                     <div class="dropdown-adm">
                                         <a href="#" class="link-adm dropdown-toggle text-center" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,19 +62,19 @@
                                             </div>
                                         </a>
                                         <div class="dropdown-menu admin-drop-menu-tb" aria-labelledby="navbarDropdownMenuLink">
-                                          <a class="force-color-black" href="{{ route('userManagementClientAccountManage') }}">
+                                          <a class="force-color-black" href="{{ route('userManagementClientAccountManage', ['user' => $usr->id]) }}">
                                               <i class="fas fa-cog mr-2"></i>
                                               Manage account
                                             </a><br>
-                                            <?php if(1 == 1){ ?>
+                                            @if($usr->status == 1)
                                           <a class="force-color-black" href="#">
                                               <i class="far fa-envelope mr-2"></i>Block
                                             </a><br>
-                                            <?php }else{ ?>
+                                            @else
                                                 <a class="force-color-black" href="#">
                                                   <i class="far fa-envelope mr-2"></i>Unblock
                                                 </a><br>
-                                            <?php } ?>
+                                            @endif
                                             <a class="force-color-black" href="{{ route('userManagementClientAccountSendMail') }}">
                                               <i class="far fa-envelope mr-2"></i>Send email
                                             </a><br>
@@ -81,6 +85,9 @@
                                     </div>
                                 </td>
                             </tr>
+                            {{ $i++ }}
+                          @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -95,12 +102,6 @@
                 $('#example').DataTable();
             } );
             
-            var msg = new URL(window.location.href).searchParams.get("msg");
-            if(msg === "sucessBlck"){
-                window.onload = (event) => {
-                   bs4pop.notice('User Account Updated', {position: 'topright', type: 'success'})
-                }
-            }
         </script>
         
     </body>

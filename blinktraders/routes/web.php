@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\BlogPostNewUpdateController;
 use App\Http\Controllers\User\InvestPackTransactController;
 use App\Http\Controllers\Admin\DepositPaymentgateController;
 use App\Http\Controllers\Admin\SystemConfigSettingsController;
+use App\Http\Controllers\Admin\InvestPlanTransactionController;
 use App\Http\Controllers\Admin\SystemConfigAccountInfoController;
 use App\Http\Controllers\User\InvestCopyTraderTransactController;
 use App\Http\Controllers\Admin\UserManagementPromotionalController;
@@ -52,6 +53,10 @@ use App\Http\Controllers\Admin\UserManagementClientAccountSendMailController;
 */
 
 Route::get('/', function () {
+    return view('common.index');
+})->name('index');
+
+Route::get('home', function () {
     return view('common.index');
 })->name('home');
 
@@ -83,21 +88,29 @@ Route::post('/registerUpdate', [RegisterSubmitController::class, 'update'])->nam
 Route::get('/dashboard', [PortfolioController::class, 'index'])->name('dashboard');
 
 Route::get('/deposit', [DepositController::class, 'index'])->name('deposit');
-Route::get('/depositCode', [DepositCodeController::class, 'index'])->name('depositCode');
-Route::get('/depositTransact', [DepositTransactController::class, 'index'])->name('depositTransact');
+Route::get('/depositCode/{transactions_id}/transaction', [DepositCodeController::class, 'index'])->name('depositCode');
+Route::get('/depositTransact/{payment_id}/paymentmethod', [DepositTransactController::class, 'index'])->name('depositTransact');
+Route::post('/depositTransactStore', [DepositTransactController::class, 'store'])->name('depositTransactStore');
 
 Route::get('/invest', [InvestController::class, 'index'])->name('invest');
 Route::get('/investCopyTraderTransact', [InvestCopyTraderTransactController::class, 'index'])->name('investCopyTraderTransact');
+Route::post('/investCopyTraderTransact', [InvestCopyTraderTransactController::class, 'update']);
 Route::get('/investPackTransact', [InvestPackTransactController::class, 'index'])->name('investPackTransact');
+Route::post('/investPackTransact', [InvestPackTransactController::class, 'store']);
 
 Route::get('/withdraw', [WithdrawController::class, 'index'])->name('withdraw');
-Route::get('/withdrawTransact', [WithdrawTransactController::class, 'index'])->name('withdrawTransact');
+Route::get('/withdrawTransact/{payment_id}/paymentmethod', [WithdrawTransactController::class, 'index'])->name('withdrawTransact');
+Route::post('/withdrawTransactStore', [WithdrawTransactController::class, 'store'])->name('withdrawTransactStore');
+Route::post('/withdrawTransactConfirm', [WithdrawTransactController::class, 'confirm'])->name('withdrawTransactConfirm');
 
 Route::get('/activities', [ActivitiesController::class, 'index'])->name('activities');
 
 Route::get('/masterclass', [MasterclassController::class, 'index'])->name('masterclass');
+Route::post('/masterclass', [MasterclassController::class, 'store']);
 
 Route::get('/security', [SecurityController::class, 'index'])->name('security');
+Route::post('/securityPin', [SecurityController::class, 'storePin'])->name('securityPin');
+Route::post('/securityPassword', [SecurityController::class, 'storePassword'])->name('securityPassword');
 
 Route::get('/kyc', [KycController::class, 'index'])->name('kyc');
 Route::get('/kycSnapshortIntro', [KycSnapshortIntroController::class, 'index'])->name('kycSnapshortIntro');
@@ -110,19 +123,36 @@ Route::post('/loginAdmin', [LoginAdminController::class, 'store']);
 Route::get('/dashboardAdmin', [DashboardAdminController::class, 'index'])->name('dashboardAdmin');
 
 Route::get('/userManagementClientAccount', [UserManagementClientAccountController::class, 'index'])->name('userManagementClientAccount');
-Route::get('/userManagementClientAccountManage', [UserManagementClientAccountManageController::class, 'index'])->name('userManagementClientAccountManage');
+
+Route::get('/userManagementClientAccountManage/{user}/manage', [UserManagementClientAccountManageController::class, 'index'])->name('userManagementClientAccountManage');
+Route::post('/userManagementClientAccountManageUpdate', [UserManagementClientAccountManageController::class, 'update'])->name('userManagementClientAccountManageUpdate');
+
 Route::get('/userManagementClientAccountSendMail', [UserManagementClientAccountSendMailController::class, 'index'])->name('userManagementClientAccountSendMail');
 Route::get('/userManagementPromotional', [UserManagementPromotionalController::class, 'index'])->name('userManagementPromotional');
 
-Route::get('/systemConfigSettings', [SystemConfigSettingsController::class, 'index'])->name('systemConfigSettings');
-Route::get('/systemConfigAccountInfo', [SystemConfigAccountInfoController::class, 'index'])->name('systemConfigAccountInfo');
+Route::get('/systemConfigSettings/{adm_id}/system', [SystemConfigSettingsController::class, 'index'])->name('systemConfigSettings');
+Route::post('/systemConfigSettingsUpdate', [SystemConfigSettingsController::class, 'update'])->name('systemConfigSettingsUpdate');
+
+Route::get('/systemConfigAccountInfo/{user}/account', [SystemConfigAccountInfoController::class, 'index'])->name('systemConfigAccountInfo');
+Route::post('/systemConfigAccountInfoUpdate', [SystemConfigAccountInfoController::class, 'update'])->name('systemConfigAccountInfoUpdate');
 
 Route::get('/depositPaymentgate', [DepositPaymentgateController::class, 'index'])->name('depositPaymentgate');
+Route::post('/depositPaymentgate', [DepositPaymentgateController::class, 'store']);
+Route::post('/depositPaymentgateUpdate', [DepositPaymentgateController::class, 'update'])->name('depositPaymentgateUpdate');
+Route::get('/getCoinDetail', [DepositPaymentgateController::class, 'getCoin'])->name('getCoinDetail');
+
 Route::get('/depositLog', [DepositLogController::class, 'index'])->name('depositLog');
+Route::post('/depositLog', [DepositLogController::class, 'update']);
 
 Route::get('/withdrawLog', [WithdrawLogController::class, 'index'])->name('withdrawLog');
+Route::post('/withdrawLog', [WithdrawLogController::class, 'update']);
 
 Route::get('/investPlan', [InvestPlanController::class, 'index'])->name('investPlan');
+Route::post('/investPlan', [InvestPlanController::class, 'store']);
+Route::post('/investPlanUpdate', [InvestPlanController::class, 'update'])->name('investPlanUpdate');
+
+Route::get('/investPlanTransact', [InvestPlanTransactionController::class, 'index'])->name('investPlanTransact');
+Route::post('/investPlanTransact', [InvestPlanTransactionController::class, 'update']);
 
 Route::get('/masterclassAdmin', [MasterclassAdminController::class, 'index'])->name('masterclassAdmin');
 

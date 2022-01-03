@@ -8,6 +8,8 @@
             $mi1 = $mi2 = $mi3 = $mi4 = $mi5 = $mi6 = $mi7 = $mi8 = "";
             $smi5 = "footer-sticky-menu-active";
             $smi1 = $smi3 = $smi4 = $smi2 = "";
+            $typStatus = ["Pending", "Approved", "Decline"];
+            $trnType = ["Deposit", "Withdraw"];
         ?>
     </head>
     <body>
@@ -24,31 +26,33 @@
                     <div class="mt-5 mb-5 deposit-res-px-5">
                         <div class="master-deposit-div-wk-pd">
                         <div class="row">
-                                <a href="#" class="col col-lg-5 row force-bg-white mb-4 ml-5 py-2 px-4 border-curve-5 modal-a" id="click-modal-display" data-toggle="modal" data-target="#myModal"
-                                   data-id="1"       
-                                   data-amount="100.00"
-                                   data-charges="10"
-                                   data-pg_id="000066BTC"
-                                   data-coin_name="Bitcoin"
-                                   data-reference_id="q112"
-                                   data-date_created="02-02-2002"
-                                   data-time_created="11: 20: 01"
-                                   data-date_update="02-02-2002"
-                                   data-time_update="11: 20: 01"
-                                   data-status="1"
+                            @if($transaction->count())
+                                @foreach($transaction as $trn)
+                                <a href="#" class="col-lg-5 col-xs-12 justify-space-between force-bg-white mb-4 deposit-activity border-curve-5 modal-a" id="click-modal-display" data-toggle="modal" data-target="#myModal"
+                                   data-id="{{$trn->id}}"       
+                                   data-amount="{{$trn->amount}}"
+                                   data-charges="{{$trn->charges}}"
+                                   data-pg_id="{{$trn->coin_amount}}{{$trn->paymentGateway->coin_short}}"
+                                   data-coin_name="{{$trn->paymentGateway->name}}"
+                                   data-reference_id="{{$trn->reference_id}}"
+                                   data-date_created="{{$trn->created_at->toFormattedDateString()}}"
+                                   data-time_created="{{$trn->created_at->toTimeString()}}"
+                                   data-date_update="{{$trn->updated_at->toFormattedDateString()}}"
+                                   data-time_update="{{$trn->updated_at->toTimeString()}}"
+                                   data-status="{{$trn->status}}"
                                    >
-                                    <div class="col col-lg-1">
-                                        <i class="far fa-arrow-alt-circle-down force-color-green"></i>
+                                    <div class="">
+                                        <span><i class="far fa-arrow-alt-circle-down force-color-green"></i></span>
+                                        <span class="force-color-black big-font-size">{{$trnType[$trn->transact_type]}}</span>
+                                        <br><span class="small-font-size ml-3">{{$trn->created_at->toFormattedDateString()}}</span>
                                     </div>
-                                    <div class="col col-lg-4 text-left">
-                                        <h4 class="force-color-black big-font-size">Deposit</h4>
-                                        <span class="small-font-size">02-02-2002</span>
-                                    </div>
-                                    <div class="col col-lg-6 text-right">
-                                        <h4 class="force-color-black big-font-size">+$200</h4>
-                                        <span class="small-font-size"><sp class="text-uppercase">000066BTC</sp></span>
+                                    <div class="">
+                                        <h4 class="force-color-black big-font-size text-right">+{{$trn->amount}}</h4>
+                                        <span class="small-font-size ml-2 text-right"><sp class="text-uppercase">{{$trn->coin_amount}}{{$trn->paymentGateway->coin_short}}BTC</sp></span>
                                     </div>
                                 </a>
+                                @endforeach
+                            @endif
                             </div>
                         </div>
                     </div>
@@ -122,6 +126,8 @@
                      
                     if($(this).attr("data-status") == 1){
                         document.querySelector("#status").innerHTML = '<sp class="badge badge-success pt-1">Approved</sp>'
+                    }else if($(this).attr("data-status") == 2){
+                        document.querySelector("#status").innerHTML = '<sp class="badge badge-danger pt-1">Decline</sp>'
                     }else{
                         document.querySelector("#status").innerHTML = '<sp class="badge badge-warning pt-1">Pending</sp>'
                     }

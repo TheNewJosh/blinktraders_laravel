@@ -33,7 +33,7 @@
 ?>
 
 <div class="sidebar-div">
-    <a href="{{ route('index') }}"><img src="{{ asset('img/dashb-icon.svg') }}" /></a>
+    <a href="{{ route('home') }}"><img src="{{ asset('img/dashb-icon.svg') }}" /></a>
     <div class="sidebar-link-div">
         <div class="sidebar-link <?= $mi1 ?>">
             <a href="{{ route('dashboard') }}" class="sidebar-link-a">

@@ -22,7 +22,7 @@
                 <div class="pofolio-div">
                     <div class="space-mobile"></div>
                     <h4 class="force-color-black force-small-text">
-                        <img src="{{ asset('img/payment-gateway/icon_agric1638313563.9616.png') }}" class="coin-icon" /> Bitcoin
+                        <img src="{{ asset('img/payment-gateway') }}/{{$payment_id->upload_icon}}" class="coin-icon" /> {{$payment_id->name}}
                     </h4>
                     
                     <!--         Mobile view start           -->
@@ -44,40 +44,37 @@
                     
                     <div class="mt-5 mb-5 deposit-res-px-5 display-none-area">
                         <div class="force-bg-gray master-deposit-div-wk px-4 py-2">
-                        <input type="hidden" id="amount-snt" name="amount"/>
-                        <input type="hidden" id="cdt" name="cdt" value="1"/>
-                        <input type="hidden" id="user_id" name="user_id" value="1"/>
                             <span class="big-font-size mr-2">Input amount to withdraw</span>
                             <input type="number" id="amt-transact-input" placeholder="10.0" class="amt-transact-input mr-2" />
                             <span class="big-font-size text-center">USD</span>
                             <br><br>
                             <span class="big-font-size mr-2">Wallet address for withdrawal</span><br>
-                            <input type="text" id="wallet-address-transact-input" class="input-withdarl"/> <br><br>
+                            <input type="text" id="wallet-address-transact-input" name="wallet_address" class="input-withdarl"/> <br><br>
                             
                             <span class="big-font-size mr-2">Withdraw from</span><br>
                             <div class="row">
-                                <div class="col-lg-4 col-xs-12">
-                                    <label for="button-1" class="btn btn-outline-primary force-color-black force-smaller-text">
+                                <div class="col-lg-4 col-xs-12 withdraw_sour" data-value="0">
+                                    <label for="button-1-m" class="btn btn-outline-primary force-color-black force-smaller-text">
                                         <span class=""><b>Account Balance</b></span>
-                                        <span>$12.00</span><br>
+                                        <span>${{$trn_sum_ava}}</span><br>
                                         <span>Withdraw from your main balance</span>
-                                        <input type="radio" id="button-1" name="withdraw_bal" value="1" checked />
+                                        <input type="radio" id="button-1-m" name="withdraw_sour" value="0" checked />
                                     </label>
                                 </div>
-                                <div class="col-lg-4 col-xs-12">
-                                    <label for="button-2" class="btn btn-outline-primary force-color-black force-smaller-text">
+                                <div class="col-lg-4 col-xs-12 withdraw_sour" data-value="1">
+                                    <label for="button-2-m" class="btn btn-outline-primary force-color-black force-smaller-text">
                                         <span class=""><b>Trading Profit</b></span>
-                                        <span>$12.00</span><br>
+                                        <span>${{$trn_sum_pro}}</span><br>
                                         <span>Withdraw from your trading balance</span>
-                                        <input type="radio" id="button-2" value="2" name="withdraw_bal" />
+                                        <input type="radio" id="button-2-m" value="1" name="withdraw_sour"/>
                                     </label>
                                 </div>
-                                <div class="col-lg-4 col-xs-12">
-                                    <label for="button-3" class="btn btn-outline-primary force-color-black force-smaller-text">
+                                <div class="col-lg-4 col-xs-12 withdraw_sour" data-value="2">
+                                    <label for="button-3-m" class="btn btn-outline-primary force-color-black force-smaller-text">
                                         <span class=""><b>Referral Earnings</b></span>
-                                        <span>$12.00</span><br>
+                                        <span>${{$trn_sum_ref}}</span><br>
                                         <span>Withdraw from your referral earnings</span>
-                                        <input type="radio" id="button-3" value="3" name="withdraw_bal" />
+                                        <input type="radio" id="button-3-m" value="2" name="withdraw_sour" />
                                     </label>
                                 </div>
                             </div>
@@ -91,82 +88,7 @@
             </section>
         </main>
         
-<!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalConfirmWithdraw">
-  <div class="modal-dialog modal-sm modal-dialog-centered">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="pr-2 pt-2">
-          <span class="big-font-size ml-4">Review</span>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body text-center">
-            <div class="in-box-depot-modal">
-                <div class="d-flex justify-content-between">
-                    <span>Amount</span>
-                    <span id="amount">--</span>
-                </div><br>
-                <div class="d-flex justify-content-between">
-                    <span>Charge</span>
-                    <span id="charge">--</span>
-                </div><br>
-                <div class="d-flex justify-content-between">
-                    <span>Total</span>
-                    <span id="total">--</span>
-                </div>
-            </div>
-          <br><br>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalConfirmWithdrawInput" data-dismiss="modal">Confirm withdraw</button>
-      </div>
-    </div>
-  </div>
-</div>
-        
-<!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalConfirmWithdrawInput">
-  <div class="modal-dialog modal-sm modal-dialog-centered">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="pr-2 pt-4">
-          <h4 class="big-font-size text-center">Input withdrarwal PIN</h4>
-<!--
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
--->
-      </div>
-      <!-- Modal body -->
-      <div class="modal-body text-center">
-            <div class="row">
-                <br><br>
-                <div class="row px-5">
-                    <div class="col col-lg-3 col-xs-3 px-2">
-                        <input type="password" class="pin-input-cl" id="pin-1" />
-                    </div>
-                    <div class="col col-lg-3 col-xs-3 px-2">
-                        <input type="password" class="pin-input-cl" id="pin-2" />
-                    </div>
-                    <div class="col col-lg-3 col-xs-3 px-2">
-                        <input type="password" class="pin-input-cl" id="pin-3" />
-                    </div>
-                    <div class="col col-lg-3 col-xs-3 px-2">
-                        <input type="password" class="pin-input-cl" id="pin-4" />
-                    </div>
-                </div>
-                <span class="text-center" id="message-span"></span>
-            </div>
-          <br><br>
-            <button type="button" class="btn btn-primary" id="complete-pin-id">Continue</button>
-      </div>
-    </div>
-  </div>
-</div>
-        
+        <!-- Mobile Start  -->
 <!-- Modal -->
 <div class="modal fade foo" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog card-modal-open-m" role="document">
@@ -181,39 +103,38 @@
         <span class="big-font-size">Deposit Method</span><br><br>
         <div class="force-color-black text-center force-small-text justify-space-between">
             <span>
-                <img src="{{ asset('img/payment-gateway/icon_agric1638313563.9616.png') }}" class="coin-icon" /> Bitcoin
-            </span>
+            <img src="{{ asset('img/payment-gateway') }}/{{$payment_id->upload_icon}}" class="coin-icon" /> {{$payment_id->name}}            </span>
             <span>
-                000066BTC
+            <span id="amount-coin-m"></span>
             </span>
         </div>
         <div>
             <br>
             <span class="big-font-size mr-2">Wallet address for withdrawal</span><br>
-            <input type="text" id="wallet-address-transact-input" class="input-withdarl"/> <br>  
+            <input type="text" id="wallet-address-transact-input-m" class="input-withdarl"/> <br>  
         </div>
         <div class="deposit-res-px-5">
             <div class="">
-                <div class="">
+                <div class="withdraw_sour-m" data-value="0">
                     <label for="button-1" class="btn btn-outline-primary force-color-black force-smaller-text-m">
                         <span class=""><b>Account Balance</b></span>
-                        <span>$12.00</span><br>
+                        <span>${{$trn_sum_ava}}</span><br>
                         <span>Withdraw from your main balance</span>
                         <input type="radio" id="button-1" name="withdraw_bal" value="1" checked />
                     </label>
                 </div>
-                <div class="">
+                <div class="withdraw_sour-m" data-value="1">
                     <label for="button-2" class="btn btn-outline-primary force-color-black force-smaller-text-m">
                         <span class=""><b>Trading Profit</b></span>
-                        <span>$12.00</span><br>
+                        <span>${{$trn_sum_pro}}</span><br>
                         <span>Withdraw from your trading balance</span>
                         <input type="radio" id="button-2" value="2" name="withdraw_bal" />
                     </label>
                 </div>
-                <div class="">
+                <div class="withdraw_sour-m" data-value="2">
                     <label for="button-3" class="btn btn-outline-primary force-color-black force-smaller-text-m">
                         <span class=""><b>Referral Earnings</b></span>
-                        <span>$12.00</span><br>
+                        <span>${{$trn_sum_ref}}</span><br>
                         <span>Withdraw from your referral earnings</span>
                         <input type="radio" id="button-3" value="3" name="withdraw_bal" />
                     </label>
@@ -242,19 +163,23 @@
         <span class="big-font-size">Withdrawal Method</span><br><br>
         <div class="force-color-black text-center force-small-text justify-space-between">
             <span>
-                <img src="{{ asset('img/payment-gateway/icon_agric1638313563.9616.png') }}" class="coin-icon" /> Bitcoin
-            </span>
-            <span>
-                000066BTC
-            </span>
+            <img src="{{ asset('img/payment-gateway') }}/{{$payment_id->upload_icon}}" class="coin-icon" /> {{$payment_id->name}}            </span>
+            <span id="amount-coin-m-2"></span>
         </div>
         <div class="deposit-res-px-5">
-            <div class="master-deposit-div-wk">
-            <input type="hidden" id="amount-snt-m" name="amount"/>
-            <input type="hidden" id="charges-snt-m" name="charges"/>
-            <input type="hidden" id="coin-amount-snt-m" name="coin_amount"/>
-            <input type="hidden" name="cdt" value="1"/>
-            <input type="hidden" name="user_id" value="1"/>
+            <form action="{{ route('withdrawTransactStore') }}" method="post" class="master-deposit-div-wk">
+                @csrf
+                <input type="hidden" id="amount-snt-m" name="amount"/>
+                <input type="hidden" id="charges-snt-m" name="charges"/>
+                <input type="hidden" id="coin_amount-snt-m" name="coin_amount"/>
+                <input type="hidden" name="payment_gateway_id" value="{{$payment_id->id}}"/>
+                <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
+                <input type="hidden" id="wallet_address-m" name="wallet_address"/>
+                <input type="hidden" id="withdraw_source-m" name="withdraw_source" value="0"/>
+                <input type="hidden" name="percent" value="{{$system_configuration->withdraw_charge}}"/>
+                <input type="hidden" name="trn_sum_ava" value="{{$trn_sum_ava}}"/>
+                <input type="hidden" name="trn_sum_pro" value="{{$trn_sum_pro}}"/>
+                <input type="hidden" name="trn_sum_ref" value="{{$trn_sum_ref}}"/>
                 <div class="in-box-depot">
                     <div class="d-flex justify-content-between">
                         <span>Amount</span>
@@ -273,8 +198,137 @@
                 <div class="text-center">
                     <button type="submit" name="submit_deposit_btn" class="btn btn-primary" data-toggle="modal" data-target="#myModalConfirmWithdrawInput">Withdrawal</button>
                 </div>
-            </div>
+            </form>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalConfirmWithdraw">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="pr-2 pt-2">
+          <span class="big-font-size ml-4">Review</span>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <form action="{{ route('withdrawTransactStore') }}" method="post" class="modal-body text-center">
+            @csrf
+            <input type="hidden" id="amount-snt" name="amount"/>
+            <input type="hidden" id="charges-snt" name="charges"/>
+            <input type="hidden" id="coin_amount-snt" name="coin_amount"/>
+            <input type="hidden" name="payment_gateway_id" value="{{$payment_id->id}}"/>
+            <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
+            <input type="hidden" id="wallet_address" name="wallet_address"/>
+            <input type="hidden" id="withdraw_source" name="withdraw_source" value="0"/>
+            <input type="hidden" name="percent" value="{{$system_configuration->withdraw_charge}}"/>
+            <input type="hidden" name="trn_sum_ava" value="{{$trn_sum_ava}}"/>
+            <input type="hidden" name="trn_sum_pro" value="{{$trn_sum_pro}}"/>
+            <input type="hidden" name="trn_sum_ref" value="{{$trn_sum_ref}}"/>
+            <div class="in-box-depot-modal">
+                <div class="d-flex justify-content-between">
+                    <span>Amount</span>
+                    <span id="amount">--</span>
+                </div><br>
+                <div class="d-flex justify-content-between">
+                    <span>Coin</span>
+                    <span id="amount-coin">--</span>
+                </div><br>
+                <div class="d-flex justify-content-between">
+                    <span>Charge</span>
+                    <span id="charge">--</span>
+                </div><br>
+                <div class="d-flex justify-content-between">
+                    <span>Total</span>
+                    <span id="total">--</span>
+                </div>
+            </div>
+          <br><br>
+            <button type="submit" class="btn btn-primary">Confirm withdraw</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile End -->
+        
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalConfirmWithdrawInput">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="pr-2 pt-4">
+          <h4 class="big-font-size text-center">Input withdrarwal PIN</h4>
+<!--
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+-->
+      </div>
+      <!-- Modal body -->
+      <form action="{{ route('withdrawTransactConfirm') }}" method="post" class="modal-body text-center">
+            @csrf
+            <input type="hidden" name="pin" value="{{$user->pin}}">
+            <input type="hidden" name="id" value="{{session('statusID')}}">
+            <div class="row">
+                <br><br>
+                <div class="row px-5">
+                    <div class="col col-lg-3 col-xs-3 px-2">
+                        <input type="password" name="pin1" class="pin-input-cl" id="pin-1" />
+                    </div>
+                    <div class="col col-lg-3 col-xs-3 px-2">
+                        <input type="password" name="pin2" class="pin-input-cl" id="pin-2" />
+                    </div>
+                    <div class="col col-lg-3 col-xs-3 px-2">
+                        <input type="password" name="pin3" class="pin-input-cl" id="pin-3" />
+                    </div>
+                    <div class="col col-lg-3 col-xs-3 px-2">
+                        <input type="password" name="pin4" class="pin-input-cl" id="pin-4" />
+                    </div>
+                </div>
+                <span class="text-center" id="message-span"></span>
+            </div>
+          <br><br>
+            <button type="submit" class="btn btn-primary" id="complete-pin-id">Okay</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalCalcBuyMss">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">You are unable to withdraw because you do not have any previous transactions with us.
+Please opt in for an investment pack</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalCalcBuyMssSS">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-green" style="font-size:50px;"><i class="far fa-check-circle"></i></span><br>
+            <span class="big-font-size">Pin Confirmed</span><br><br><br>
       </div>
     </div>
   </div>
@@ -286,46 +340,88 @@
         $(document).ready(function(){
             $('#amt-transact-input').change(function(){
                     var input_amt =  $('#amt-transact-input').val();
-                    var charges_db = 10;
+                    var charges_db = {{$system_configuration->withdraw_charge}};
                     var charges = (charges_db/100) * input_amt;
-                    var total = input_amt + charges;
+                    var total = Number(input_amt) + Number(charges);
+                    var coin_amt = Number(total) / Number({{$payment_id->price}});
 
                     document.querySelector('#amount-snt').value = total;
+                    document.querySelector('#charges-snt').value = charges;
+                    document.querySelector('#coin_amount-snt').value = coin_amt;
                     document.querySelector('#amount').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(input_amt);
+                    
+                    document.querySelector('#amount-coin').innerHTML = new Intl.NumberFormat('en-US').format(coin_amt) + "{{$payment_id->coin_short}}";
                     document.querySelector('#charge').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(charges);
                     document.querySelector('#total').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(total); 
             });
 
-            $('#complete-pin-id').click(function(){
-                     var pin1 =  $('#pin-1').val();
-                     var pin2 =  $('#pin-2').val();
-                     var pin3 =  $('#pin-3').val();
-                     var pin4 =  $('#pin-4').val();
+            $('#amt-transact-input-m').change(function(){
+                    var input_amt =  $('#amt-transact-input-m').val();
+                    var charges_db = {{$system_configuration->withdraw_charge}};
+                    var charges = (charges_db/100) * input_amt;
+                    var total = Number(input_amt) + Number(charges);
+                    var coin_amt = Number(total) / Number({{$payment_id->price}});
 
-                     var amount =  $('#amount-snt').val();
-                     var cdt =  $('#cdt').val();
-                     var user_id =  $('#user_id').val();
-                     var wallet_address =  $('#wallet-address-transact-input').val();
+                    document.querySelector('#amount-snt-m').value = total;
+                    document.querySelector('#charges-snt-m').value = charges;
+                    document.querySelector('#coin_amount-snt-m').value = coin_amt;
+                    document.querySelector('#amount-m').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(input_amt);
+                    document.querySelector('#amount-coin-m').innerHTML = new Intl.NumberFormat('en-US').format(coin_amt) + "{{$payment_id->coin_short}}";
+                    document.querySelector('#amount-coin-m-2').innerHTML = new Intl.NumberFormat('en-US').format(coin_amt) + "{{$payment_id->coin_short}}";
+                    document.querySelector('#charge-m').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(charges);
+                    document.querySelector('#total-m').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(total); 
+            });
 
-                    $.ajax({
-                        url: "components/actions-withdraw-transact-add.php", 
-                        method:"POST",
-                        data:{submit_withdraw_btn:"submit_withdraw_btn", amount:amount, cdt:cdt, user_id:user_id},
-                        dataType: "json",
-                        success: function(data){
-                            if(data.status == 0){
-                               document.querySelector('#message-span').innerHTML = data.message;
-                               
-                            }else{
-                                window.location.href = "index.php?msg=withdraw";
-                            }                    
-                        }
-                    });
+            $('#wallet-address-transact-input').change(function(){
+                document.querySelector('#wallet_address').value = $('#wallet-address-transact-input').val();
+            });
+            
+            $('#wallet-address-transact-input-m').change(function(){
+                document.querySelector('#wallet_address-m').value = $('#wallet-address-transact-input-m').val();
+            });
 
-                });
+            $(document).on('click', '.withdraw_sour', function(){
+                document.querySelector('#withdraw_source').value = $(this).attr("data-value");
+            });
+            
+            $(document).on('click', '.withdraw_sour-m', function(){
+                document.querySelector('#withdraw_source-m').value = $(this).attr("data-value");
+            });
 
             });
         </script>
-        
+        <script>
+            @if(session('statusError'))
+                $(window).on('load', function() {
+                    $('#myModalCalcBuyMss').modal('show');
+                });
+            @endif
+            
+            @if(session('statusSuccessSS'))
+                $(window).on('load', function() {
+                    $('#myModalCalcBuyMssSS').modal('show');
+                });
+            @endif
+
+            @if(session('statusSuccess'))
+                $(window).on('load', function() {
+                    $('#myModalConfirmWithdrawInput').modal('show');
+                });
+
+                window.onload = (event) => {
+                    bs4pop.notice('Transaction Drafted', {position: 'topright', type: 'success'})
+                };
+            @endif
+
+            @if(session('statusErrorPin'))
+                $(window).on('load', function() {
+                    $('#myModalConfirmWithdrawInput').modal('show');
+                });
+
+                window.onload = (event) => {
+                    bs4pop.notice('Error Occur: Retry', {position: 'topright', type: 'danger'})
+                };
+            @endif
+        </script>
     </body>
 </html>

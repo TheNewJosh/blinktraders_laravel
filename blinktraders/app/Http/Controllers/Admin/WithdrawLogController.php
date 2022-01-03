@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class WithdrawLogController extends Controller
 {
@@ -14,6 +15,18 @@ class WithdrawLogController extends Controller
     
     public function index()
     {
-        return view('admin.withdrawLog');
+        $transactions = Transactions::where('transact_type', 1)->get();
+        return view('admin.withdrawLog', [
+            'transactions' => $transactions,
+        ]);
+    }
+
+    public function update(Request $request)
+    { 
+        Transactions::where('id', $request->id)->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('statusUpdateSuccess', 'Success');
     }
 }

@@ -145,7 +145,11 @@ We the Mentor and the Mentee agreed on the above mentioned terms and conditions 
                         <br>
                         <p class="big-font-size">BY TYPING YOUR FULL NAME AND PRESSING "I AGREE" YOU ARE PROVIDING A DIGITAL SIGNATURE AND THEREFORE ACCEPTING THE ABOVE DOCUMENT ON A LEGAL GROUNDS</p>
                         <div class="d-flex justify-content-center">
-                            <a href="components/actions-aaa-table.php?submit-masterclass=yes&id=1" class="btn btn-primary px-5">I AGREE</a>
+                        <form action="{{ route('masterclass') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
+                            <button type="submit" class="btn btn-primary px-5">I AGREE</button>
+                        </form>
                         </div>
                         
                     </div>
@@ -155,6 +159,19 @@ We the Mentor and the Mentee agreed on the above mentioned terms and conditions 
         
         @include('user.layouts.footer')
         
+        <script>
+            @if(session('statusError'))
+                window.onload = (event) => {
+                   bs4pop.notice('Input error', {position: 'topright', type: 'danger'})
+                };
+            @endif
+
+            @if(session('statusSuccess'))
+                window.onload = (event) => {
+                   bs4pop.notice('Request Sent', {position: 'topright', type: 'success'})
+                };
+            @endif
+        </script>
         
         
     </body>
