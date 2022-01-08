@@ -29,21 +29,21 @@
                             <div class="text-center">
                                 <span class="big-font-size force-small-text">Link your MT4 to our trade replicating server for weekly profit of $1000</span>
                             </div>
-                            <form action="{{ route('investCopyTraderTransact') }}" method="post" class="form-invest-input">
-                                @csrf
+                            <div class="form-invest-input">
+                                
                                 <!-- <input type="hidden" name="user_id" value="" > -->
                                 <div class="form-group">
                                     <label class="force-color-black">MT4 Account ID </label>
-                                    <input type="text" name="mt4id" value="{{old('mt4id')}}" class="form-control input-outline force-bg-white">
+                                    <input type="text" name="mt4id" id="mt4id" value="{{old('mt4id')}}" class="form-control input-outline force-bg-white">
                                     @error('mt4id')
                                         <span class="force-color-red">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="force-color-black">Broker</label>
-                                    <select class="form-control input-outline force-bg-white" name="broker">
-                                        <option value="0" @if(old('broker') == '0') selected @endif >New</option>
-                                        <option value="1" @if(old('broker') == '1') selected @endif >New1</option>
+                                    <select class="form-control input-outline force-bg-white" id="broker" name="broker">
+                                        <option value="0" @if(old('broker') == '0') selected @endif >KOT4X</option>
+                                        <option value="1" @if(old('broker') == '1') selected @endif >HUGO’S WAY</option>
                                     </select>
                                     @error('broker')
                                         <span class="force-color-red">{{ $message }}</span>
@@ -51,22 +51,22 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="force-color-black">MT4 Equity/Balance </label>
-                                    <input type="text" class="form-control input-outline force-bg-white" name="mt4bal" value="{{old('mt4bal')}}">
+                                    <input type="text" class="form-control input-outline force-bg-white" name="mt4bal" id="mt4bal" value="{{old('mt4bal')}}">
                                     @error('mt4bal')
                                         <span class="force-color-red">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-group">
                                     <label class="force-color-black">MT4 Password</label>
-                                    <input type="text" class="form-control input-outline force-bg-white" name="password" value="{{old('password')}}">
+                                    <input type="text" class="form-control input-outline force-bg-white" name="password" id="password" value="{{old('password')}}">
                                     @error('password')
                                         <span class="force-color-red">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="cover">
-                                    <button type="submit" class="btn btn-primary btn-lg text-center">Proceed</button>
+                                    <button type="submit" class="btn btn-primary btn-lg text-center" id="proceed-submit" data-toggle="modal" data-target="#myModalConfirmInvest">Proceed</button>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -88,17 +88,22 @@
 -->
       </div>
       <!-- Modal body -->
-      <div class="modal-body text-center">
+        <form  action="{{ route('investCopyTraderTransact') }}" method="post" class="modal-body text-center">
+            @csrf
+            <input type="hidden" name="mt4id" id="mt4id-snt">
+            <input type="hidden" name="broker" id="broker-snt">
+            <input type="hidden" name="mt4bal" id="mt4bal-snt">
+            <input type="hidden" name="password" id="password-snt">
             <p class="text-center">Pay trade replicating server subscription $949 (billed monthly)</p>
           <br><br>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalConfirmInvestInpt" data-dismiss="modal">Proceed</button>
-      </div>
+            <button type="submit" class="btn btn-primary">Proceed</button>
+        </form>
     </div>
   </div>
 </div>
         
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalConfirmInvestInpt">
+<div class="modal" id="myModalSuccess">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
@@ -115,26 +120,95 @@
     </div>
   </div>
 </div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalNoInvestPlan">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">You are unable to perform this transaction because you do not have any previous transactions with us.
+Please opt in for an investment pack</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalNoAvaBal">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Unsuccessful</span><br>
+            <span class="small-font-size text-center">Input at least minimum deposit</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalError">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">An Error Occur</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
         
 @include('user.layouts.footer')
+
+<script>
+    $(document).ready(function(){
+        $('#proceed-submit').click(function(){
+                document.querySelector('#mt4id-snt').value = $('#mt4id').val();
+                document.querySelector('#broker-snt').value = $('#broker').val();
+                document.querySelector('#mt4bal-snt').value = $('#mt4bal').val();
+                document.querySelector('#password-snt').value = $('#password').val();
+                
+            });
+    });
+</script>
         
-        <script>
-            @if(session('statusError'))
-                window.onload = (event) => {
-                    bs4pop.notice('Error Occur', {position: 'topright', type: 'danger'})
-                };
-            @endif
+<script>    
+    @if(session('statusError'))
+        $(window).on('load', function() {
+            $('#myModalError').modal('show');
+        });
+    @endif
+    
+    @if(session('statusErrorNoInvestPlan'))
+        $(window).on('load', function() {
+            $('#myModalNoInvestPlan').modal('show');
+        });
+    @endif
+    
+    @if(session('statusErrorNoAvaBal'))
+        $(window).on('load', function() {
+            $('#myModalNoAvaBal').modal('show');
+        });
+    @endif
 
-            @if(session('statusSuccess'))
-                $(window).on('load', function() {
-                    $('#myModalConfirmInvest').modal('show');
-                });
-
-                window.onload = (event) => {
-                    bs4pop.notice('Transaction Drafted', {position: 'topright', type: 'success'})
-                };
-            @endif
-        </script>
+    @if(session('statusSuccess'))
+        $(window).on('load', function() {
+            $('#myModalSuccess').modal('show');
+        });
+    @endif
+</script>
         
     </body>
 </html>

@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Referrals;
 use App\Models\InvestPlan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\InvestPlanTransact;
 use App\Models\InvestPackTransaction;
+use App\Services\UserAvailableBalance;
 use Illuminate\Support\Facades\Validator;
 
 class InvestPackTransactController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth']);
+        $this->middleware(['role:user|superadministrator']);
     }
     
     public function index()
@@ -26,8 +29,18 @@ class InvestPackTransactController extends Controller
 
     public function store(Request $request)
     {
-        if($request->amount > $request->price){
-            return back()->with('statusError2', 'Input error');
+        $userAvailableBalance = UserAvailableBalance::getAvailableBalance();
+        
+        if($userAvailableBalance < $request->amount){
+            return back()->with('statusErrorNoAvaBal', 'Input error')->withInput();
+        }
+
+        if($request->amount > $request->max_amount ){
+            return back()->with('statusErrorMaxAmt', 'Input error')->withInput();
+        }
+
+        if($request->amount < $request->min_amount ){
+            return back()->with('statusErrorMinAmt', 'Input error')->withInput();
         }
 
         $validator = Validator::make($request->all(), [
@@ -46,8 +59,20 @@ class InvestPackTransactController extends Controller
                 'percentage' => $request->percentage,
                 'duration' => $request->duration,
                 'profit' => $request->profit,
+                'total' => $request->total,
                 'reference_id' => $reference_id,
+                'status' => 1,
             ]);
+
+            if($request->user_ref){
+                $amount = ($request->percent_referral/100) * $request->amount;
+
+                Referrals::create([
+                    'user_id' => $request->user_ref,
+                    'user_id_ref' => $request->user_id,
+                    'amount' => $amount,
+                ]);
+            }
     
             return redirect()->back()->with('statusSuccess', 'Success');
         }

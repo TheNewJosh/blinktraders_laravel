@@ -31,7 +31,7 @@
                         <div class="col-lg-3" id="balance-card">
                             <div class="card border border-primary force-bg-gray balance-card-div">
                               <div class="card-body text-center">
-                                <h5 class="card-title force-color-black">${{$trn_deposit->sum('amount') - $trn_withdraw->sum('amount')}}</h5><br><br>
+                                <h5 class="card-title force-color-black">${{$userAvailableBalance}}</h5><br><br>
                                   <p class="force-color-black">Available Balance</p>
                               </div>
                               <div class="balance-border-fill"></div>
@@ -40,7 +40,7 @@
                         <div class="col-lg-3 show-none" id="profit-card">
                             <div class="card border border-primary force-bg-gray balance-card-div">
                               <div class="card-body text-center">
-                                <h5 class="card-title force-color-black">${{$trn_invest->sum('profit') - $trn_withdraw_profit->sum('amount')}}</h5><br><br>
+                                <h5 class="card-title force-color-black">${{$userAvailableBalanceProfit}}</h5><br><br>
                                   <p class="force-color-black">Available Profit</p>
                               </div>
                                 <div class="balance-border-fill"></div>
@@ -49,7 +49,7 @@
                         <div class="col-lg-3 show-none" id="referral-card">
                             <div class="card border border-primary force-bg-gray balance-card-div">
                               <div class="card-body text-center">
-                                <h5 class="card-title force-color-black">${{$trn_referral->sum('amount') - $trn_withdraw_referral->sum('amount')}}</h5><br><br>
+                                <h5 class="card-title force-color-black">${{$userAvailableBalanceReferral}}</h5><br><br>
                                   <p class="force-color-black">Referral Earnings</p>
                               </div>
                                 <div class="balance-border-fill"></div>
@@ -69,15 +69,20 @@
                                         <div class="">
                                             <b class="force-color-black small-font-size small-font-size-mobile">{{$pgw->name}}</b><br>
                                             <span class="small-font-size small-font-size-mobile force-color-black">
-                                            @if($user->transactions->where('payment_gateway_id', $pgw->id)->count() >= 1)
-                                                {{$user->transactions->where('payment_gateway_id', $pgw->id)->last()->created_at->toTimeString()}}
-                                            @endif
+                                                ${{$pgw->price}}
                                             </span>
-                                            <span class="force-color-green small-font-size-mobile">
-                                            @if($user->transactions->where('payment_gateway_id', $pgw->id)->count() >= 1)
-                                                -{{$user->transactions->where('payment_gateway_id', $pgw->id)->last()->amount}}
-                                            @endif
+                                            @if($pgw->change < 0)
+                                            <span class="mall-font-size small-font-size-mobile force-color-red">
+                                                
+                                                    {{$pgw->change}}%
                                             </span>
+                                            @endif
+                                            @if($pgw->change > 0)
+                                            <span class="mall-font-size small-font-size-mobile force-color-green">
+                                                
+                                                    +{{$pgw->change}}%
+                                            </span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="amount-span small-font-size-mobile mt-2">
@@ -133,7 +138,7 @@
                                 <br><br>
                                 
                                 <div class="row px-4">
-                                <span class="col-xs-8"> <input type="text" id="inputfieldm" class="form-under-line mr-2" value="{{ route('register') }}/{{$user->referral_id}}" readonly style="width:150px;" /></span>
+                                <span class="col-xs-8"> <input type="text" id="inputfieldm" class="form-under-line mr-2" value="{{ route('register') }}/{{$user->username}}" readonly style="width:150px;" /></span>
                                 <span class="col-xs-2" onclick="getTextCopiedM()" id="buttontextm">
                                     <i class="far fa-clone"></i>
                                 </span>
@@ -142,42 +147,22 @@
                             </div><br>
                             <div class="force-bg-white py-4 px-4 border-curve-5 amount-span-border">
                                 Referrals<br><br>
-                                <div class="row border-line-bottom mt-2">
-                                    <div class="col col-lg-8 text-left row">
-                                        <span><img src="{{ asset('assets/img/circle-gray.svg') }}" /></span>
-                                        <span class="ml-2">
-                                            <b class="force-color-black big-font-size">Deposit</b><br>
-                                            <sp class="small-font-size">user1</sp>
-                                        </span>
+                                @if($user_ref->count())
+                                    @foreach($user_ref as $tref)
+                                    <div class="row border-line-bottom mt-2">
+                                        <div class="col col-lg-8 text-left row">
+                                            <span><img src="{{ asset('img/circle-gray.svg') }}" /></span>
+                                            <span class="ml-2">
+                                                <b class="force-color-black big-font-size">Deposit</b><br>
+                                                <sp class="small-font-size">{{$tref->name}}</sp>
+                                            </span>
+                                        </div>
+                                        <div class="col col-lg-4 text-right">
+                                            <sp class="small-font-size">{{$tref->created_at->toFormattedDateString()}}</sp>
+                                        </div>
                                     </div>
-                                    <div class="col col-lg-4 text-right">
-                                        <sp class="small-font-size">Aug 28</sp>
-                                    </div>
-                                </div>
-                                <div class="row border-line-bottom mt-2">
-                                    <div class="col col-lg-8 text-left row">
-                                        <span><img src="{{ asset('img/circle-gray.svg') }}" /></span>
-                                        <span class="ml-2">
-                                            <b class="force-color-black big-font-size">Deposit</b><br>
-                                            <sp class="small-font-size">user1</sp>
-                                        </span>
-                                    </div>
-                                    <div class="col col-lg-4 text-right">
-                                        <sp class="small-font-size">Aug 28</sp>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col col-lg-8 text-left row">
-                                        <span><img src="{{ asset('assets/img/circle-gray.svg') }}" /></span>
-                                        <span class="ml-2">
-                                            <b class="force-color-black big-font-size">Deposit</b><br>
-                                            <sp class="small-font-size">user1</sp>
-                                        </span>
-                                    </div>
-                                    <div class="col col-lg-4 text-right">
-                                        <sp class="small-font-size">Aug 28</sp>
-                                    </div>
-                                </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                     <!--        Mobile Ends  End          -->
@@ -224,7 +209,7 @@
                                 <br><br>
                                 
                                 <div class="row">
-                                <span class="col col-lg-10"> <input type="text" id="inputfield" class="form-under-line mr-5" value="{{ route('register') }}/{{$user->referral_id}}" readonly style="width:100%;" /></span>
+                                <span class="col col-lg-10"> <input type="text" id="inputfield" class="form-under-line mr-5" value="{{ route('register') }}/{{$user->username}}" readonly style="width:100%;" /></span>
                                 <span class="col-xs-2" onclick="getTextCopied()" id="buttontext">
                                     <i class="far fa-clone"></i>
                                 </span>
@@ -233,18 +218,18 @@
                             </div><br>
                             <div class="force-bg-white py-4 px-4 border-curve-5">
                                 Referrals<br><br>
-                                @if($trn_referral->count())
-                                    @foreach($trn_referral as $tref)
+                                @if($user_ref->count())
+                                    @foreach($user_ref as $tref)
                                     <div class="row border-line-bottom mt-2">
                                         <div class="col col-lg-8 text-left row">
                                             <span><img src="{{ asset('img/circle-gray.svg') }}" /></span>
                                             <span class="ml-2">
                                                 <b class="force-color-black big-font-size">Deposit</b><br>
-                                                <sp class="small-font-size">user1</sp>
+                                                <sp class="small-font-size">{{$tref->name}}</sp>
                                             </span>
                                         </div>
                                         <div class="col col-lg-4 text-right">
-                                            <sp class="small-font-size">Aug 28</sp>
+                                            <sp class="small-font-size">{{$tref->created_at->toFormattedDateString()}}</sp>
                                         </div>
                                     </div>
                                     @endforeach

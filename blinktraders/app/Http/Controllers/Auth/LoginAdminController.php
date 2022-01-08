@@ -28,6 +28,13 @@ class LoginAdminController extends Controller
             return back()->with('status', 'Invalid login details');
         }
 
-        return redirect()->route('dashboardAdmin');
+        if($this->hasRole('superadministrator')){
+            return redirect()->route('dashboardAdmin');
+        }
+        
+        if($this->hasRole('user')){
+            return redirect()->route('dashboard');
+        }
+        
     }
 }

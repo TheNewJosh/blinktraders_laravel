@@ -17,14 +17,17 @@ use App\Http\Controllers\User\ActivitiesController;
 use App\Http\Controllers\Admin\DepositLogController;
 use App\Http\Controllers\Admin\InvestPlanController;
 use App\Http\Controllers\User\DepositCodeController;
+use App\Http\Controllers\User\KycDocumentController;
 use App\Http\Controllers\User\MasterclassController;
 use App\Http\Controllers\Admin\BlogArticleController;
 use App\Http\Controllers\Admin\BlogPostNewController;
 use App\Http\Controllers\Admin\WithdrawLogController;
+use App\Http\Controllers\Auth\RegisterInitController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Auth\RegisterSubmitController;
 use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\User\DepositTransactController;
+use App\Http\Controllers\User\KycProofAddressController;
 use App\Http\Controllers\User\KycSnapshortTakeController;
 use App\Http\Controllers\User\WithdrawTransactController;
 use App\Http\Controllers\Admin\MasterclassAdminController;
@@ -72,15 +75,18 @@ Route::get('serviceStock', function () {
     return view('common.serviceStock');
 })->name('serviceStock');
 
-Route::get('/blog', [BlogController::class, 'index'])->name('blog');
+Route::get('/blog/{category_id}/category', [BlogController::class, 'index'])->name('blog');
+Route::get('/blogRead/{article_id}/read', [BlogController::class, 'read'])->name('blogRead');
 
 Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
+Route::get('/logout', [LogoutController::class, 'store'])->name('logout');
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'store']);
+// Route::get('/login', [LoginController::class, 'index'])->name('login');
+// Route::post('/login', [LoginController::class, 'authenticated']);
+
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
-Route::post('/register', [RegisterController::class, 'store']);
+Route::post('/registerInit', [RegisterInitController::class, 'store'])->name('registerInit');
 
 Route::get('/registerSubmit/{user}/registration', [RegisterSubmitController::class, 'index'])->name('registerSubmit');
 Route::post('/registerUpdate', [RegisterSubmitController::class, 'update'])->name('registerUpdate');
@@ -101,7 +107,6 @@ Route::post('/investPackTransact', [InvestPackTransactController::class, 'store'
 Route::get('/withdraw', [WithdrawController::class, 'index'])->name('withdraw');
 Route::get('/withdrawTransact/{payment_id}/paymentmethod', [WithdrawTransactController::class, 'index'])->name('withdrawTransact');
 Route::post('/withdrawTransactStore', [WithdrawTransactController::class, 'store'])->name('withdrawTransactStore');
-Route::post('/withdrawTransactConfirm', [WithdrawTransactController::class, 'confirm'])->name('withdrawTransactConfirm');
 
 Route::get('/activities', [ActivitiesController::class, 'index'])->name('activities');
 
@@ -114,8 +119,15 @@ Route::post('/securityPassword', [SecurityController::class, 'storePassword'])->
 
 Route::get('/kyc', [KycController::class, 'index'])->name('kyc');
 Route::get('/kycSnapshortIntro', [KycSnapshortIntroController::class, 'index'])->name('kycSnapshortIntro');
-Route::get('/kycSnapshortTake', [KycSnapshortTakeController::class, 'index'])->name('kycSnapshortTake');
 
+Route::get('/kycSnapshortTake', [KycSnapshortTakeController::class, 'index'])->name('kycSnapshortTake');
+Route::post('/kycSnapshortTake', [KycSnapshortTakeController::class, 'store']);
+
+Route::get('/kycDocument', [KycDocumentController::class, 'index'])->name('kycDocument');
+Route::post('/kycDocument', [KycDocumentController::class, 'store']);
+
+Route::get('/kycProofAddress', [KycProofAddressController::class, 'index'])->name('kycProofAddress');
+Route::post('/kycProofAddress', [KycProofAddressController::class, 'store']);
 
 Route::get('/loginAdmin', [LoginAdminController::class, 'index'])->name('loginAdmin');
 Route::post('/loginAdmin', [LoginAdminController::class, 'store']);
@@ -159,6 +171,18 @@ Route::get('/masterclassAdmin', [MasterclassAdminController::class, 'index'])->n
 Route::get('/copyTrade', [CopyTradeController::class, 'index'])->name('copyTrade');
 
 Route::get('/blogPostNew', [BlogPostNewController::class, 'index'])->name('blogPostNew');
+Route::post('/blogPostNew', [BlogPostNewController::class, 'store']);
+
 Route::get('/blogArticle', [BlogArticleController::class, 'index'])->name('blogArticle');
-Route::get('/blogPostNewUpdate', [BlogPostNewUpdateController::class, 'index'])->name('blogPostNewUpdate');
+Route::post('/blogArticle', [BlogArticleController::class, 'store']);
+Route::post('/blogArticleDestroy', [BlogArticleController::class, 'destroy'])->name('blogArticleDestroy');
+
+Route::get('/blogPostNewUpdate/{blog_id}/blog', [BlogPostNewUpdateController::class, 'index'])->name('blogPostNewUpdate');
+Route::post('/blogPostNewUpdateStore', [BlogPostNewUpdateController::class, 'update'])->name('blogPostNewUpdateStore');
+
 Route::get('/blogCategory', [BlogCategoryController::class, 'index'])->name('blogCategory');
+Route::post('/blogCategory', [BlogCategoryController::class, 'store']);
+
+Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

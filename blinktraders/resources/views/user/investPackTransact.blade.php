@@ -36,14 +36,16 @@
                                             <h5 class="card-title force-color-black border-line-bottom pb-2">{{$inp->name}}</h5>
                                               <h2 class="force-color-blue">{{$inp->percent}}%</h2>
                                               <b class="force-color-blue">{{$inp->percent_ref}}</b><br><br>
-                                              <p class="force-color-black">${{$inp->price}} - Above</p>
+                                              <p class="force-color-black">${{$inp->min_amount}} - ${{$inp->max_amount}}</p>
                                               <p class="force-color-black">24/7 support</p>
-                                              <p class="force-color-black">Referral Bonus 5%</p><br><br>
+                                              <p class="force-color-black">Referral Bonus {{$inp->percent_referral}}%</p><br><br>
                                               <a href="#" class="btn btn-outline-primary"
                                               data-id="{{$inp->id}}"
                                               data-percent="{{$inp->percent}}"
                                               data-duration="{{$inp->duration}}"
-                                              data-price="{{$inp->price}}"
+                                              data-min_amount="{{$inp->min_amount}}"
+                                              data-max_amount="{{$inp->max_amount}}"
+                                              data-percent_referral="{{$inp->percent_referral}}"
                                               data-toggle="modal" data-target="#myModalCalc" id="investCalc">Calculate</a>
                                           </div>
                                         </div>
@@ -129,11 +131,16 @@
       <form action="{{ route('investPackTransact') }}" method="post" class="modal-body text-center">
       @csrf
         <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
+        <input type="hidden" name="user_ref" value="{{auth()->user()->referral_user}}"/>
         <input type="hidden" id="invest_plan_id" name="invest_plan_id"/>
         <input type="hidden" id="percentage" name="percentage"/>
         <input type="hidden" id="duration" name="duration"/>
         <input type="hidden" id="profit" name="profit"/>
-        <input type="hidden" id="price" name="price"/>
+        <input type="hidden" id="amount" name="amount"/>
+        <input type="hidden" id="max_amount" name="max_amount"/>
+        <input type="hidden" id="min_amount" name="min_amount"/>
+        <input type="hidden" id="percent_referral" name="percent_referral"/>
+        <input type="hidden" id="total" name="total"/>
         <span class="big-font-size">Input amount to invest</span><br>
         <span class="big-font-size text-center"><input type="number" id="amount-cal" name="amount" placeholder="0.0" class="input-spcing-buyp" readonly /></span><br><br>
         <button type="submit" class="btn btn-outline-primary">Buy pack</button>
@@ -143,7 +150,7 @@
 </div>
         
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalCalcBuyMss">
+<div class="modal" id="myModalSuccess">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body text-center">
@@ -155,7 +162,7 @@
 </div>
 
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalCalcBuyMssErr1">
+<div class="modal" id="statusErrorNoInvestPlan">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
@@ -173,19 +180,65 @@ Please opt in for an investment pack</span><br><br>
 </div>
 
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalCalcBuyMssErr2">
+<div class="modal" id="myModalNoAvaBal">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <!-- Modal body -->
-              
-        <div class="modal-body text-center">
+      <div class="modal-body text-center">
             <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
-            <span class="big-font-size">Unsuccessful!</span><br>
+            <span class="big-font-size">Unsuccessful</span><br>
             <span class="small-font-size text-center">Input at least minimum deposit</span><br><br>
       </div>
-        
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalError">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">An Error Occur</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalErrorMinAmt">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">Amount too low</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalErrorMaxAmt">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">Amount above range</span><br><br>
+      </div>
     </div>
   </div>
 </div>
@@ -198,35 +251,64 @@ Please opt in for an investment pack</span><br><br>
             document.querySelector("#invest_plan_id").value = $(this).attr("data-id");
             document.querySelector("#calc-perctage").value = $(this).attr("data-percent");
             document.querySelector("#duration").value = $(this).attr("data-duration");
-            document.querySelector("#price").value = $(this).attr("data-price");
+            document.querySelector("#min_amount").value = $(this).attr("data-min_amount");
+            document.querySelector("#max_amount").value = $(this).attr("data-max_amount");
+            document.querySelector("#percent_referral").value = $(this).attr("data-percent_referral");
           });
 
             $('#ConfirmInvestInpt').click(function(){
                     var calcPercent =  $('#calc-perctage').val();
+                    var duration = $('#duration').val();
                     var amtTransactInput = $('#amt-transact-input').val();
-                    var calProfit = (calcPercent/100) * amtTransactInput;
+                    var calProfit = ((calcPercent/100) * amtTransactInput)  * duration;
                     var total = Number(amtTransactInput) + Number(calProfit);
 
                     document.querySelector('#percentage').value = calcPercent;
                     document.querySelector('#profit').value = calProfit;
                     document.querySelector('#amount-cal').value = amtTransactInput;
+                    document.querySelector('#amount').value = amtTransactInput;
+                    document.querySelector('#total').value = total;
 
                     document.querySelector('#invest-profit-r').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(calProfit);
                     document.querySelector('#percentage-success').innerHTML = calcPercent + "%"; 
             });
         </script>
-        <script>
-            @if(session('statusError2'))
-                $(window).on('load', function() {
-                    $('#myModalCalcBuyMssErr2').modal('show');
-                });
-            @endif
+        <script>    
+          @if(session('statusError'))
+              $(window).on('load', function() {
+                  $('#myModalError').modal('show');
+              });
+          @endif
 
-            @if(session('statusSuccess'))
-                $(window).on('load', function() {
-                    $('#myModalCalcBuyMss').modal('show');
-                });
-            @endif
-        </script>
+          @if(session('statusErrorMaxAmt'))
+              $(window).on('load', function() {
+                  $('#myModalErrorMaxAmt').modal('show');
+              });
+          @endif
+
+          @if(session('statusErrorMinAmt'))
+              $(window).on('load', function() {
+                  $('#myModalErrorMinAmt').modal('show');
+              });
+          @endif
+          
+          @if(session('statusErrorNoInvestPlan'))
+              $(window).on('load', function() {
+                  $('#myModalNoInvestPlan').modal('show');
+              });
+          @endif
+          
+          @if(session('statusErrorNoAvaBal'))
+              $(window).on('load', function() {
+                  $('#myModalNoAvaBal').modal('show');
+              });
+          @endif
+
+          @if(session('statusSuccess'))
+              $(window).on('load', function() {
+                  $('#myModalSuccess').modal('show');
+              });
+          @endif
+      </script>
     </body>
 </html>

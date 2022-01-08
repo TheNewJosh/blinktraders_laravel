@@ -167,19 +167,8 @@
             <span id="amount-coin-m-2"></span>
         </div>
         <div class="deposit-res-px-5">
-            <form action="{{ route('withdrawTransactStore') }}" method="post" class="master-deposit-div-wk">
-                @csrf
-                <input type="hidden" id="amount-snt-m" name="amount"/>
-                <input type="hidden" id="charges-snt-m" name="charges"/>
-                <input type="hidden" id="coin_amount-snt-m" name="coin_amount"/>
-                <input type="hidden" name="payment_gateway_id" value="{{$payment_id->id}}"/>
-                <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
-                <input type="hidden" id="wallet_address-m" name="wallet_address"/>
-                <input type="hidden" id="withdraw_source-m" name="withdraw_source" value="0"/>
-                <input type="hidden" name="percent" value="{{$system_configuration->withdraw_charge}}"/>
-                <input type="hidden" name="trn_sum_ava" value="{{$trn_sum_ava}}"/>
-                <input type="hidden" name="trn_sum_pro" value="{{$trn_sum_pro}}"/>
-                <input type="hidden" name="trn_sum_ref" value="{{$trn_sum_ref}}"/>
+            <div class="master-deposit-div-wk">
+               
                 <div class="in-box-depot">
                     <div class="d-flex justify-content-between">
                         <span>Amount</span>
@@ -198,7 +187,7 @@
                 <div class="text-center">
                     <button type="submit" name="submit_deposit_btn" class="btn btn-primary" data-toggle="modal" data-target="#myModalConfirmWithdrawInput">Withdrawal</button>
                 </div>
-            </form>
+            </div>
         </div>
       </div>
     </div>
@@ -218,19 +207,7 @@
         </button>
       </div>
       <!-- Modal body -->
-      <form action="{{ route('withdrawTransactStore') }}" method="post" class="modal-body text-center">
-            @csrf
-            <input type="hidden" id="amount-snt" name="amount"/>
-            <input type="hidden" id="charges-snt" name="charges"/>
-            <input type="hidden" id="coin_amount-snt" name="coin_amount"/>
-            <input type="hidden" name="payment_gateway_id" value="{{$payment_id->id}}"/>
-            <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
-            <input type="hidden" id="wallet_address" name="wallet_address"/>
-            <input type="hidden" id="withdraw_source" name="withdraw_source" value="0"/>
-            <input type="hidden" name="percent" value="{{$system_configuration->withdraw_charge}}"/>
-            <input type="hidden" name="trn_sum_ava" value="{{$trn_sum_ava}}"/>
-            <input type="hidden" name="trn_sum_pro" value="{{$trn_sum_pro}}"/>
-            <input type="hidden" name="trn_sum_ref" value="{{$trn_sum_ref}}"/>
+      <div class="modal-body text-center">
             <div class="in-box-depot-modal">
                 <div class="d-flex justify-content-between">
                     <span>Amount</span>
@@ -250,8 +227,8 @@
                 </div>
             </div>
           <br><br>
-            <button type="submit" class="btn btn-primary">Confirm withdraw</button>
-      </form>
+            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModalConfirmWithdrawInput" data-dismiss="modal">Confirm withdraw</button>
+        </div>
     </div>
   </div>
 </div>
@@ -273,10 +250,19 @@
 -->
       </div>
       <!-- Modal body -->
-      <form action="{{ route('withdrawTransactConfirm') }}" method="post" class="modal-body text-center">
-            @csrf
-            <input type="hidden" name="pin" value="{{$user->pin}}">
-            <input type="hidden" name="id" value="{{session('statusID')}}">
+      <form action="{{ route('withdrawTransactStore') }}" method="post" class="modal-body text-center">
+        @csrf
+            <input type="hidden" id="amount-snt" name="amount"/>
+            <input type="hidden" id="charges-snt" name="charges"/>
+            <input type="hidden" id="coin_amount-snt" name="coin_amount"/>
+            <input type="hidden" name="payment_gateway_id" value="{{$payment_id->id}}"/>
+            <input type="hidden" name="user_id" value="{{auth()->user()->id}}"/>
+            <input type="hidden" id="wallet_address" name="wallet_address"/>
+            <input type="hidden" id="withdraw_source" name="withdraw_source" value="0"/>
+            <input type="hidden" name="percent" value="{{$system_configuration->withdraw_charge}}"/>
+            <input type="hidden" name="trn_sum_ava" value="{{$trn_sum_ava}}"/>
+            <input type="hidden" name="trn_sum_pro" value="{{$trn_sum_pro}}"/>
+            <input type="hidden" name="trn_sum_ref" value="{{$trn_sum_ref}}"/>
             <div class="row">
                 <br><br>
                 <div class="row px-5">
@@ -297,13 +283,28 @@
             </div>
           <br><br>
             <button type="submit" class="btn btn-primary" id="complete-pin-id">Okay</button>
-      </form>
+        </form>
     </div>
   </div>
 </div>
 
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalCalcBuyMss">
+<div class="modal" id="myModalSuccess">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-green" style="font-size:50px;"><i class="far fa-check-circle"></i></span><br>
+            <span class="big-font-size">Pin Confirmed</span><br><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="statusErrorNoInvestPlan">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
@@ -315,20 +316,54 @@
             <span class="small-font-size text-center">You are unable to withdraw because you do not have any previous transactions with us.
 Please opt in for an investment pack</span><br><br>
       </div>
+
     </div>
   </div>
 </div>
 
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalCalcBuyMssSS">
+<div class="modal" id="myModalNoAvaBal">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <!-- Modal body -->
       <div class="modal-body text-center">
-            <span class="force-color-green" style="font-size:50px;"><i class="far fa-check-circle"></i></span><br>
-            <span class="big-font-size">Pin Confirmed</span><br><br><br>
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Unsuccessful</span><br>
+            <span class="small-font-size text-center">Input at least minimum deposit</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalErrorPin">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">Wrong Pin Please reset your pin</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalError">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">An Error Occur</span><br><br>
       </div>
     </div>
   </div>
@@ -348,8 +383,8 @@ Please opt in for an investment pack</span><br><br>
                     document.querySelector('#amount-snt').value = total;
                     document.querySelector('#charges-snt').value = charges;
                     document.querySelector('#coin_amount-snt').value = coin_amt;
+
                     document.querySelector('#amount').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(input_amt);
-                    
                     document.querySelector('#amount-coin').innerHTML = new Intl.NumberFormat('en-US').format(coin_amt) + "{{$payment_id->coin_short}}";
                     document.querySelector('#charge').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(charges);
                     document.querySelector('#total').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(total); 
@@ -362,9 +397,10 @@ Please opt in for an investment pack</span><br><br>
                     var total = Number(input_amt) + Number(charges);
                     var coin_amt = Number(total) / Number({{$payment_id->price}});
 
-                    document.querySelector('#amount-snt-m').value = total;
-                    document.querySelector('#charges-snt-m').value = charges;
-                    document.querySelector('#coin_amount-snt-m').value = coin_amt;
+                    document.querySelector('#amount-snt').value = total;
+                    document.querySelector('#charges-snt').value = charges;
+                    document.querySelector('#coin_amount-snt').value = coin_amt;
+                    
                     document.querySelector('#amount-m').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(input_amt);
                     document.querySelector('#amount-coin-m').innerHTML = new Intl.NumberFormat('en-US').format(coin_amt) + "{{$payment_id->coin_short}}";
                     document.querySelector('#amount-coin-m-2').innerHTML = new Intl.NumberFormat('en-US').format(coin_amt) + "{{$payment_id->coin_short}}";
@@ -390,38 +426,36 @@ Please opt in for an investment pack</span><br><br>
 
             });
         </script>
-        <script>
-            @if(session('statusError'))
-                $(window).on('load', function() {
-                    $('#myModalCalcBuyMss').modal('show');
-                });
-            @endif
-            
-            @if(session('statusSuccessSS'))
-                $(window).on('load', function() {
-                    $('#myModalCalcBuyMssSS').modal('show');
-                });
-            @endif
+        <script>    
+          @if(session('statusError'))
+              $(window).on('load', function() {
+                  $('#myModalError').modal('show');
+              });
+          @endif
 
-            @if(session('statusSuccess'))
-                $(window).on('load', function() {
-                    $('#myModalConfirmWithdrawInput').modal('show');
-                });
+          @if(session('statusErrorPin'))
+              $(window).on('load', function() {
+                  $('#myModalErrorPin').modal('show');
+              });
+          @endif
+          
+          @if(session('statusErrorNoInvestPlan'))
+              $(window).on('load', function() {
+                  $('#myModalNoInvestPlan').modal('show');
+              });
+          @endif
+          
+          @if(session('statusErrorNoAvaBal'))
+              $(window).on('load', function() {
+                  $('#myModalNoAvaBal').modal('show');
+              });
+          @endif
 
-                window.onload = (event) => {
-                    bs4pop.notice('Transaction Drafted', {position: 'topright', type: 'success'})
-                };
-            @endif
-
-            @if(session('statusErrorPin'))
-                $(window).on('load', function() {
-                    $('#myModalConfirmWithdrawInput').modal('show');
-                });
-
-                window.onload = (event) => {
-                    bs4pop.notice('Error Occur: Retry', {position: 'topright', type: 'danger'})
-                };
-            @endif
-        </script>
+          @if(session('statusSuccess'))
+              $(window).on('load', function() {
+                  $('#myModalSuccess').modal('show');
+              });
+          @endif
+      </script>
     </body>
 </html>

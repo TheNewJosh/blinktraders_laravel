@@ -18,8 +18,8 @@ class CreateInvestPlansTable extends Migration
             $table->string('name')->nullable();
             $table->string('icon')->nullable();
             $table->float('percent')->nullable();
-            $table->string('percent_ref')->nullable();
-            $table->float('price')->nullable();
+            $table->float('percent_ref')->nullable();
+            $table->float('percent_referral')->nullable();
             $table->integer('duration')->nullable();
             $table->string('type_in')->nullable();
             $table->tinyInteger('status')->default(0);

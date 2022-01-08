@@ -27,10 +27,16 @@
                                             <div class="form-group">
                                                 <label class="force-color-black">Email Address</label>
                                                 <input type="email" name="email" class="form-control input-outline" value="{{ old('email') }}" required>
+                                                @error('email')
+                                                    <span class="force-color-red">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="form-group">
                                                 <label class="force-color-black">Password</label>
                                                 <input type="password" name="password" class="form-control input-outline" value="{{ old('password') }}" required>
+                                                @error('password')
+                                                    <span class="force-color-red">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="cover">
                                                 <button type="submit" class="btn btn-primary btn-lg text-center" name="submit_login_btn">Login</button>
@@ -54,9 +60,15 @@
         @include('layouts.footer')
         
         <script>            
-            @if (session('status'))
+            @if($errors->any())
                 window.onload = (event) => {
-                bs4pop.notice('{{ session('status') }}', {position: 'topright', type: 'danger'})
+                bs4pop.notice('Error Occur', {position: 'topright', type: 'danger'})
+                };
+            @endif
+
+            @if(session('statusLoginSuccess'))
+                window.onload = (event) => {
+                bs4pop.notice('Successfully Register', {position: 'topright', type: 'success'})
                 };
             @endif
         </script>

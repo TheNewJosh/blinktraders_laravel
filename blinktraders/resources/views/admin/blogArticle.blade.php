@@ -5,6 +5,7 @@
         <?php 
             $page = "blog-article.php"; 
             $page_title = "Blog"; 
+            $type = ['Unpublish', 'Publish']
         ?>
         @include('layouts.meta')
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
@@ -37,15 +38,17 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @if ($blog->count())
+                            @foreach ($blog as $blg)
                             <tr>
-                                <td>1</td>
-                                <td><img src="../../assets/img/banner1.png" class="force-img-avatar-table-icon" /></td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td>$320,800</td>
-                                <td>$320,800</td>
+                                <td>{{$loop->iteration}}</td>
+                                <td><img src="{{asset('img/blog') }}/{{$blg->thumbnail}}" class="force-img-avatar-table-icon" /></td>
+                                <td>{{$blg->title}}</td>
+                                <td>{{$blg->blogCategory->name}}</td>
+                                <td>23</td>
+                                <td>{{$type[$blg->status]}}</td>
+                                <td>{{$blg->created_at->toFormattedDateString()}}</td>
+                                <td>{{$blg->updated_at->diffForHumans()}}</td>
                                 <td>
                                     <div class="dropdown-adm">
                                         <a href="#" class="link-adm dropdown-toggle text-center" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,20 +59,39 @@
                                             </div>
                                         </a>
                                         <div class="dropdown-menu admin-drop-menu-tb" aria-labelledby="navbarDropdownMenuLink">
-                                          <a class="force-color-black" href="">
-                                              <i class="fas fa-cog mr-2"></i>
-                                              Unpublish
-                                            </a><br>
-                                          <a class="force-color-black" href="{{ route('blogPostNewUpdate') }}">
+                                            @if($blg->status == 1)
+                                            <form action="{{ route('blogArticle') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$blg->id}}">
+                                                <input type="hidden" name="status" value="0">
+                                                <button type="submit" class="button-deposit-log"><i class="fas fa-cog mr-2"></i> Unpublish</button>
+                                            </form>
+                                            @endif
+
+                                            @if($blg->status == 0)
+                                            <form action="{{ route('blogArticle') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$blg->id}}">
+                                                <input type="hidden" name="status" value="1">
+                                                <button type="submit" class="button-deposit-log"><i class="fas fa-cog mr-2"></i> publish</button>
+                                            </form>
+                                            @endif
+
+                                          <a class="force-color-black" href="{{ route('blogPostNewUpdate', ['blog_id' => $blg->id]) }}">
                                               <i class="far fa-envelope mr-2"></i>Edit
                                             </a><br>
-                                            <a class="force-color-black" href="">
-                                              <i class="far fa-envelope mr-2"></i>Delete
-                                            </a>
+                                            <form action="{{ route('blogArticleDestroy') }}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id" value="{{$blg->id}}">
+                                                <input type="hidden" name="status" value="1">
+                                                <button type="submit" class="button-deposit-log"><i class="fas fa-cog mr-2"></i> Delete</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -83,6 +105,24 @@
             $(document).ready(function() {
                 $('#example').DataTable();
             } );
+
+            @if(session('statusError'))
+                window.onload = (event) => {
+                   bs4pop.notice('Input Error', {position: 'topright', type: 'danger'})
+                };
+            @endif
+
+            @if(session('statusSuccess'))
+                window.onload = (event) => {
+                   bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                };
+            @endif
+            
+            @if(session('statusSuccessDelete'))
+                window.onload = (event) => {
+                   bs4pop.notice('Article Deleted', {position: 'topright', type: 'success'})
+                };
+            @endif
         </script>
         
     </body>

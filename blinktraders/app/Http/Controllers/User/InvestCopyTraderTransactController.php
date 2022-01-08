@@ -3,15 +3,19 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\CopyTrade;
+use App\Models\Transactions;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\InvestPlanTransact;
+use App\Models\InvestPackTransaction;
+use App\Services\UserAvailableBalance;
 use Illuminate\Support\Facades\Validator;
 
 class InvestCopyTraderTransactController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth']);
+        $this->middleware(['role:user|superadministrator']);
     }
     
     public function index()
@@ -25,27 +29,38 @@ class InvestCopyTraderTransactController extends Controller
 
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'password' => 'required',
-            'mt4id' => 'required',
-            'mt4bal' => 'required',
-            'broker' => 'required',
-        ]);
+        $investPlanTransact = InvestPlanTransact::checkTransactionExistUser(auth()->user()->id);
+        $userAvailableBalance = UserAvailableBalance::getAvailableBalance();
 
-        if($validator->fails()) {
-            return back()->with('statusError', 'Input error')->withErrors($validator)->withInput();
+        if($investPlanTransact <= 0){
+            return back()->with('statusErrorNoInvestPlan', 'Input error')->withInput();
+        }elseif($userAvailableBalance < 949){
+            return back()->with('statusErrorNoAvaBal', 'Input error')->withInput();
         }else{
-
-            CopyTrade::create([
-                'mt4id' => $request->mt4id,
-                'broker' => $request->broker,
-                'mt4bal' => $request->mt4bal,
-                'password' => $request->password,
-                'user_id' => auth()->user()->id,
+            $validator = Validator::make($request->all(), [
+                'password' => 'required',
+                'mt4id' => 'required',
+                'mt4bal' => 'required',
+                'broker' => 'required',
             ]);
-
-            return redirect()->back()->with('statusSuccess', 'Success');;
-
+    
+            if($validator->fails()) {
+                return back()->with('statusError', 'Input error')->withErrors($validator)->withInput();
+            }else{
+    
+                CopyTrade::create([
+                    'mt4id' => $request->mt4id,
+                    'broker' => $request->broker,
+                    'mt4bal' => $request->mt4bal,
+                    'password' => $request->password,
+                    'user_id' => auth()->user()->id,
+                    'status' => 1,
+                    'amount' => 949,
+                ]);
+    
+                return redirect()->back()->with('statusSuccess', 'Success');
+    
+            }
         }
     }
 }

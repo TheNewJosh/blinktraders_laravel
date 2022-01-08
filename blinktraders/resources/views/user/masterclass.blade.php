@@ -32,17 +32,17 @@
                                   <p class="small-font-size">This agreement is between:</p>
                                   <p class="small-font-size">
                                     <label class="mr-2">Name</label>
-                                      <input type="text" class="form-under-line mr-5" value="John" readonly />
+                                      <input type="text" class="form-under-line mr-5" value="{{auth()->user()->name}}" readonly />
                                       <span class="small-font-size ml-5">mentee</span>
                                   </p>
                                   <p class="small-font-size">
                                     <label class="mr-2">Email Address</label>
-                                      <input type="text" class="form-under-line mr-5" value="jon@jk" readonly />
+                                      <input type="text" class="form-under-line mr-5" value="{{auth()->user()->email}}" readonly />
                                   </p>
                                   <p>
-                                    <span class="mr-5 small-font-size">Name: Mas.com</span>
+                                    <span class="mr-5 small-font-size">Name: {{$system_configuration->company_name}}</span>
                                       <span class="small-font-size ml-5">mentor</span><br>
-                                      <span class="small-font-size">Email Address: mas@kl</span>
+                                      <span class="small-font-size">Email Address: {{$system_configuration->company_email}}</span>
                                   </p>
                                   <ol>
                                       <li class="small-font-size">
@@ -140,7 +140,7 @@ We the Mentor and the Mentee agreed on the above mentioned terms and conditions 
                             </ol>
                         </div>
                         <div class="small-font-size border-name-bottom">
-                            <span class="mr-2">John</span>
+                            <span class="mr-2">{{auth()->user()->name}}</span>
                           </div>
                         <br>
                         <p class="big-font-size">BY TYPING YOUR FULL NAME AND PRESSING "I AGREE" YOU ARE PROVIDING A DIGITAL SIGNATURE AND THEREFORE ACCEPTING THE ABOVE DOCUMENT ON A LEGAL GROUNDS</p>
@@ -156,20 +156,84 @@ We the Mentor and the Mentee agreed on the above mentioned terms and conditions 
                 </div>
             </section>
         </main>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalSuccess">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span>
+                <i class="far fa-check-circle force-color-green" style="font-size:50px;"></i>
+            </span><br><br>
+            <span class="big-font-size">Master class subscription was successfully paid</span><br><br>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalNoInvestPlan">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">You are unable to perform this transaction because you do not have any previous transactions with us.
+Please opt in for an investment pack</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalNoAvaBal">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Unsuccessful</span><br>
+            <span class="small-font-size text-center">Input at least minimum deposit</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
         
         @include('user.layouts.footer')
         
         <script>
             @if(session('statusError'))
-                window.onload = (event) => {
-                   bs4pop.notice('Input error', {position: 'topright', type: 'danger'})
-                };
+                $(window).on('load', function() {
+                    $('#myModalError').modal('show');
+                });
+            @endif
+            
+            @if(session('statusErrorNoInvestPlan'))
+                $(window).on('load', function() {
+                    $('#myModalNoInvestPlan').modal('show');
+                });
+            @endif
+            
+            @if(session('statusErrorNoAvaBal'))
+                $(window).on('load', function() {
+                    $('#myModalNoAvaBal').modal('show');
+                });
             @endif
 
             @if(session('statusSuccess'))
-                window.onload = (event) => {
-                   bs4pop.notice('Request Sent', {position: 'topright', type: 'success'})
-                };
+                $(window).on('load', function() {
+                    $('#myModalSuccess').modal('show');
+                });
             @endif
         </script>
         

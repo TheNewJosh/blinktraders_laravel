@@ -9,6 +9,12 @@ class Referrals extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'user_id_ref',
+        'amount',
+    ];
+
     protected $table = 'referrals';
 
     protected $primaryKey = 'id';

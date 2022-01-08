@@ -421,19 +421,11 @@ body, html{
 }
 
 .bg-img-page{
-    background-image: url(../img/banner4.jpg);
+    background: linear-gradient(rgba(0,0,0,.8), rgba(0,0,0,.8)), url(../img/banner4.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     padding: 100px 0px;
 }
-
-.bg-img-page:before {
-    content: "";
-    position: absolute;
-    left: 0; right: 0;
-    top: 0; bottom: 0;
-    background: rgba(0,0,0,.8);
-  }
 
 .cover {
     text-align: center;
@@ -1352,3 +1344,53 @@ input[type=number] {
         margin: 0px;
     }
 }
+
+.logout-button-gen{
+    border: none;
+}
+
+.drag-area{
+    border: 2px dashed var(--clr-blue);
+    height: 300px;
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .drag-area.active{
+    border: 2px solid #fff;
+  }
+  .drag-area .icon{
+    font-size: 50px;
+    color: var(--clr-blue);
+  }
+  .drag-area header{
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--clr-black);
+  }
+  .drag-area span{
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--clr-black);
+    margin: 10px 0 15px 0;
+  }
+  .drag-area button{
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    background: var(--clr-blue);
+    color: var(--clr-black);
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .drag-area img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+  }

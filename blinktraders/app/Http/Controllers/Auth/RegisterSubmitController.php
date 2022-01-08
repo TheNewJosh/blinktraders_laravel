@@ -19,17 +19,17 @@ class RegisterSubmitController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'referral_id' => 'required|unique:users',
+            'username' => 'required|unique:users',
             'country' => 'required',
             'password' => 'required|confirmed',
         ]);
 
         $user = User::where('id', $request->user_id)->update([
-            'referral_id' => $request->referral_id,
+            'username' => $request->username,
             'country' => $request->country,
             'password' => Hash::make($request->password),
         ]);
-
-        return redirect()->route('login');
+        
+        return redirect()->route('login')->with('statusLoginSuccess', 'Success');
     }
 }

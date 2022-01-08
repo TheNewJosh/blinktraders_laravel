@@ -65,10 +65,8 @@
                 </div>
             </section>
         </main>
-        
+
         @include('user.layouts.footer')
-        
-        
         
     </body>
 </html>

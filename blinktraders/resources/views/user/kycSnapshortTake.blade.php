@@ -42,18 +42,86 @@
                                     </span>
                                 </div>
                             </div>
+                            <div id="my_camera"><img src="{{ asset('img/user/') }}/{{auth()->user()->snapshot}}"></div>
+                            <div id="results"></div>
                             <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary px-5">Take snapshot</button>
+                            <button type="button" onclick="configure();" id="configure" class="btn btn-primary px-5">Take snapshot</button>
+                            <button type="button" onclick="saveSnap();" id="saveSnap" class="btn btn-primary px-5 mrda-display-none">Save</button>
                         </div>
                         </div>
                     </div>
                 </div>
             </section>
         </main>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalSuccess">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-green" style="font-size:50px;"><i class="far fa-check-circle"></i></span><br>
+            <span class="big-font-size">Successful</span><br><br><br>
+            <a href="{{ route('kycDocument') }}" class="btn btn-primary px-5">Continue</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalError">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Sorry!</span><br>
+            <span class="small-font-size text-center">An Error Occur</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
         
         @include('user.layouts.footer')
-        
-        
+
+        <script src="{{ asset('js/webcam.min.js') }}" type="application/javascript"></script>
+        <script type="application/javascript">
+            function configure(){
+                document.querySelector('#saveSnap').classList.remove("mrda-display-none");
+                document.querySelector('#configure').classList.add("mrda-display-none");
+
+                Webcam.set({
+                    width: 480,
+                    height: 360,
+                    image_format: 'jpeg',
+                    jpeg_quality: 90
+                });
+
+                Webcam.attach('#my_camera');
+            }
+
+            function saveSnap(){
+                document.querySelector('#configure').classList.remove("mrda-display-none");
+                document.querySelector('#saveSnap').classList.add("mrda-display-none");
+
+                Webcam.snap(function(data_uri){
+                    document.getElementById('results').innerHTML= '<img id="webcam" src="'+data_uri+'">';
+                });
+
+                Webcam.reset();
+
+                var base64image = document.getElementById("webcam").src;
+                var csrf_token = '{{ csrf_token() }}';
+	            var url = "{{ route('kycSnapshortTake') }}?_token=" + csrf_token ;
+                Webcam.upload(base64image, url,function(code,text){
+                    $('#myModalSuccess').modal('show');
+                })
+            }
+        </script>
         
     </body>
 </html>

@@ -21,7 +21,7 @@
                                         <img src="{{ asset('img/step-2-1-form.svg')}}" /> <br><br>
                                     </div>
                                     <div class="px-2">
-                                    <form action="{{ route('register') }}" method="post">
+                                    <form action="{{ route('registerInit') }}" method="post">
                                         @csrf
                                             <span class="force-color-black"><span class="force-color-blue">*</span>Required fields</span><br>
                                             <div class="form-group">

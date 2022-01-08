@@ -5,6 +5,8 @@
         @include('layouts.meta') 
         <?php
             $page = "index.php";
+            use App\Models\InvestPlan;
+            $investPlan = InvestPlan::where('status', 1)->get()
         ?>
     </head>
     <body>   
@@ -56,7 +58,7 @@
                     <h5 class="force-color-white">BUSINESS</h5><br>
                     <h2 class="force-color-white">Let’s Start To Discover Our Benefits &amp; Features</h2><br>
                     <p class="force-color-pale-white">Satisfying your financial needs</p><br><br>
-                    <a href="#" class="btn btn-primary">Get Started</a>
+                    <a href="{{ route('register')}}" class="btn btn-primary">Get Started</a>
                 </div>
             </section>
             <section>
@@ -83,58 +85,23 @@
             </section>
             <section class="pricing-div">
                 <div class="row about-section-content">
-                    <div class="col-xs-12 col-lg-3">
-                        <div class="card force-bg-white px-2">
-                            <div class="card-body text-center">
-                            <h5 class="card-title force-color-black">Starter</h5>
-                                <h2 class="force-color-blue">10%</h2>
-                                <b class="force-color-blue">DAILY</b><br><br>
-                                <p class="force-color-black">$1000 - $4,999</p>
-                                <p class="force-color-black">24/7 support</p>
-                                <p class="force-color-black">Referral Bonus 5%</p><br><br>
-                                <a href="#" class="btn btn-primary">Get Started</a>
+                    @if ($investPlan->count())
+                        @foreach ($investPlan as $inp)
+                        <div class="col-xs-12 col-lg-3">
+                            <div class="card force-bg-white px-2">
+                                <div class="card-body text-center">
+                                <h5 class="card-title force-color-black">{{$inp->name}}</h5>
+                                    <h2 class="force-color-blue">{{$inp->percent}}%</h2>
+                                    <b class="force-color-blue">{{$inp->percent_ref}}</b><br><br>
+                                    <p class="force-color-black">${{$inp->min_amount}} - ${{$inp->max_amount}}</p>
+                                    <p class="force-color-black">24/7 support</p>
+                                    <p class="force-color-black">Referral Bonus {{$inp->percent_referral}}%</p><br><br>
+                                    <a href="{{ route('register')}}" class="btn btn-primary">Get Started</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xs-12 col-lg-3">
-                        <div class="card force-bg-black px-2">
-                            <div class="card-body text-center">
-                            <h5 class="card-title force-color-white">Standard</h5>
-                                <h2 class="force-color-blue">12%</h2>
-                                <b class="force-color-blue">DAILY</b><br><br>
-                                <p class="force-color-white">$5000 - $19,999</p>
-                                <p class="force-color-white">24/7 support</p>
-                                <p class="force-color-white">Referral Bonus 5%</p><br><br>
-                                <a href="#" class="btn btn-primary">Get Started</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-lg-3">
-                        <div class="card force-bg-white px-2">
-                            <div class="card-body text-center">
-                            <h5 class="card-title force-color-black">Premium</h5>
-                                <h2 class="force-color-blue">15%</h2>
-                                <b class="force-color-blue">DAILY</b><br><br>
-                                <p class="force-color-black">$20,000 - $49,999</p>
-                                <p class="force-color-black">24/7 support</p>
-                                <p class="force-color-black">Referral Bonus 5%</p><br><br>
-                                <a href="#" class="btn btn-primary">Get Started</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-lg-3">
-                        <div class="card force-bg-black px-2">
-                            <div class="card-body text-center">
-                            <h5 class="card-title force-color-white">Starter</h5>
-                                <h2 class="force-color-blue">20%</h2>
-                                <b class="force-color-blue">DAILY</b><br><br>
-                                <p class="force-color-white">$50,000 - unlimited</p>
-                                <p class="force-color-white">24/7 support</p>
-                                <p class="force-color-white">Referral Bonus 5%</p><br><br>
-                                <a href="#" class="btn btn-primary">Get Started</a>
-                            </div>
-                        </div>
-                    </div>
+                        @endforeach
+                    @endif
                 </div>
             </section>
             <section class="mt-5 mb-5">
@@ -149,7 +116,7 @@
                             <div class="card-body">
                             <b class="force-color-black">Crypto Currency Investment</b><br><br>
                             <p class="card-text force-color-pale-white">Bitcoin trading is a unique platform for trading bitcoin against other cryptocurrencies just like one would do for forex trading…</p>
-                                <a href="#" class="force-color-black force-a"><b>Read more</b></a>
+                                <a href="{{ route('serviceCryptoInvestment')}}" class="force-color-black force-a"><b>Read more</b></a>
                             </div>
                         </div>
                     </div>
@@ -159,7 +126,7 @@
                             <div class="card-body">
                             <b class="force-color-black">Forex Trading</b><br><br>
                             <p class="card-text force-color-pale-white">The Foreign Exchange market, also called FOREX or FX, is the global market for currency trading. With a daily volume of more than $5.3 trillion.…</p>
-                                <a href="#" class="force-color-black force-a"><b>Read more</b></a>
+                                <a href="{{ route('serviceForex')}}" class="force-color-black force-a"><b>Read more</b></a>
                             </div>
                         </div>
                     </div>
@@ -169,7 +136,7 @@
                             <div class="card-body">
                             <b class="force-color-black">Banking Investment</b><br><br>
                             <p class="card-text force-color-pale-white">Banking Investment Here at Zito Capital we provide online brokerage services for over 1000 customer accounts and processes over 3,000 trades per day.…</p>
-                                <a href="#" class="force-color-black force-a"><b>Read more</b></a>
+                                <a href="{{ route('serviceStock')}}" class="force-color-black force-a"><b>Read more</b></a>
                             </div>
                         </div>
                     </div>

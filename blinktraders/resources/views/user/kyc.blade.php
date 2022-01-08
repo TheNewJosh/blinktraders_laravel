@@ -41,7 +41,7 @@
                                     </a>
                                 </div>
                                 <div class="col col-lg-4 mt-2">
-                                    <div class="card no-border-line">
+                                    <a href="{{ route('kycDocument') }}" class="card no-border-line card-a-c">
                                       <div class="card-body text-center">
                                           <h5 class="force-color-black">Step 2</h5><br>
                                           <span class="force-color-blue invest-fa-icon">
@@ -49,10 +49,10 @@
                                           </span><br><br><br>
                                         <h5 class="force-color-black">Upload Document</h5>
                                       </div>
-                                    </div>
+                                    </a>
                                 </div>
                                 <div class="col col-lg-4 mt-2">
-                                    <div class="card no-border-line">
+                                    <a href="{{ route('kycProofAddress') }}" class="card no-border-line card-a-c">
                                       <div class="card-body text-center">
                                           <h5 class="force-color-black">Step 3</h5><br>
                                           <span class="force-color-blue invest-fa-icon">
@@ -60,11 +60,11 @@
                                           </span><br><br><br>
                                         <h5 class="force-color-black">Proof Of Address</h5>
                                       </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary px-5">Start</button>
+                            <a href="{{ route('kycSnapshortIntro') }}" class="btn btn-primary px-5">Start</a>
                         </div>
                         </div>
                     </div>

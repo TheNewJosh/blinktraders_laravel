@@ -15,6 +15,8 @@ class CopyTrade extends Model
         'broker',
         'mt4bal',
         'password',
+        'amount',
+        'status',
     ];
 
     protected $table = 'copy_trades';

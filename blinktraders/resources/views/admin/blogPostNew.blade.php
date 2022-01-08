@@ -20,7 +20,8 @@
                     @include('admin.layouts.header')
                     </div>
                 </div>
-                <form action="<?= $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
+                <form action="{{ route('blogPostNew') }}" method="post" enctype="multipart/form-data">
+                @csrf
                 <div class="main-content-body force-bg-white px-1 pt-2 pb-5"  id="mrda-margin-move">
                     
                     <h4 class="big-font-size tabel-heading-h">Create post</h4>
@@ -28,22 +29,25 @@
                     <div class="mt-4 px-5 py-4">
                         <div class="row">
                             <span class="col col-lg-2">Title:</span>
-                            <span class="col col-lg-10"><input type="text" class="pro-select-input" value="" /><br>
+                            <span class="col col-lg-10"><input type="text" class="pro-select-input" name="title" value="{{old('title')}}" /><br>
                 <span class="force-color-red"></span></span>
                         </div>
                         <div class="row mt-4">
                             <span class="col col-lg-2">Category: </span>
                             <span class="col col-lg-10">
-                                <select class="pro-select-input">
-                                    <option value = "1" <?php if(1 == 1){ echo "selected";} ?> >INVESTING</option>
-                                    <option value = "2" <?php if(1 == 2){ echo "selected";} ?> >Pending</option>
+                                <select class="pro-select-input" name="category_id">
+                                @if ($blogCategory->count())
+                                    @foreach ($blogCategory as $blc)
+                                        <option value="{{$blc->id}}" @if(old('category_id') == $blc->id) selected @endif >{{$blc->name}}</option>
+                                    @endforeach
+                                @endif
                                 </select>
                 <span class="force-color-red"></span>
                               </span>
                         </div>
                         <div class="row mt-5">
                             <span class="col col-lg-2">Thumbnail:</span>
-                            <span class="col col-lg-10"><input type="file" class="pro-select-input" accept="jpg, jpeg, png, svg, gif" value="" />
+                            <span class="col col-lg-10"><input type="file" class="pro-select-input" name="thumbnail" accept="jpg, jpeg, png, svg, gif" />
                             <br>
                 <span class="force-color-red"></span>
                         </span>
@@ -52,13 +56,13 @@
                             <span class="col col-lg-2">Content</span>
                             <span class="col col-lg-10">
                               <div class="form-group">
-                                 <textarea id="editor"></textarea>
+                                 <textarea id="textarea" name="content">{{old('content')}}</textarea>
                               </div>
                 <span class="force-color-red"></span>
                             </span>
                         </div>
                         <div class="mt-2">
-                            <button type="button" class="btn btn-primary float-right" name="send_blog_btn">Send <i class="fas fa-paper-plane"></i></button>
+                            <button type="submit" class="btn btn-primary float-right" name="send_blog_btn">Send <i class="fas fa-paper-plane"></i></button>
                         </div>
                     </div>
                 </div>
@@ -67,46 +71,23 @@
         </main>
         
         @include('admin.layouts.footer')
-        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js" type="application/javascript"></script>
-        <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js" type="application/javascript"></script>
+        <script src="https://cdn.tiny.cloud/1/0bafku73iwl16lvy29rbw1ndewfrm8fc90bly3tnv1s8nqoz/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
         <script>
-            $(document).ready(function() {
-                $('#example').DataTable();
-            } );
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $('.js-example-basic-multiple').select2();
+            tinymce.init({
+            selector: 'textarea',
             });
-        </script>
-        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
-        <script>
-              tinymce.init({
-              selector: "textarea#editor",
-              skin: "bootstrap",
-              plugins: "lists, link, image, media",
-              toolbar:
-                "h1 h2 bold italic strikethrough blockquote bullist numlist backcolor | link image media | removeformat help",
-              menubar: false,
-              setup: (editor) => {
-                // Apply the focus effect
-                editor.on("init", () => {
-                  editor.getContainer().style.transition =
-                    "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out";
-                });
-                editor.on("focus", () => {
-                  (editor.getContainer().style.boxShadow =
-                    "0 0 0 .2rem rgba(0, 123, 255, .25)"),
-                    (editor.getContainer().style.borderColor = "#80bdff");
-                });
-                editor.on("blur", () => {
-                  (editor.getContainer().style.boxShadow = ""),
-                    (editor.getContainer().style.borderColor = "");
-                });
-              },
-            });
+            @if(session('statusError'))
+                window.onload = (event) => {
+                   bs4pop.notice('Input Error', {position: 'topright', type: 'danger'})
+                };
+            @endif
+
+            @if(session('statusSuccess'))
+                window.onload = (event) => {
+                   bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                };
+            @endif
         </script>
     </body>
 </html>

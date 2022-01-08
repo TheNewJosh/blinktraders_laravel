@@ -33,9 +33,9 @@
                                             <input type="hidden" value="{{ $user->id }}" name="user_id" />
                                             <span class="force-color-black"><span class="force-color-blue">*</span>Required fields</span><br>
                                             <div class="form-group">
-                                                <label class="force-color-black">Referral ID<span class="force-color-blue">*</span></label>
-                                                <input type="text" class="form-control input-outline" name="referral_id" value="{{ old('referral_id') }}" >
-                                                @error('referral_id')
+                                                <label class="force-color-black">Username<span class="force-color-blue">*</span></label>
+                                                <input type="text" class="form-control input-outline" name="username" value="{{ old('username') }}" >
+                                                @error('username')
                                                     <span class="force-color-red">{{ $message }}</span>
                                                 @enderror
                                             </div>

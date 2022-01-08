@@ -24,15 +24,16 @@
                 <div class="main-content-body"  id="mrda-margin-move">
                     <div class="force-bg-white px-1 pt-2 pb-5 mb-5">
                         <h4 class="big-font-size tabel-heading-h">Create Category</h4>
-                        <div class="mt-4 px-5 py-4">
+                        <form action="{{ route('blogCategory') }}" method="post" class="mt-4 px-5 py-4">
+                        @csrf
                             <div class="row">
                                 <span class="col col-lg-2">Category:</span>
-                                <span class="col col-lg-10"><input type="text" class="pro-select-input" /></span>
+                                <span class="col col-lg-10"><input type="text" class="pro-select-input" name="name" /></span>
                             </div>
                             <div class="mt-2">
-                                <button type="button" class="btn btn-primary float-right">Submit <i class="fas fa-paper-plane"></i></button>
+                                <button type="submit" class="btn btn-primary float-right">Submit <i class="fas fa-paper-plane"></i></button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="force-bg-white px-1 py-3">
                         <div class="row d-flex justify-content-between px-4 py-2">
@@ -46,10 +47,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>INVESTING</td>
-                                </tr>
+                                @if ($blogCategory->count())
+                                    @foreach ($blogCategory as $blc)
+                                    <tr>
+                                        <td>{{$loop->iteration}}</td>
+                                        <td>{{$blc->name}}</td>
+                                    </tr>
+                                    @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -64,6 +69,18 @@
             $(document).ready(function() {
                 $('#example').DataTable();
             } );
+        
+            @if(session('statusError'))
+                window.onload = (event) => {
+                   bs4pop.notice('Input Error', {position: 'topright', type: 'danger'})
+                };
+            @endif
+
+            @if(session('statusSuccess'))
+                window.onload = (event) => {
+                   bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                };
+            @endif
         </script>
         
     </body>

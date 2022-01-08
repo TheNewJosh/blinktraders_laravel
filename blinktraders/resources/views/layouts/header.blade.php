@@ -1,4 +1,8 @@
 <?php        
+
+    use App\Models\BlogCategory;
+    $blogCategory = BlogCategory::get();
+
     $mi1 = $mi2 = $mi3 = $mi4 = "";
     
     if($page == "index.php"){
@@ -46,10 +50,11 @@
                 <span class="nav-link-text"><i class="fa fa-chevron-down force-color-white icon-rotates d-lg-none ml-auto" aria-hidden="true"></i></span>
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="{{ route('blog') }}">Blog</a>
-            <a class="dropdown-item" href="{{ route('blog') }}">investment</a>
-            <a class="dropdown-item" href="{{ route('blog') }}">trading</a>
-            <a class="dropdown-item" href="{{ route('blog') }}">motivation</a>
+            @if ($blogCategory->count())
+                @foreach ($blogCategory as $blc)
+                    <a class="dropdown-item" href="{{ route('blog', ['category_id' => $blc->id]) }}">{{$blc->name}}</a>
+                @endforeach
+            @endif
             </div>
         </li>
         <li class="nav-item nav-item-border-b dropdown">

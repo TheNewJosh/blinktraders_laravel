@@ -268,5 +268,11 @@
                 </a><br>
             </div>
         </div>
+        <div>
+            <a href="{{ route('logout') }}" class="py-2 px-2 link-adm">
+                <span class="force-color-white mr-2"><i class="fas fa-home"></i></span>
+                <span class="force-color-red">Logout</span>
+            </a>
+        </div>
     </div>
 </div>

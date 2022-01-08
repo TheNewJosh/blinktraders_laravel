@@ -12,9 +12,11 @@ class InvestPlan extends Model
     protected $fillable = [
         'name',
         'icon',
+        'max_amount',
+        'min_amount',
         'percent',
         'percent_ref',
-        'price',
+        'percent_referral',
         'duration',
         'type_in',
         'status',

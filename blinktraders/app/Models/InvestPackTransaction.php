@@ -17,6 +17,7 @@ class InvestPackTransaction extends Model
         'percentage',
         'duration',
         'profit',
+        'total',
         'status',
     ];
 

@@ -34,7 +34,7 @@
                                 <th>Icon</th>
                                 <th>Name</th>
                                 <th>Daily Percent</th>
-                                <th>Price</th>
+                                <th>Max Amount</th>
                                 <th>Status</th>
                                 <th>Created</th>
                                 <th>Action</th>
@@ -49,14 +49,16 @@
                                 <td><img src="{{asset('img/invest-plan') }}/{{$inp->icon}}" class="force-img-avatar-table-icon" /></td>
                                 <td>{{ $inp->name }}</td>
                                 <td>{{ $inp->percent }}</td>
-                                <td>{{ $inp->price }}</td>
+                                <td>{{ $inp->max_amount }}</td>
                                 <td>{{ $typStatus[$inp->status] }}</td>
-                                <td>{{ $inp->created_at }}</td>
+                                <td>{{ $inp->created_at->toFormattedDateString() }}</td>
                                 <td>
                                     <a href="#" class="force-color-black" data-toggle="modal" data-target="#myModal" id="click-modal-update" 
                                     data-id="{{ $inp->id }}"
                                     data-name="{{ $inp->name }}"
-                                    data-price="{{ $inp->price }}"
+                                    data-max_amount="{{ $inp->max_amount }}"
+                                    data-min_amount="{{ $inp->min_amount }}"
+                                    data-percent_referral="{{ $inp->percent_referral }}"
                                     data-percent="{{ $inp->percent }}"
                                     data-percent_ref="{{ $inp->percent_ref }}"
                                     data-duration="{{ $inp->duration }}"
@@ -95,35 +97,55 @@
                 @enderror
             </span>
         </div>
-          <div class="justify-no-space-between mt-4">
-            <span class="mr-2 pro-select-input-text">Price </span>
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Max Amount </span>
             <span class="">
-                <input type="number" class="pro-select-input-new" name="price" value="{{old('price')}}" />
+                <input type="number" class="pro-select-input-new" name="max_amount" value="{{old('max_amount')}}" />
                 <br>
-               @error('price')
+               @error('max_amount')
                     <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
                 @enderror
               </span>
         </div>
         <div class="justify-no-space-between mt-4">
-            <span class="mr-2 pro-select-input-text">Percentage </span>
+            <span class="mr-2 pro-select-input-text">Min Amount </span>
             <span class="">
-                <input type="number" class="pro-select-input-new-sm" name="percent" value="{{old('percent')}}" />
-            <br>
-                @error('percent')
-                    <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                <input type="number" class="pro-select-input-new" name="min_amount" value="{{old('min_amount')}}" />
+                <br>
+               @error('min_amount')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
                 @enderror
-            </span>
-            
-            <span class="mr-2 pro-select-input-text">Pert. Ref </span>
+              </span>
+        </div>
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Percentage Earning </span>
             <span class="">
-                <input type="text" class="pro-select-input-new-sm" name="percent_ref" value="{{old('percent_ref')}}" />
+                <input type="number" class="pro-select-input-new" name="percent" value="{{old('percent')}}" />
+                <br>
+               @error('percent')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+              </span>
+        </div>
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Percentage Tag </span>
+            <span class="">
+                <input type="text" class="pro-select-input-new" name="percent_ref" value="{{old('percent_ref')}}" />
                 <br>
                @error('percent_ref')
-                    <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
                 @enderror
-            </span>
-            
+              </span>
+        </div>
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Referral Bonus Percent </span>
+            <span class="">
+                <input type="number" class="pro-select-input-new" name="percent_referral" value="{{old('percent_referral')}}" />
+                <br>
+               @error('percent_referral')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+              </span>
         </div>
           <div class="justify-no-space-between mt-4">
             <span class="mr-2 pro-select-input-text">Duration (Day) </span>
@@ -202,35 +224,55 @@
                 @enderror
             </span>
         </div>
-          <div class="justify-no-space-between mt-4">
-            <span class="mr-2 pro-select-input-text">Price </span>
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Max Amount </span>
             <span class="">
-                <input type="number" class="pro-select-input-new" name="price" id="price" value="{{old('price')}}" />
+                <input type="number" class="pro-select-input-new" name="max_amount" id="max_amount" value="{{old('max_amount')}}" />
                 <br>
-               @error('price')
+               @error('max_amount')
                     <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
                 @enderror
               </span>
         </div>
         <div class="justify-no-space-between mt-4">
-            <span class="mr-2 pro-select-input-text">Percentage </span>
+            <span class="mr-2 pro-select-input-text">Min Amount </span>
             <span class="">
-                <input type="number" class="pro-select-input-new-sm" name="percent" id="percent" value="{{old('percent')}}" />
-            <br>
-                @error('percent')
-                    <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                <input type="number" class="pro-select-input-new" name="min_amount" id="min_amount" value="{{old('min_amount')}}" />
+                <br>
+               @error('min_amount')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
                 @enderror
-            </span>
-            
-            <span class="mr-2 pro-select-input-text">Pert. Ref </span>
+              </span>
+        </div>
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Percentage Earning </span>
             <span class="">
-                <input type="text" class="pro-select-input-new-sm" name="percent_ref" id="percent_ref" value="{{old('percent_ref')}}" />
+                <input type="number" class="pro-select-input-new" name="percent" id="percent" value="{{old('percent')}}" />
+                <br>
+               @error('percent')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+              </span>
+        </div>
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Percentage Tag </span>
+            <span class="">
+                <input type="text" class="pro-select-input-new" name="percent_ref" id="percent_ref" value="{{old('percent_ref')}}" />
                 <br>
                @error('percent_ref')
-                    <sp class="force-color-red pro-select-input-text-error">{{ $message }}</sp>
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
                 @enderror
-            </span>
-            
+              </span>
+        </div>
+        <div class="justify-no-space-between mt-4">
+            <span class="mr-2 pro-select-input-text">Referral Bonus Percent </span>
+            <span class="">
+                <input type="number" class="pro-select-input-new" name="percent_referral" id="percent_referral" value="{{old('percent_referral')}}" />
+                <br>
+               @error('percent_referral')
+                    <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
+                @enderror
+              </span>
         </div>
           <div class="justify-no-space-between mt-4">
             <span class="mr-2 pro-select-input-text">Duration (Day) </span>
@@ -331,7 +373,9 @@
                 $(document).on('click', '#click-modal-update', function(){
                   document.querySelector("#inp_id").value = $(this).attr("data-id");
                   document.querySelector("#name").value = $(this).attr("data-name");
-                  document.querySelector("#price").value = $(this).attr("data-price");
+                  document.querySelector("#max_amount").value = $(this).attr("data-max_amount");
+                  document.querySelector("#min_amount").value = $(this).attr("data-min_amount");
+                  document.querySelector("#percent_referral").value = $(this).attr("data-percent_referral");
                   document.querySelector("#percent").value = $(this).attr("data-percent");
                   document.querySelector("#percent_ref").value = $(this).attr("data-percent_ref");
                   document.querySelector("#duration").value = $(this).attr("data-duration");

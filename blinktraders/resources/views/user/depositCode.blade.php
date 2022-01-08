@@ -46,7 +46,7 @@
                             <br>
                             <div class="text-center">
                                 <button type="button" onclick="getTextCopied()" id="buttontext" class="btn btn-outline-primary mr-2 mt-4">Copy address</button>
-                                <a href="#" class="btn btn-primary mt-4">Share address</a>
+                                <button type="button" id="shareButton" class="btn btn-primary mt-4 display-none-area-desk">Share address</button>
                             </div>
                         </div>
                     </div>
@@ -67,6 +67,21 @@
               document.execCommand("copy");
               document.getElementById('buttontext').innerHTML="Copied";
              }
+        </script>
+        <script>
+            var shareButton = document.querySelector('#shareButton');
+            shareButton.addEventListener('click', () =>{
+                if(navigator.share){
+                    navigator.share({
+                        title: `${title}`,
+                        url: `${url}`
+                    }).then(() =>{
+                        console.log("Thanks")
+                    }).catch(console.error)
+                }else{
+                    console.log("Desktop")
+                }
+            })
         </script>
         <script>
             @if(session('statusdepositPaymentgateSuccess'))

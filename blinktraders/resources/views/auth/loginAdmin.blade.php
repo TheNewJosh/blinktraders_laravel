@@ -22,7 +22,7 @@
                                         <br><br>
                                     </div>
                                     <div class="px-2">
-                                        <form action="{{ route('loginAdmin') }}" method="post">
+                                        <form action="{{ route('login') }}" method="post">
                                             @csrf
                                             <div class="form-group">
                                                 <label class="force-color-black">Email Address</label>
