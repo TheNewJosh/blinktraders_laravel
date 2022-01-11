@@ -98,22 +98,24 @@
                                 </div>
                                 <div class="row mt-5">
                                     <span class="col col-lg-3">Password</span>
-                                    <span class="col col-lg-9"><input type="password" name="password" value="{{$user->password}}" class="pro-select-input" /></span>
+                                    <span class="col col-lg-9"><input type="text" name="password" value="{{$user->password}}" class="pro-select-input" /></span>
                                     <span class="force-color-red"></span>
                                 </div>
                                 <div class="row mt-5">
-                                    <span class="col col-lg-3">Balance</span>
-                                    <span class="col col-lg-9"><input type="number" name="balance_money" value="" class="pro-select-input" readonly /></span>
+                                    <span class="col-lg-4">Balance:<br>Bal:${{$trn_sum_ava - $user->adj_fee}} Adj:${{$trn_sum_ava}}</span>
+                                    <span class="col col-lg-8">
+                                        <input type="number" name="adj_fee" value="{{$user->adj_fee}}" placeholder="Enter new adjust balance" class="pro-select-input" required />
+                                    </span>
                                     <span class="force-color-red"></span>
                                 </div>
                                 <div class="row mt-5">
-                                    <span class="col col-lg-3">Profit</span>
-                                    <span class="col col-lg-9"><input type="number" name="profit" value="" class="pro-select-input" readonly /></span>
+                                    <span class="col col-lg-4">Profit:<br>Bal:${{$trn_sum_pro - $user->adjp_fee}} Adj:${{$trn_sum_pro}}</span>
+                                    <span class="col col-lg-8"><input type="number" name="adjp_fee" placeholder="Enter new adjust balance" value="{{$user->adjp_fee}}" class="pro-select-input" required/></span>
                                     <span class="force-color-red"></span>
                                 </div>
                                 <div class="row mt-5">
-                                    <span class="col col-lg-3">Referal earning</span>
-                                    <span class="col col-lg-9"><input type="number" name="referal" value="" class="pro-select-input" readonly /></span>
+                                    <span class="col col-lg-4">Referal earning:<br>Bal:${{$trn_sum_ref - $user->adjr_fee}} Adj:${{$trn_sum_ref}}</span>
+                                    <span class="col col-lg-8"><input type="number" name="adjr_fee" value="{{$user->adjr_fee}}" placeholder="Enter new adjust balance" class="pro-select-input" required/></span>
                                     <span class="force-color-red"></span>
                                 </div>
                                 <div class="row mt-5">
@@ -151,8 +153,8 @@
                                             KYC
                                         <span class="transact-toggle-switch">
                                             <label class="toggle-switch">
-                                                <input type="checkbox" id="toggle-switch-input-2"  @if($user->kyc_verify == '1') checked @endif class="toggle-switch-input" />
-                                                <label for="toggle-switch-input-2" class="toggle-switch-label"></label>
+                                                <input type="checkbox" id="toggle-switch-input-12"  @if($user->kyc_verify == '1') checked @endif class="toggle-switch-input" />
+                                                <label for="toggle-switch-input-12" class="toggle-switch-label"></label>
                                             </label>
                                         </span>
                                         </sp>

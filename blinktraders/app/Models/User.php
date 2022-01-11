@@ -38,6 +38,8 @@ class User extends Authenticatable
         'doc_type_prof',
         'signup_fee',
         'adj_fee',
+        'adjp_fee',
+        'adjr_fee',
     ];
 
     /**

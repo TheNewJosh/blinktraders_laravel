@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\UserAvailableBalance;
 use Illuminate\Support\Facades\Validator;
 
 class UserManagementClientAccountManageController extends Controller
@@ -16,8 +17,15 @@ class UserManagementClientAccountManageController extends Controller
     
     public function index(User $user)
     {        
+        $userAvailableBalance = UserAvailableBalance::getAvailableBalanceID($user->id);
+        $userAvailableBalanceProfit = UserAvailableBalance::getAvailableBalanceProfitID($user->id);
+        $userAvailableBalanceReferral = UserAvailableBalance::getAvailableBalanceReferralID($user->id);
+
         return view('admin.userManagementClientAccountManage', [
             'user' => $user,
+            'trn_sum_ava' => $userAvailableBalance,
+            'trn_sum_pro' => $userAvailableBalanceProfit,
+            'trn_sum_ref' => $userAvailableBalanceReferral,
         ]);
     }
 
@@ -33,7 +41,6 @@ class UserManagementClientAccountManageController extends Controller
         if($validator->fails()) {
             return back()->with('statusError', 'Input error')->withErrors($validator)->withInput();
         }else{
-
             $user = User::where('id', $request->user_id)->update([
                 'username' => $request->username,
                 'name' => $request->name,
@@ -42,13 +49,11 @@ class UserManagementClientAccountManageController extends Controller
                 'address' => $request->address,
                 'country' => $request->country,
                 'zip_code' => $request->zip_code,
-                'email_verify' => $request->email_verify,
-                'phone_verify' => $request->phone_verify,
-                'upgrade_account' => $request->upgrade_account,
+                'adj_fee' => $request->adj_fee,
+                'adjp_fee' => $request->adjp_fee,
+                'adjr_fee' => $request->adjr_fee,
             ]);
-
             return redirect()->back()->with('statusSuccess', 'Success');;
-
         }
     }
 
