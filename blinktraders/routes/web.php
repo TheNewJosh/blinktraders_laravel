@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Common\BlogController;
 use App\Http\Controllers\User\InvestController;
+use App\Http\Controllers\User\AccountController;
 use App\Http\Controllers\User\DepositController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\SecurityController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Admin\BlogPostNewController;
 use App\Http\Controllers\Admin\WithdrawLogController;
 use App\Http\Controllers\Auth\RegisterInitController;
 use App\Http\Controllers\Admin\BlogCategoryController;
+use App\Http\Controllers\Auth\AccountVerifyController;
 use App\Http\Controllers\Auth\RegisterSubmitController;
 use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\User\DepositTransactController;
@@ -81,8 +83,8 @@ Route::get('/blogRead/{article_id}/read', [BlogController::class, 'read'])->name
 Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
 Route::get('/logout', [LogoutController::class, 'store'])->name('logout');
 
-// Route::get('/login', [LoginController::class, 'index'])->name('login');
-// Route::post('/login', [LoginController::class, 'authenticated']);
+Route::get('/accountVerify', [AccountVerifyController::class, 'index'])->name('accountVerify');
+Route::post('/accountVerify', [AccountVerifyController::class, 'store']);
 
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
@@ -117,8 +119,15 @@ Route::get('/security', [SecurityController::class, 'index'])->name('security');
 Route::post('/securityPin', [SecurityController::class, 'storePin'])->name('securityPin');
 Route::post('/securityPassword', [SecurityController::class, 'storePassword'])->name('securityPassword');
 
+Route::get('/account', [AccountController::class, 'index'])->name('account');
+Route::post('/account', [AccountController::class, 'store']);
+Route::post('/accountUpgrade', [AccountController::class, 'upgrade'])->name('accountUpgrade');
+
 Route::get('/kyc', [KycController::class, 'index'])->name('kyc');
+Route::get('/kycSuccess', [KycController::class, 'success'])->name('kycSuccess');
+
 Route::get('/kycSnapshortIntro', [KycSnapshortIntroController::class, 'index'])->name('kycSnapshortIntro');
+
 
 Route::get('/kycSnapshortTake', [KycSnapshortTakeController::class, 'index'])->name('kycSnapshortTake');
 Route::post('/kycSnapshortTake', [KycSnapshortTakeController::class, 'store']);
@@ -135,9 +144,12 @@ Route::post('/loginAdmin', [LoginAdminController::class, 'store']);
 Route::get('/dashboardAdmin', [DashboardAdminController::class, 'index'])->name('dashboardAdmin');
 
 Route::get('/userManagementClientAccount', [UserManagementClientAccountController::class, 'index'])->name('userManagementClientAccount');
+Route::post('/userManagementClientAccount', [UserManagementClientAccountController::class, 'store']);
 
 Route::get('/userManagementClientAccountManage/{user}/manage', [UserManagementClientAccountManageController::class, 'index'])->name('userManagementClientAccountManage');
 Route::post('/userManagementClientAccountManageUpdate', [UserManagementClientAccountManageController::class, 'update'])->name('userManagementClientAccountManageUpdate');
+Route::post('/userManagementClientAccountManageKyc', [UserManagementClientAccountManageController::class, 'kyc'])->name('userManagementClientAccountManageKyc');
+Route::get('/userManagementClientAccountManagerDownloadFile/{fname}/file', [UserManagementClientAccountManageController::class, 'downloadFile'])->name('userManagementClientAccountManagerDownloadFile');
 
 Route::get('/userManagementClientAccountSendMail', [UserManagementClientAccountSendMailController::class, 'index'])->name('userManagementClientAccountSendMail');
 Route::get('/userManagementPromotional', [UserManagementPromotionalController::class, 'index'])->name('userManagementPromotional');
@@ -186,3 +198,5 @@ Route::post('/blogCategory', [BlogCategoryController::class, 'store']);
 Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+

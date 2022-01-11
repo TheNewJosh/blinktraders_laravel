@@ -9,6 +9,12 @@
             $mi1 = $mi2 = $mi3 = $mi4 = $mi5 = $mi6 = $mi7 = $mi8 = "";
             $smi1 = $smi2 = $smi3 = $smi4 = $smi5 = "";
         ?>
+        <style>
+            #vid{
+                width: 250px !important;
+                height: 250px !important;
+            }
+        </style>
     </head>
     <body>
         <main class="main-dash row main-bottom">
@@ -35,15 +41,15 @@
                                     Step 1
                                 </span>
                             </div>
-                            <div class="row px-5 py-2">
+                            <div class="row px-2 py-2">
                                 <div class="text-center">
                                     <span class="big-font-size">
                                         Hold your phone at eye level and make sure your face is entered in the oval shape for the snapshot
                                     </span>
                                 </div>
                             </div>
-                            <div id="my_camera"><img src="{{ asset('img/user/') }}/{{auth()->user()->snapshot}}"></div>
-                            <div id="results"></div>
+                            <div id="my_camera" class="text-center"><img src="{{ asset('img/user/') }}/{{auth()->user()->snapshot}}" class="img-sizes-12x" ></div>
+                            <div id="results"></div><br><br>
                             <div class="d-flex justify-content-center">
                             <button type="button" onclick="configure();" id="configure" class="btn btn-primary px-5">Take snapshot</button>
                             <button type="button" onclick="saveSnap();" id="saveSnap" class="btn btn-primary px-5 mrda-display-none">Save</button>
@@ -95,8 +101,8 @@
                 document.querySelector('#configure').classList.add("mrda-display-none");
 
                 Webcam.set({
-                    width: 480,
-                    height: 360,
+                    width: 250,
+                    height: 250,
                     image_format: 'jpeg',
                     jpeg_quality: 90
                 });

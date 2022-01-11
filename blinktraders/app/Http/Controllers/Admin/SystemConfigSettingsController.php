@@ -48,6 +48,7 @@ class SystemConfigSettingsController extends Controller
                 'referral' => $request->referral,
                 'subject' => $request->subject,
                 'address' => $request->address,
+                'signup_fee' => $request->signup_fee,
             ]);
 
             return redirect()->back()->with('statusSuccess', 'Success');;

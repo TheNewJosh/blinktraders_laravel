@@ -51,4 +51,21 @@ class UserManagementClientAccountManageController extends Controller
 
         }
     }
+
+    public function downloadFile($fname)
+    {
+        $filep = public_path('img/user/');
+        $file = $filep . $fname;
+        $name = basename($file);
+        return response()->download($file, $name);
+    }
+
+    public function kyc(Request $request)
+    {
+        $user = User::where('id', $request->user_id)->update([
+            'kyc_verify' => $request->kyc_verify,
+        ]);
+
+        return redirect()->back()->with('statusSuccessKyc', 'Success');;
+    }
 }

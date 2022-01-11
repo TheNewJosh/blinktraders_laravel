@@ -5,11 +5,8 @@
             <span class="dashnav-link-text"><i class="far fa-user-circle force-color-black"></i></span>
         </a>
         <div class="dropdown-menu dash-head-drop" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item force-color-pale-white" href="#">Account</a>
-          <form action="{{ route('logout') }}" method="post">
-              @csrf
-              <button type="submit" class="dropdown-item force-color-red">Logout</button>
-          </form>
+          <a class="dropdown-item force-color-pale-white force-color-hoer" href="{{ route('account') }}">Account</a>
+          <a class="dropdown-item force-color-red force-color-hoer" href="{{ route('logout') }}">Logout</a>
         </div>
       </div>
 </div>
@@ -31,31 +28,6 @@
       </div>
     </div>
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item nav-item-border-b">
-        <a class="nav-link force-color-black" href="{{ route('dashboard') }}">
-            <span class="nav-link-text"><i class="far fa-chart-bar mr-4"></i>Portfolio</span>
-        </a>
-      </li>
-      <li class="nav-item nav-item-border-b">
-        <a class="nav-link force-color-black" href="{{ route('deposit') }}">
-            <span class="nav-link-text"><i class="far fa-money-bill-alt mr-4"></i>Deposit</span>
-        </a>
-      </li>
-        <li class="nav-item nav-item-border-b">
-        <a class="nav-link force-color-black" href="{{ route('invest') }}">
-            <span class="nav-link-text"><i class="fas fa-university mr-4"></i>Investment</span>
-        </a>
-      </li>
-        <li class="nav-item nav-item-border-b">
-        <a class="nav-link force-color-black" href="{{ route('withdraw') }}">
-            <span class="nav-link-text"><i class="fas fa-hand-holding-usd mr-4"></i>Withdraw</span>
-        </a>
-      </li>
-        <li class="nav-item nav-item-border-b">
-        <a class="nav-link force-color-black" href="{{ route('activities') }}">
-            <span class="nav-link-text"><i class="fas fa-exchange-alt mr-4"></i>Activies</span>
-        </a>
-      </li>
         <li class="nav-item nav-item-border-b">
         <a class="nav-link force-color-black" href="{{ route('masterclass') }}">
             <span class="nav-link-text"><i class="fas fa-user-graduate mr-4"></i>Masterclass</span>
@@ -69,6 +41,16 @@
         <li class="nav-item nav-item-border-b">
         <a class="nav-link force-color-black" href="{{ route('kyc') }}">
             <span class="nav-link-text"><i class="far fa-address-card mr-4"></i>KYC</span>
+        </a>
+      </li>
+      <li class="nav-item nav-item-border-b">
+        <a class="nav-link force-color-black" href="{{ route('account') }}">
+            <span class="nav-link-text"><i class="fas fa-exchange-alt mr-4"></i>Account</span>
+        </a>
+      </li>
+      <li class="nav-item nav-item-border-b">
+        <a class="nav-link force-color-red" href="{{ route('logout') }}">
+            <span class="nav-link-text"><i class="fas fa-sign-out-alt mr-4"></i>Logout</span>
         </a>
       </li>
     </ul>

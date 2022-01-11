@@ -33,6 +33,11 @@
                 <span class="force-color-red"></span></span>
                         </div>
                         <div class="row mt-4">
+                            <span class="col col-lg-2">Description:</span>
+                            <span class="col col-lg-10"><input type="text" class="pro-select-input" name="short_detail" value="{{old('short_detail')}}" /><br>
+                <span class="force-color-red"></span></span>
+                        </div>
+                        <div class="row mt-4">
                             <span class="col col-lg-2">Category: </span>
                             <span class="col col-lg-10">
                                 <select class="pro-select-input" name="category_id">

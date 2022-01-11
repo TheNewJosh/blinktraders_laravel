@@ -32,6 +32,7 @@ class BlogPostNewUpdateController extends Controller
             'title' => 'required',
             'category_id' => 'required',
             'content' => 'required',
+            'short_detail' => 'required',
             'thumbnail' => 'image|max:2000',
         ]);
 
@@ -58,6 +59,7 @@ class BlogPostNewUpdateController extends Controller
                 'title' => $request->title,
                 'blog_category_id' => $request->category_id,
                 'content' => $request->content,
+                'short_detail' => $request->short_detail,
             ]);
 
             return redirect()->back()->with('statusSuccess', 'Success');

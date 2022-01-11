@@ -26,7 +26,7 @@ class PortfolioController extends Controller
         $transaction = Transactions::where('user_id', auth()->user()->id)->get();
         $investPackTransaction = InvestPackTransaction::where('user_id', auth()->user()->id)->where('status', 1)->get();
         
-        $paymentGateway = PaymentGateway::where('status', 1)->get();
+        $paymentGateway = PaymentGateway::where('status', 1)->orderBy('id', 'ASC')->get();
         $user_ref = User::where('referral_user', auth()->user()->id)->get();
         $user = User::find(auth()->user()->id);
         

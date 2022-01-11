@@ -34,7 +34,8 @@
             <i class="fas fa-times force-color-white"></i>
         </div>
         <div class="ml-auto">
-            <a href="#"><i class="fas fa-phone force-color-white mr-2"></i></a>
+            <a href="#"><i class="fab fa-telegram force-color-white mr-2"></i></a>
+            <a href="#"><i class="fab fa-youtube force-color-white mr-2"></i></a>
             <a href="#"><i class="far fa-envelope force-color-white ml-2"></i></a>
         </div>
         </div>
@@ -76,10 +77,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             @auth
                 <a class="dropdown-item" href="{{ route('dashboard') }}">dashboard</a>
-                <form action="{{ route('logout') }}" method="post">
-                    @csrf
-                    <button type="submit" class="dropdown-item force-color-red">Logout</button>
-                </form>
+                <a class="dropdown-item force-color-red" href="{{ route('logout') }}">Logout</a>
             @endauth
 
             @guest

@@ -41,10 +41,9 @@
                         </thead>
                         <tbody>
                         @if ($user->count())
-                          {{ $i=1 }}
                           @foreach ($user as $usr)
                             <tr>
-                                <td>{{$i}}</td>
+                                <td>{{$loop->iteration}}</td>
                                 <td>{{ $usr->name }}</td>
                                 <td>{{ $usr->username }}</td>
                                 <td>{{ $usr->email }}</td>
@@ -67,13 +66,23 @@
                                               Manage account
                                             </a><br>
                                             @if($usr->status == 1)
-                                          <a class="force-color-black" href="#">
-                                              <i class="far fa-envelope mr-2"></i>Block
-                                            </a><br>
+                                            <form action="{{ route('userManagementClientAccount') }}" method="post">
+                                            @csrf  
+                                                <input type="hidden" name="user_id" value="{{$usr->id}}" />
+                                                <input type="hidden" name="status" value="0" />
+                                                <button class="force-color-black" type="submit">
+                                                    <i class="far fa-envelope mr-2"></i>Block
+                                                </button><br>
+                                            </form>
                                             @else
-                                                <a class="force-color-black" href="#">
-                                                  <i class="far fa-envelope mr-2"></i>Unblock
-                                                </a><br>
+                                            <form action="{{ route('userManagementClientAccount') }}" method="post">
+                                            @csrf  
+                                                <input type="hidden" name="user_id" value="{{$usr->id}}" />
+                                                <input type="hidden" name="status" value="1" />
+                                                <button class="force-color-black" type="submit">
+                                                    <i class="far fa-envelope mr-2"></i>Unblock
+                                                </button><br>
+                                            </form>
                                             @endif
                                             <a class="force-color-black" href="{{ route('userManagementClientAccountSendMail') }}">
                                               <i class="far fa-envelope mr-2"></i>Send email
@@ -85,7 +94,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            {{ $i++ }}
                           @endforeach
                         @endif
                         </tbody>
@@ -102,6 +110,11 @@
                 $('#example').DataTable();
             } );
             
+            @if(session('statusSuccess'))
+                window.onload = (event) => {
+                bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                };
+            @endif
         </script>
         
     </body>

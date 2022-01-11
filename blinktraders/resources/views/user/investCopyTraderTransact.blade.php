@@ -148,7 +148,7 @@ Please opt in for an investment pack</span><br><br>
       <div class="modal-body text-center">
             <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
             <span class="big-font-size">Unsuccessful</span><br>
-            <span class="small-font-size text-center">Input at least minimum deposit</span><br><br>
+            <span class="small-font-size text-center">Insufficient balance. Please fund your account to proceed.</span><br><br>
       </div>
     </div>
   </div>

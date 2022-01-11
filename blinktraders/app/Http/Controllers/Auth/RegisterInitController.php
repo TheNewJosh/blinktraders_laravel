@@ -30,6 +30,8 @@ class RegisterInitController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'phone' => $request->phone,
+            'referral_user' => $request->referral_user,
         ]);
         $user->attachRole('user');
         return redirect()->route('registerSubmit', ['user' => $user->id]);

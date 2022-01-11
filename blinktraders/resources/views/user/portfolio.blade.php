@@ -10,6 +10,7 @@
             $smi5 = $smi2 = $smi4 = $smi3 = "";
             $typStatus = ["Pending", "Approved", "Decline"];
             $trnType = ["Deposit", "Withdraw"];
+            use App\Services\UserAvailableBalance;
         ?>
     </head>
     <body>
@@ -56,7 +57,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--        Mobile Ends  Start          -->
+                    <!--        Mobile  Start          -->
                     <div class="mt-5 mb-5 display-none-area-desk" id="balance-area">
                         @if ($paymentGateway->count())
                           @foreach ($paymentGateway as $pgw)
@@ -105,7 +106,22 @@
                     <div class="mt-5 mb-5 display-none-area-desk show-none" id="profit-area">
                         @if ($investPackTransaction->count())
                           @foreach ($investPackTransaction as $inpt)
-                            <div class="amount-span-border px-4">
+                            <div class="amount-span-border px-4" id="click-modal-display-inv" data-toggle="modal" data-target="#myModalInvest"
+                                data-id="{{$inpt->id}}"       
+                                data-invest_plan="{{$inpt->investPlan->name}}"
+                                data-reference_id="{{$inpt->reference_id}}"
+                                data-percentage="{{$inpt->percentage}}"
+                                data-duration="{{$inpt->duration}}"
+                                data-profit="{{UserAvailableBalance::getAvailableProfitID($inpt->id)}}"
+                                data-status="{{$inpt->status}}"
+                                data-amount="{{$inpt->amount}}"
+                                data-total="{{UserAvailableBalance::getAvailableProfitID($inpt->id)}}"
+                                data-end_date="{{$inpt->end_date}}"
+                                data-date_created="{{$inpt->created_at->toFormattedDateString()}}"
+                                data-time_created="{{$inpt->created_at->toTimeString()}}"
+                                data-date_update="{{$inpt->updated_at->toFormattedDateString()}}"
+                                data-time_update="{{$inpt->updated_at->toTimeString()}}"
+                            >
                                 <div class="force-bg-white justify-space-between">
                                     <div class="row">
                                         <div class="mr-3">
@@ -119,7 +135,7 @@
                                         </div>
                                     </div>
                                     <div class="amount-span small-font-size-mobile mt-2">
-                                        <span>${{$inpt->profit}}</span><br>
+                                        <span>${{UserAvailableBalance::getAvailableProfitID($inpt->id)}}</span><br>
                                             <span class="force-color-green small-font-size-mobile">
                                             {{$inpt->percentage}}%
                                             </span>
@@ -138,7 +154,7 @@
                                 <br><br>
                                 
                                 <div class="row px-4">
-                                <span class="col-xs-8"> <input type="text" id="inputfieldm" class="form-under-line mr-2" value="{{ route('register') }}/{{$user->username}}" readonly style="width:150px;" /></span>
+                                <span class="col-xs-8"> <input type="text" id="inputfieldm" class="form-under-line mr-2" value="{{ route('register') }}?id={{$user->id}}&user={{md5($user->username)}}" readonly style="width:200px;" /></span>
                                 <span class="col-xs-2" onclick="getTextCopiedM()" id="buttontextm">
                                     <i class="far fa-clone"></i>
                                 </span>
@@ -165,7 +181,9 @@
                                 @endif
                             </div>
                         </div>
-                    <!--        Mobile Ends  End          -->
+                    <!--        Mobile  End          -->
+
+
                     <div class="row pofolio-activities display-none-area">
                         <div class="col col-lg-8 force-bg-gray py-4 border-curve-5">
                             <h4 class="force-color-black">Activity</h4>
@@ -186,15 +204,25 @@
                                    data-status="{{$trn->status}}"
                                    >
                                     <div class="col col-lg-1">
-                                        <i class="far fa-arrow-alt-circle-down force-color-green"></i>
+                                        @if($trn->transact_type == 0)
+                                            <span><i class="far fa-arrow-alt-circle-down force-color-green"></i></span>
+                                        @endif
+                                        @if($trn->transact_type == 1)
+                                            <span><i class="far fa-arrow-alt-circle-up force-color-red"></i></span>
+                                        @endif
                                     </div>
                                     <div class="col col-lg-4 text-left">
                                         <h4 class="force-color-black big-font-size">{{$trnType[$trn->transact_type]}}</h4>
                                         <span class="small-font-size">{{$trn->created_at->toFormattedDateString()}}</span>
                                     </div>
                                     <div class="col col-lg-6 text-right">
-                                        <h4 class="force-color-black big-font-size">+{{$trn->amount}}</h4>
-                                        <span class="small-font-size"><sp class="text-uppercase">{{$trn->coin_amount}}{{$trn->paymentGateway->coin_short}}BTC</sp></span>
+                                        @if($trn->transact_type == 0)
+                                            <h4 class="force-color-black big-font-size text-right">+{{$trn->amount}}</h4>
+                                        @endif
+                                        @if($trn->transact_type == 1)
+                                            <h4 class="force-color-black big-font-size text-right">-{{$trn->amount}}</h4>
+                                        @endif
+                                        <span class="small-font-size"><sp class="text-uppercase">{{$trn->coin_amount}}{{$trn->paymentGateway->coin_short}}</sp></span>
                                     </div>
                                 </a>
                                 @endforeach
@@ -209,7 +237,7 @@
                                 <br><br>
                                 
                                 <div class="row">
-                                <span class="col col-lg-10"> <input type="text" id="inputfield" class="form-under-line mr-5" value="{{ route('register') }}/{{$user->username}}" readonly style="width:100%;" /></span>
+                                <span class="col col-lg-10"> <input type="text" id="inputfield" class="form-under-line mr-5" value="{{ route('register') }}?id={{$user->id}}&user={{md5($user->username)}}" readonly style="width:100%;" /></span>
                                 <span class="col-xs-2" onclick="getTextCopied()" id="buttontext">
                                     <i class="far fa-clone"></i>
                                 </span>
@@ -292,6 +320,47 @@
     </div>
   </div>
 </div>
+
+<div class="modal ffoo" id="myModalInvest">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Investment Earning</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row d-flex justify-content-between px-4">
+            <span class="col col-lg-10 big-font-size" id="profit-inv"></span>
+            <span class="col col-lg-2" id="status-inv"></span>
+        </div>
+        <div class="mt-4">
+            <span class="small-font-size">Invested Amount</span><br>
+            <span class="big-font-size" id="amount-inv"></span><br>
+            <span class="text-input-up"><input type="text" class="pro-select-input" readonly /></span>
+        </div>
+        <div class="mt-2">
+            <span class="small-font-size">Investment Pack</span><br>
+            <span class="big-font-size" id="invest_plan-inv"></span><br>
+            <span class="text-input-up"><input type="text" class="pro-select-input" readonly /></span>
+        </div>
+        <div class="mt-2">
+            <span class="small-font-size">Date</span><br>
+            <span class="big-font-size" id="create_datetime-inv"></span><br>
+            <span class="text-input-up"><input type="text" class="pro-select-input" readonly /></span>
+        </div>
+        <div class="mt-2">
+            <span class="small-font-size">Updated</span><br>
+            <span class="big-font-size" id="update_datetime-inv"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
         
     @include('user.layouts.footer')
 
@@ -335,7 +404,7 @@
               inputfield.setSelectionRange(0,999999);
 
               document.execCommand("copy");
-              document.getElementById('buttontext').innerHTML='<i class="far fa-clone" style="color:#0057FF;"></i>';
+              document.getElementById('buttontext').innerHTML='<i class="fas fa-check force-color-green"></i>';
              }
         </script>
         <script>
@@ -347,7 +416,7 @@
               inputfield.setSelectionRange(0,999999);
 
               document.execCommand("copy");
-              document.getElementById('buttontextm').innerHTML='<i class="far fa-clone" style="color:#0057FF;"></i>';
+              document.getElementById('buttontextm').innerHTML='<i class="fas fa-check force-color-green"></i>';
              }
         </script>
         <script>
@@ -396,6 +465,39 @@
                 });
                 
             })
+        </script>
+        
+        <script type="text/javascript">
+            @if(auth()->user()->kyc_verify == 0)
+                $(window).on('load', function() {
+                    $('#myModalVerifyAcc').modal('show');
+                });
+            @endif
+        </script>
+
+        <script>
+          $(document).ready(function(){
+                
+                $(document).on('click', '#click-modal-display-inv', function(){
+                  document.querySelector("#profit-inv").innerHTML = "$" + $(this).attr("data-profit");
+                  document.querySelector("#amount-inv").innerHTML = "$" + $(this).attr("data-amount");
+                  document.querySelector("#invest_plan-inv").innerHTML = $(this).attr("data-invest_plan");
+                  document.querySelector("#create_datetime-inv").innerHTML = $(this).attr("data-date_created") + " @ " + $(this).attr("data-time_created");
+                  document.querySelector("#update_datetime-inv").innerHTML = $(this).attr("data-end_date") + " @ " + $(this).attr("data-time_update");
+                     
+                    var today = new Date();
+                    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                    var dateTime = Date.parse(date+' '+time)/1000;
+                    var db_end_date = Date.parse($(this).attr("data-end_date"))/1000 ;
+
+                    if( db_end_date <= dateTime){
+                        document.querySelector("#status-inv").innerHTML = '<sp class="badge badge-success pt-1">Ended</sp>';
+                    }else{
+                        document.querySelector("#status-inv").innerHTML = '<sp class="badge badge-warning pt-1">In Progress</sp>';
+                    }
+                 }); 
+             });            
         </script>
         
     </body>

@@ -41,6 +41,7 @@
                                               <p class="force-color-black">Referral Bonus {{$inp->percent_referral}}%</p><br><br>
                                               <a href="#" class="btn btn-outline-primary"
                                               data-id="{{$inp->id}}"
+                                              data-status="{{$inp->status}}"
                                               data-percent="{{$inp->percent}}"
                                               data-duration="{{$inp->duration}}"
                                               data-min_amount="{{$inp->min_amount}}"
@@ -124,7 +125,7 @@
 
       <!-- Modal Header -->
         <div class="px-5 pt-4 row d-flex justify-content-between">
-          <span class="big-font-size">Successful<br>$1000 - $4,999</span>
+          <span class="big-font-size">Successful<br><sp id="range-price-pack"></sp></span>
           <span class="force-color-blue big-font-size" id="percentage-success">-</span>
       </div>
       <!-- Modal body -->
@@ -141,6 +142,7 @@
         <input type="hidden" id="min_amount" name="min_amount"/>
         <input type="hidden" id="percent_referral" name="percent_referral"/>
         <input type="hidden" id="total" name="total"/>
+        <input type="hidden" id="status-plan" name="status_plan"/>
         <span class="big-font-size">Input amount to invest</span><br>
         <span class="big-font-size text-center"><input type="number" id="amount-cal" name="amount" placeholder="0.0" class="input-spcing-buyp" readonly /></span><br><br>
         <button type="submit" class="btn btn-outline-primary">Buy pack</button>
@@ -189,6 +191,22 @@ Please opt in for an investment pack</span><br><br>
       <div class="modal-body text-center">
             <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
             <span class="big-font-size">Unsuccessful</span><br>
+            <span class="small-font-size text-center">Insufficient balance. Please fund your account to proceed.</span><br><br>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalOutRange">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
+            <span class="big-font-size">Unsuccessful</span><br>
             <span class="small-font-size text-center">Input at least minimum deposit</span><br><br>
       </div>
     </div>
@@ -212,7 +230,7 @@ Please opt in for an investment pack</span><br><br>
 </div>
 
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalErrorMinAmt">
+<div class="modal" id="myModalErrorStatusPlan">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
@@ -221,23 +239,8 @@ Please opt in for an investment pack</span><br><br>
       <div class="modal-body text-center">
             <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
             <span class="big-font-size">Sorry!</span><br>
-            <span class="small-font-size text-center">Amount too low</span><br><br>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalErrorMaxAmt">
-  <div class="modal-dialog modal-sm modal-dialog-centered">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <!-- Modal body -->
-      <div class="modal-body text-center">
-            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
-            <span class="big-font-size">Sorry!</span><br>
-            <span class="small-font-size text-center">Amount above range</span><br><br>
+            <span class="small-font-size text-center">Sorry this plan is no longer available. Our numbers of investors is increasing rapidly and we are trying to optimize our  
+Please opt in for any other investment plan.</span><br><br>
       </div>
     </div>
   </div>
@@ -254,14 +257,18 @@ Please opt in for an investment pack</span><br><br>
             document.querySelector("#min_amount").value = $(this).attr("data-min_amount");
             document.querySelector("#max_amount").value = $(this).attr("data-max_amount");
             document.querySelector("#percent_referral").value = $(this).attr("data-percent_referral");
+            document.querySelector("#status-plan").value = $(this).attr("data-status");
+
+            document.querySelector("#range-price-pack").innerHTML = "$" + $(this).attr("data-max_amount") + "- $" + $(this).attr("data-min_amount");
           });
 
             $('#ConfirmInvestInpt').click(function(){
                     var calcPercent =  $('#calc-perctage').val();
                     var duration = $('#duration').val();
                     var amtTransactInput = $('#amt-transact-input').val();
-                    var calProfit = ((calcPercent/100) * amtTransactInput)  * duration;
-                    var total = Number(amtTransactInput) + Number(calProfit);
+                    var calProfit = ((calcPercent/100) * amtTransactInput);
+                    var calProfitDis = ((calcPercent/100) * amtTransactInput) * duration;
+                    var total = Number(amtTransactInput) + Number(calProfit) * duration;
 
                     document.querySelector('#percentage').value = calcPercent;
                     document.querySelector('#profit').value = calProfit;
@@ -269,7 +276,7 @@ Please opt in for an investment pack</span><br><br>
                     document.querySelector('#amount').value = amtTransactInput;
                     document.querySelector('#total').value = total;
 
-                    document.querySelector('#invest-profit-r').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(calProfit);
+                    document.querySelector('#invest-profit-r').innerHTML = "$ " + new Intl.NumberFormat('en-US').format(calProfitDis);
                     document.querySelector('#percentage-success').innerHTML = calcPercent + "%"; 
             });
         </script>
@@ -280,15 +287,9 @@ Please opt in for an investment pack</span><br><br>
               });
           @endif
 
-          @if(session('statusErrorMaxAmt'))
+          @if(session('statusErrorOutRange'))
               $(window).on('load', function() {
-                  $('#myModalErrorMaxAmt').modal('show');
-              });
-          @endif
-
-          @if(session('statusErrorMinAmt'))
-              $(window).on('load', function() {
-                  $('#myModalErrorMinAmt').modal('show');
+                  $('#myModalOutRange').modal('show');
               });
           @endif
           
@@ -301,6 +302,12 @@ Please opt in for an investment pack</span><br><br>
           @if(session('statusErrorNoAvaBal'))
               $(window).on('load', function() {
                   $('#myModalNoAvaBal').modal('show');
+              });
+          @endif
+          
+          @if(session('statusErrorStatusPlan'))
+              $(window).on('load', function() {
+                  $('#myModalErrorStatusPlan').modal('show');
               });
           @endif
 

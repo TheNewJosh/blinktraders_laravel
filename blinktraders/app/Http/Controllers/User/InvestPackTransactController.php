@@ -20,7 +20,7 @@ class InvestPackTransactController extends Controller
     
     public function index()
     {
-        $investPlan = InvestPlan::where('status', 1)->get();
+        $investPlan = InvestPlan::get();
 
         return view('user.investPackTransact', [
             'investPlan' => $investPlan,
@@ -36,11 +36,15 @@ class InvestPackTransactController extends Controller
         }
 
         if($request->amount > $request->max_amount ){
-            return back()->with('statusErrorMaxAmt', 'Input error')->withInput();
+            return back()->with('statusErrorOutRange', 'Input error')->withInput();
         }
 
         if($request->amount < $request->min_amount ){
-            return back()->with('statusErrorMinAmt', 'Input error')->withInput();
+            return back()->with('statusErrorOutRange', 'Input error')->withInput();
+        }
+
+        if($request->status_plan == 0 ){
+            return back()->with('statusErrorStatusPlan', 'Input error')->withInput();
         }
 
         $validator = Validator::make($request->all(), [
@@ -52,6 +56,9 @@ class InvestPackTransactController extends Controller
         }else{
             $reference_id = $request->user_id."#".uniqid()."inp";
 
+            $now = date('Y-m-d h:i:s', time());
+            $end_date = date('Y-m-d h:i:s', strtotime($now. ' + '.$request->duration.' days'));
+
             InvestPackTransaction::create([
                 'amount' => $request->amount,
                 'user_id' => $request->user_id,
@@ -62,6 +69,7 @@ class InvestPackTransactController extends Controller
                 'total' => $request->total,
                 'reference_id' => $reference_id,
                 'status' => 1,
+                'end_date' => $end_date,
             ]);
 
             if($request->user_ref){

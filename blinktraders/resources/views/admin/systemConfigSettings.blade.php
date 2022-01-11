@@ -39,7 +39,7 @@
                         <div class="row mt-5">
                             <span class="col col-lg-3">Balance on sign up </span>
                             <span class="col col-lg-9">
-                                USD<input type="text" class="pro-select-input-sm" />
+                                USD<input type="text" name="signup_fee" class="pro-select-input-sm" value="{{ $sysc->signup_fee }}" />
                                 <sp class="ml-4">Withdraw charge<input type="text" class="pro-select-input-sm" name="withdraw_charge" value="{{ $sysc->withdraw_charge }}" />%
                                 </sp>
                                 <sp class="ml-4">Deposit charge<input type="text" class="pro-select-input-sm" name="deposit_charge" value="{{ $sysc->deposit_charge }}" />%</sp>

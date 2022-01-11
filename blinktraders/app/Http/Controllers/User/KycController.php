@@ -16,4 +16,9 @@ class KycController extends Controller
     {
         return view('user.kyc');
     }
+    
+    public function success()
+    {
+        return view('user.kycSuccess');
+    }
 }

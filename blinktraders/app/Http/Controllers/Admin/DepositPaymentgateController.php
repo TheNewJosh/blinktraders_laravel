@@ -50,7 +50,7 @@ class DepositPaymentgateController extends Controller
             Image::configure(array('driver' => 'gd'));
             $uploadQrimgName = "qrimg-" . sha1(time()) . $uploadQrimgExtension;
             $uploadQrimgNamePath = $uploadQrimgPath . $uploadQrimgName;
-            $uploadQrimgImg = Image::make($request->file('upload_qr_img'))->resize(100,100)->save($uploadQrimgNamePath);
+            $uploadQrimgImg = Image::make($request->file('upload_qr_img'))->save($uploadQrimgNamePath);
             $uploadQrimgImg->save();
 
             PaymentGateway::create([
@@ -84,7 +84,9 @@ class DepositPaymentgateController extends Controller
 
             if($request->file('upload_icon')){
                 $uploadIconPath = public_path('img/payment-gateway/');
-                unlink($uploadIconPath . $request->icon_img_hd);
+                if($request->icon_img_hd){
+                    unlink($uploadIconPath . $request->icon_img_hd);
+                }
                 $uploadIconExtension = ".png";
                 Image::configure(array('driver' => 'gd'));
                 $uploadIconName = "icon-" . sha1(time()) . $uploadIconExtension;
@@ -99,12 +101,14 @@ class DepositPaymentgateController extends Controller
 
             if($request->file('upload_qr_img')){
                 $uploadQrimgPath = public_path('img/payment-gateway/');
-                unlink($uploadQrimgPath . $request->p_img_hd);
+                if($request->p_img_hd){
+                    unlink($uploadQrimgPath . $request->p_img_hd);
+                }
                 $uploadQrimgExtension = ".png";
                 Image::configure(array('driver' => 'gd'));
                 $uploadQrimgName = "qrimg-" . sha1(time()) . $uploadQrimgExtension;
                 $uploadQrimgNamePath = $uploadQrimgPath . $uploadQrimgName;
-                $uploadQrimgImg = Image::make($request->file('upload_qr_img'))->resize(100,100)->save($uploadQrimgNamePath);
+                $uploadQrimgImg = Image::make($request->file('upload_qr_img'))->save($uploadQrimgNamePath);
                 $uploadQrimgImg->save();
 
                 PaymentGateway::where('id', $request->pgw_id)->update([

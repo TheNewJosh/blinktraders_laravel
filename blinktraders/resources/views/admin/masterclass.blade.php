@@ -5,6 +5,7 @@
         <?php 
             $page = "masterclass.php"; 
             $page_title = "Masterclass"; 
+            $typeStatus = ["Unpaid", "Paid"];
         ?>
         @include('layouts.meta')
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
@@ -38,17 +39,21 @@
                             </tr>
                         </thead>
                         <tbody>
+                        @if ($masterClass->count())
+                          @foreach ($masterClass as $mac)
                             <tr>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td>$320,800</td>
-                                <td>$320,800</td>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$mac->user->name}}</td>
+                                <td>{{$mac->amount}}</td>
+                                <td>{{$typeStatus[$mac->status]}}</td>
+                                <td>{{$mac->created_at}}</td>
+                                <td>{{$mac->updated_at}}</td>
                                 <td>
                                     <button type="button" class="btn btn-outline-danger">Delete</button>
                                 </td>
                             </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>

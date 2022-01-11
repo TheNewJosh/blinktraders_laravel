@@ -1,5 +1,5 @@
 <footer>
-    <div class="sticky-bottom row text-center">
+    <div class="sticky-bottom row footer-texctt">
         <div class="col-xs-12 col-lg-6 mt-5">
             <div>
                 <a class="navbar-brand" href="index.php">
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <div class="text-right">
+        <div class="fb-text-right">
             <a href="#" class="footer-link">Terms and Conditions</a>
             <a href="#" class="footer-link">Privacy</a>
             <a href="#" class="footer-link">Contact Us</a>

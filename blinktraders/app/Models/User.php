@@ -33,6 +33,11 @@ class User extends Authenticatable
         'phone_verify',
         'upgrade_account',
         'snapshot',
+        'referral_user',
+        'doc_type_snap',
+        'doc_type_prof',
+        'signup_fee',
+        'adj_fee',
     ];
 
     /**

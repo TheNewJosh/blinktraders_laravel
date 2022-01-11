@@ -147,6 +147,15 @@
                                             </label>
                                         </span>
                                         </sp>
+                                        <sp class="ml-1">
+                                            KYC
+                                        <span class="transact-toggle-switch">
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="toggle-switch-input-2"  @if($user->kyc_verify == '1') checked @endif class="toggle-switch-input" />
+                                                <label for="toggle-switch-input-2" class="toggle-switch-label"></label>
+                                            </label>
+                                        </span>
+                                        </sp>
                                     </span>
                                 </div>
 
@@ -176,7 +185,23 @@
                             </div>
                         </div>
                         <div class="force-bg-white py-4 mt-5">
-                            <h4 class="big-font-size tabel-heading-h">KYC</h4>
+                            <div class="justify-row-space tabel-heading-h">
+                                <div class="big-font-size">KYC</div>
+                                <div class="row">
+                                    <form action="{{ route('userManagementClientAccountManageKyc') }}" method="post" class="mr-2">
+                                        @csrf    
+                                        <input type="hidden" name="user_id" value="{{$user->id}}" />
+                                        <input type="hidden" name="kyc_verify" value="1" />
+                                        <button type="submit" class="btn btn-outline-success btn-sm">Approve</button>
+                                    </form>
+                                    <form action="{{ route('userManagementClientAccountManageKyc') }}" method="post" class="mr-2">
+                                        @csrf    
+                                        <input type="hidden" name="user_id" value="{{$user->id}}" />
+                                        <input type="hidden" name="kyc_verify" value="0" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Decline</button>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="tabel-heading-h">
                                 <div class="px-4 py-2">
                                     <b class="small-font-size">Snapshot</b><br><br>
@@ -188,12 +213,16 @@
                                     <b class="small-font-size">Document</b><br><br>
                                     <div class="row">
                                         <div class="col col-lg-6">
-                                            <span class="small-font-size">Front snap</span><br>
-                                            <img src="{{ asset('assets/img/user') }}/{{$user->front_snapshot}}" class="force-img-avatar-triangle" />
+                                            @if($user->front_snapshot)
+                                            <a href="{{ route('userManagementClientAccountManagerDownloadFile', ['fname' => $user->front_snapshot])}}" class="small-font-size"> <i class="fa fa-download" style="font-size:36px"></i>Front snap</a><br>
+                                            @endif
+                                            <!-- <img src="" class="force-img-avatar-triangle" /> -->
                                         </div>
                                         <div class="col col-lg-6">
-                                            <span class="small-font-size">Back snap</span><br>
-                                            <img src="{{ asset('assets/img/user') }}/{{$user->back_snapshot}}" class="force-img-avatar-triangle" />
+                                            @if($user->back_snapshot)
+                                            <a href="{{ route('userManagementClientAccountManagerDownloadFile', ['fname' => $user->back_snapshot])}}" class="small-font-size"><i class="fa fa-download" style="font-size:36px"></i>Back snap</a><br>
+                                            @endif
+                                            <!-- <img src="" class="force-img-avatar-triangle" /> -->
                                         </div>
                                     </div>
                                 </div>
@@ -203,8 +232,10 @@
                                     <b class="small-font-size">Proof of Adress</b><br><br>
                                     <div class="row">
                                         <div class="col col-lg-6">
-                                            <span class="small-font-size">Snap</span><br>
-                                            <img src="{{ asset('assets/img/user') }}/{{$user->proof_snap}}" class="force-img-avatar-triangle" />
+                                            @if($user->proof_snap)
+                                            <a href="{{ route('userManagementClientAccountManagerDownloadFile', ['fname' => $user->proof_snap])}}"  class="small-font-size"><i class="fa fa-download" style="font-size:36px"></i>Snap</a><br>
+                                            @endif
+                                            <!-- <img src="" class="force-img-avatar-triangle" /> -->
                                         </div>
 <!-- 
                                         <div class="col col-lg-6">
@@ -245,6 +276,12 @@
             @if(session('statusSuccess'))
                 window.onload = (event) => {
                 bs4pop.notice('Saved', {position: 'topright', type: 'success'})
+                };
+            @endif
+            
+            @if(session('statusSuccessKyc'))
+                window.onload = (event) => {
+                bs4pop.notice('Kyc Updated', {position: 'topright', type: 'success'})
                 };
             @endif
         </script>

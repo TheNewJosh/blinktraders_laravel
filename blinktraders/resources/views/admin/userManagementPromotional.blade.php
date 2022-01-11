@@ -28,12 +28,11 @@
                             <span class="col col-lg-2">To</span>
                             <span class="col col-lg-10">
                                 <select class="js-example-basic-multiple pro-select-input" name="states[]" multiple="multiple">
-                                  <option value="AL">Alabama</option>
-                                  <option value="AL23">Alabama12</option>
-                                  <option value="AL32">Alabama34</option>
-                                  <option value="AL23">Alabama4</option>
-                                    ...
-                                  <option value="WY">Wyoming</option>
+                                @if ($user->count())
+                                    @foreach ($user as $usr)
+                                  <option value="{{$usr->id}}">{{$usr->email}}</option>
+                                  @endforeach
+                                @endif
                                 </select>
                                 <div class="pro-select-input"></div>
                             </span>

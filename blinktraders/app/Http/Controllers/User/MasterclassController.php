@@ -27,12 +27,8 @@ class MasterclassController extends Controller
 
     public function store(Request $request)
     {
-        $investPlanTransact = InvestPlanTransact::checkTransactionExistUser(auth()->user()->id);
         $userAvailableBalance = UserAvailableBalance::getAvailableBalance();
 
-        if($investPlanTransact <= 0){
-            return back()->with('statusErrorNoInvestPlan', 'Input error')->withInput();
-        }
         if($userAvailableBalance < 499){
             return back()->with('statusErrorNoAvaBal', 'Input error')->withInput();
         }

@@ -29,12 +29,10 @@ class InvestCopyTraderTransactController extends Controller
 
     public function update(Request $request)
     {
-        $investPlanTransact = InvestPlanTransact::checkTransactionExistUser(auth()->user()->id);
+        
         $userAvailableBalance = UserAvailableBalance::getAvailableBalance();
 
-        if($investPlanTransact <= 0){
-            return back()->with('statusErrorNoInvestPlan', 'Input error')->withInput();
-        }elseif($userAvailableBalance < 949){
+        if($userAvailableBalance < 949){
             return back()->with('statusErrorNoAvaBal', 'Input error')->withInput();
         }else{
             $validator = Validator::make($request->all(), [

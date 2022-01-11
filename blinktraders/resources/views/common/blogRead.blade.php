@@ -10,8 +10,8 @@
     <body>   
         @include('layouts.header')  
         <main class="main">
-            <section class="hero-banner-head"></section>
-            <div class="hero-banner-head-mobile"></div>
+            <section class="hero-banner-head" style="background-image: url({{ asset('img/blog')}}/{{$blog->thumbnail}});"></section>
+            <div class="hero-banner-head-mobile" style="background-image: url({{ asset('img/blog')}}/{{$blog->thumbnail}});"></div>
             <div class="blog-content-div">
               <div class="row">
                   <div class="col-lg-4"  id="sticky-sidebar">
@@ -29,7 +29,7 @@
                   <div class="col-lg-8 col-xs-12" id="main">
                       <div class="main-div">
                           <h2 class="force-color-black">{{ $blog->title}}</h2>
-                          {{ $blog->content}}
+                          {!!html_entity_decode($blog->content)!!}
                        </div>
                   </div>
               </div>

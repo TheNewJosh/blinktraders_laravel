@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\MasterClass;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MasterclassAdminController extends Controller
 {
@@ -14,6 +15,9 @@ class MasterclassAdminController extends Controller
     
     public function index()
     {
-        return view('admin.masterclass');
+        $masterClass = MasterClass::get();
+        return view('admin.masterclass', [
+            'masterClass' => $masterClass,
+        ]);
     }
 }

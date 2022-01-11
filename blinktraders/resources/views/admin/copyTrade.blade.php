@@ -5,6 +5,8 @@
         <?php 
             $page = "copytrade.php"; 
             $page_title = "Copy trade"; 
+            $typeStatus = ["Unpaid", "Paid"];
+            $broker = ["KOT4X", "HUGO’S WAY"];
         ?>
         @include('layouts.meta')
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
@@ -42,23 +44,21 @@
                         </thead>
                         <tbody>
                         @if ($copyTrade->count())
-                          {{ $i=1 }}
                           @foreach ($copyTrade as $cpt)
                             <tr>
-                                <td>{{$i}}</td>
+                                <td>{{$loop->iteration}}</td>
                                 <td>{{$cpt->user->name}}</td>
                                 <td>{{$cpt->mt4bal}}</td>
                                 <td>{{$cpt->mt4id}}</td>
                                 <td>{{$cpt->mt4bal}}</td>
                                 <td>{{$cpt->password}}</td>
-                                <td>{{$cpt->broker}}</td>
-                                <td>{{$cpt->status}}</td>
+                                <td>{{$broker[$cpt->broker]}}</td>
+                                <td>{{$typeStatus[$cpt->status]}}</td>
                                 <td>{{$cpt->created_at}}</td>
                                 <td>
                                     <button type="button" class="btn btn-outline-danger">Delete</button>
                                 </td>
                             </tr>
-                            {{ $i++ }}
                           @endforeach
                         @endif
                         </tbody>

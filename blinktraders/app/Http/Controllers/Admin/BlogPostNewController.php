@@ -30,6 +30,7 @@ class BlogPostNewController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'category_id' => 'required',
+            'short_detail' => 'required',
             'content' => 'required',
             'thumbnail' => 'image|max:2000',
         ]);
@@ -53,6 +54,7 @@ class BlogPostNewController extends Controller
                 'title' => $request->title,
                 'blog_category_id' => $request->category_id,
                 'content' => $request->content,
+                'short_detail' => $request->short_detail,
                 'thumbnail' => $thumbnailName,
             ]);
     

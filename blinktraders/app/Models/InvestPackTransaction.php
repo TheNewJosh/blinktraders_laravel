@@ -19,6 +19,7 @@ class InvestPackTransaction extends Model
         'profit',
         'total',
         'status',
+        'end_date',
     ];
 
     protected $table = 'invest_pack_transactions';

@@ -47,13 +47,15 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="exampleFormControlSelect1">Select document</label>
-                                                <select class="form-control" id="exampleFormControlSelect1">
-                                                    <option></option>
+                                                <select class="form-control" id="exampleFormControlSelect1" name="doc_type_prof">
+                                                    <option value="Bills">Bills</option>
+                                                    <option value="Receipts">Receipts</option>
+                                                    <option value="Bank Statements">Bank Statements</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-sm-12">
-                                            <div class="text-center">Upload the back of your document</div>
+                                            <div class="text-center">Upload a snapshot of your document</div>
                                             <div class="drag-area" id="drag-area-1">
                                                 <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
                                                 <header id="header-1">Drag & Drop to Upload File</header>
@@ -174,6 +176,7 @@
            @if(session('statusSuccess'))
               $(window).on('load', function() {
                   $('#myModalSuccess').modal('show');
+                  setTimeout(window.location.replace("{{ route('kycSuccess')}}"), 5000)
               });
           @endif
 

@@ -42,10 +42,9 @@
                         </thead>
                         <tbody>
                         @if ($paymentGateway->count())
-                          {{ $i=1 }}
                           @foreach ($paymentGateway as $pgw)
                             <tr>
-                                <td>{{$i}}</td>
+                                <td>{{$loop->iteration}}</td>
                                 <td><img src="{{asset('img/payment-gateway') }}/{{$pgw->upload_icon}}" class="force-img-avatar-table-icon" /></td>
                                 <td>{{ $pgw->name }}</td>
                                 <td>{{ $pgw->wallet_address }}</td>
@@ -66,7 +65,6 @@
                                     ><i class="fas fa-pencil-alt mr-2"></i>Edit</a>
                                 </td>
                             </tr> 
-                            {{ $i++ }}
                           @endforeach
                         @endif 
                         </tbody>
@@ -216,7 +214,7 @@
   <div class="justify-no-space-between mt-4">
       <span class="mr-2 pro-select-input-text">Max deposit </span>
       <span class="">
-          <input type="number" class="pro-select-input-new-sm" name="max_deposit" id="max_deposit" value="{{ old('max_deposit') }}" />
+          <input type="text" class="pro-select-input-new-sm" name="max_deposit" id="max_deposit" value="{{ old('max_deposit') }}" />
       <br>
       @error('max_deposit')
         <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>
@@ -225,7 +223,7 @@
       
       <span class="mr-2 pro-select-input-text">Min deposit </span>
       <span class="">
-          <input type="number" class="pro-select-input-new-sm" name="min_deposit" id="min_deposit" value="{{ old('min_deposit') }}" />
+          <input type="text" class="pro-select-input-new-sm" name="min_deposit" id="min_deposit" value="{{ old('min_deposit') }}" />
           <br>
           @error('min_deposit')
             <span class="force-color-red pro-select-input-text-error">{{ $message }}</span>

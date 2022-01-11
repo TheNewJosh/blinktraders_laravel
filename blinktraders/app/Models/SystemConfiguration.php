@@ -25,5 +25,6 @@ class SystemConfiguration extends Model
         'referral',
         'subject',
         'address',
+        'signup_fee',
     ];
 }

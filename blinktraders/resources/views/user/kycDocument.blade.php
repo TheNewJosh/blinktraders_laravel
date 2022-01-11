@@ -41,8 +41,10 @@
                                 <div class="px-2 py-5">
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1">Select document</label>
-                                        <select class="form-control" id="exampleFormControlSelect1" style="width:50%;">
-                                            <option></option>
+                                        <select class="form-control" id="exampleFormControlSelect1" name="doc_type_snap" style="width:50%;">
+                                            <option value="Drivers License">Drivers License</option>
+                                            <option value="National ID Card">National ID Card</option>
+                                            <option value="International Passport">International Passport</option>
                                         </select>
                                     </div>
                                     <div class="row">

@@ -21,10 +21,12 @@
                 </div>
                 <div class="pofolio-div">
                     <div class="space-mobile"></div>
+                    @if(auth()->user()->kyc_verify == 0)
                     <h4 class="force-color-black force-small-text">
                         Your account is not yet verified
                         <span class="force-bg-red px-2 py-2 small-font-size border-curve-5">UNVERIFIED</span>
                     </h4>
+                    @endif
                     <div class="mt-5 mb-5 deposit-res-px-5">
                         <div class="force-bg-gray master-deposit-div-wk px-4 py-2">
                             <h6 class="force-color-black">Please complete your KYC to upgrade your account for better transactions.</h6>

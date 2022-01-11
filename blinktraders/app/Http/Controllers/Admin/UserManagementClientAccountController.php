@@ -21,4 +21,13 @@ class UserManagementClientAccountController extends Controller
             'user' => $user,
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $user = User::where('id', $request->user_id)->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('statusSuccess', 'Success');;
+    }
 }

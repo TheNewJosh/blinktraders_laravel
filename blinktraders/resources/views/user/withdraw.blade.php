@@ -35,15 +35,20 @@
                                         <div class="">
                                             <h4 class="force-color-black big-font-size">{{$pgw->name}}</h4>
                                             <span class="small-font-size force-color-black">
-                                                @if($user->transactions->where('payment_gateway_id', $pgw->id)->where('transact_type', 1)->count() >= 1)
-                                                    ${{$user->transactions->where('payment_gateway_id', $pgw->id)->where('transact_type', 1)->last()->amount}}
-                                                @endif
+                                                ${{$pgw->price}}
                                             </span>
+                                            @if($pgw->change < 0)
+                                            <span class="force-color-red">
+                                                
+                                                    {{$pgw->change}}%
+                                            </span>
+                                            @endif
+                                            @if($pgw->change > 0)
                                             <span class="force-color-green">
-                                                @if($user->transactions->where('payment_gateway_id', $pgw->id)->where('transact_type', 1)->count() >= 1)
-                                                    -{{$user->transactions->where('payment_gateway_id', $pgw->id)->where('transact_type', 1)->last()->percent}}%
-                                                @endif
+                                                
+                                                    +{{$pgw->change}}%
                                             </span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="">

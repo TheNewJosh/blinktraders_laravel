@@ -23,6 +23,7 @@
                                     <div class="px-2">
                                     <form action="{{ route('registerInit') }}" method="post">
                                         @csrf
+                                            <input type="hidden" name="referral_user" <?php if(isset($_GET['id'])){ ?> value="<?= $_GET['id'] ?>" <?php }else{ ?> value="{{ old('referral_user') }}" <?php } ?> >
                                             <span class="force-color-black"><span class="force-color-blue">*</span>Required fields</span><br>
                                             <div class="form-group">
                                                 <label class="force-color-black">Full Name <span class="force-color-blue">*</span></label>

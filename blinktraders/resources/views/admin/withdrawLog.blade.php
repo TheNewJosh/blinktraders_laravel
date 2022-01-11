@@ -6,6 +6,7 @@
             $page = "withdraw-log.php"; 
             $page_title = "Withradaw System"; 
             $typStatus = ["Pending", "Approved", "Decline"];
+            $typWithdraw = ["Withradaw Bal.", "Profit Bal", "Referral Bal"];
         ?>
         @include('layouts.meta')
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css" />
@@ -33,6 +34,7 @@
                                 <th>Name</th>
                                 <th>Amount</th>
                                 <th>Details</th>
+                                <th>Ref. ID</th>
                                 <th>Type</th>
                                 <th>Status</th>
                                 <th>Created</th>
@@ -41,14 +43,14 @@
                         </thead>
                         <tbody>
                         @if ($transactions->count())
-                          {{ $i=1 }}
                           @foreach ($transactions as $trn)
                           <tr>
-                                <td>{{$i}}</td>
+                                <td>{{$loop->iteration}}</td>
                                 <td>{{$trn->user->name}}</td>
-                                <td>{{$trn->amount}}</td>
-                                <td>{{$trn->wallet_address}}</td>
+                                <td>{{$trn->amount - $trn->charges}}</td>
+                                <td>ID: {{$trn->wallet_address}}<br>Coin: {{$trn->paymentGateway->name}}</td>
                                 <td>{{$trn->reference_id}}</td>
+                                <td>{{$typWithdraw[$trn->withdraw_source]}}</td>
                                 <td>{{$typStatus[$trn->status]}}</td>
                                 <td>{{$trn->created_at}}</td>
                                 <td>
@@ -86,7 +88,6 @@
                                     </div>
                                 </td>
                             </tr>
-                          {{ $i++ }}
                           @endforeach
                         @endif
                         </tbody>

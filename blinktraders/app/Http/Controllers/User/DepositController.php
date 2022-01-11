@@ -16,7 +16,7 @@ class DepositController extends Controller
     
     public function index()
     {
-        $paymentGateway = PaymentGateway::where('status', 1)->get();
+        $paymentGateway = PaymentGateway::where('status', 1)->orderBy('id', 'ASC')->get();
 
         $user = User::find(auth()->user()->id);
         

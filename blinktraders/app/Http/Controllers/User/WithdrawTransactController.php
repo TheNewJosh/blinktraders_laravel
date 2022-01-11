@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
 use App\Models\SystemConfiguration;
 use App\Http\Controllers\Controller;
+use App\Services\InvestPlanTransact;
 use App\Models\InvestPackTransaction;
 use App\Services\UserAvailableBalance;
 use Illuminate\Support\Facades\Validator;
@@ -43,7 +44,7 @@ class WithdrawTransactController extends Controller
     public function store(Request $request)
     {
         
-        $pin = $request->pin1 . $request->pin2 . $request->pin3 . $request->pin4;
+        $pin = $request->pin0 . $request->pin1 . $request->pin2 . $request->pin3;
 
         if($pin != auth()->user()->pin) {
             return back()->with('statusErrorPin', 'Input error')->withInput();
@@ -53,9 +54,14 @@ class WithdrawTransactController extends Controller
             return back()->with('statusErrorPin', 'Input error')->withInput();
         }
 
+        $investPlanTransact = InvestPlanTransact::checkTransactionExistUser(auth()->user()->id);
         $userAvailableBalance = UserAvailableBalance::getAvailableBalance();
         $userAvailableBalanceProfit = UserAvailableBalance::getAvailableBalanceProfit();
         $userAvailableBalanceReferral = UserAvailableBalance::getAvailableBalanceReferral();
+
+        if($investPlanTransact <= 0){
+            return back()->with('statusErrorNoInvestPlan', 'Input error')->withInput();
+        }
 
         if($request->withdraw_source == 0){
             if($request->amount > $userAvailableBalance){
@@ -98,8 +104,11 @@ class WithdrawTransactController extends Controller
                 'transact_type' => 1,
                 'status' => 0,
             ]);
-    
-            return redirect()->back()->with('statusSuccess', 'Success')->with('statusID', $transactions->id);
+            if($request->withdraw_source == 1){
+                return redirect()->back()->with('statusSuccessProfit', 'Success')->with('statusID', $transactions->id);
+            }else{
+                return redirect()->back()->with('statusSuccess', 'Success')->with('statusID', $transactions->id);
+            }
         }
     }
 }

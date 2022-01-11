@@ -23,6 +23,7 @@ class KycProofAddressController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'address' => 'required',
+            'doc_type_prof' => 'required',
         ]);
 
         if($validator->fails()) {
@@ -48,6 +49,7 @@ class KycProofAddressController extends Controller
 
             User::where('id', auth()->user()->id)->update([
                 'address' => $request->address,
+                'doc_type_prof' => $request->doc_type_prof,
             ]);
 
             // return response(['status' => true, 'message' => 'Success']);
