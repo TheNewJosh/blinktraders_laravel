@@ -1,0 +1,1 @@
+/usr/bin/php /home/u115662082/domain/blinktraders.com/public_html && php artisan schedule:run >> /dev/null 2>&1
